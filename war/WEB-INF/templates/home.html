@@ -1,0 +1,41 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-3.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>League - Welcome!</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+	<p th:text="#{home.welcome}">Welcome to the League!</p>
+
+	<p th:utext="#{home.welcome2}">Welcome to our grocery store!</p>
+	
+	<p>Today is: <span th:text="${today}">01 January 1970</span></p>
+	
+	<p th:utext="#{home.welcome(${session.user.name})}">Welcome to our grocery store, Sebastian Pepper!</p>
+	
+	<span th:text="${#locale.country}">US</span>
+	
+	 <div th:object="${session.user}">
+        <p>Name: <span th:text="*{firstName}">Sebastian</span>.</p>
+        <p>Surname: <span th:text="*{lastName}">Pepper</span>.</p>
+        <p>Nationality: <span th:text="*{nationality}">Saturn</span>.</p>
+    </div>
+	
+	<table>
+      <tr>
+        <th>NAME</th>
+        <th>PRICE</th>
+        <th>IN STOCK</th>
+      </tr>
+      <tr th:each="prod : ${prods}">
+        <td th:text="${prod.name}">Onions</td>
+        <td th:text="${prod.price}">2.41</td>
+        <td th:text="${prod.inStock}? #{true} : #{false}">yes</td>
+      </tr>
+    </table>
+	
+	
+</body>
+
+</html>

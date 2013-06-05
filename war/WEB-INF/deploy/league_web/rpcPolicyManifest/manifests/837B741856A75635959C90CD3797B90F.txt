@@ -1,2 +1,0 @@
-serviceClass: com.africaapps.league.web.client.GreetingService
-path: 093F0B3E5C308167F83DA6696141E740.gwt.rpc
