@@ -1,4 +1,4 @@
-package com.africaapps.league.web.server.user;
+package com.africaapps.league.web.server.controller.user;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.africaapps.league.exception.LeagueException;
 import com.africaapps.league.model.game.User;
 import com.africaapps.league.service.user.UserService;
+import com.africaapps.league.web.server.controller.BaseLeagueController;
 
 @Controller
 @RequestMapping(value = "/user")
-public class UserController {
+public class UserController extends BaseLeagueController {
 
 	@Autowired
 	private UserService userService;
@@ -24,13 +25,14 @@ public class UserController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String checkUser(@RequestParam(required = false, value = "username") String username,
-			@RequestParam(required = false, value = "password") String password, 
-			ModelMap model) {
+			                    @RequestParam(required = false, value = "password") String password, 
+			                    ModelMap model) {
 		try {
 			if (username != null && !username.trim().equals("")) {
 				User user = userService.getUser(username, password);
 				if (user != null) {
-					// TODO getUserTeams(user);
+					model.addAttribute(USER_ID_PARAM, user.getId().toString());
+					return "redirect:/team/list?"+USER_ID_PARAM+"="+user.getId();
 				} else {		
 					model.addAttribute("username", username);
 					return "register";
@@ -53,8 +55,9 @@ public class UserController {
 				User user = new User();
 				user.setUsername(username);
 				userService.saveUser(user);
+				model.addAttribute(USER_ID_PARAM, user.getId().toString());
 				model.addAttribute("newUser", true);
-				return "redirect:/pages/teams.jsp";
+				return "redirect:/team/list?"+NEW_USER_PARAM+"=true&"+USER_ID_PARAM+"="+user.getId();
 			} else {
 				model.addAttribute("message", "Enter your username!");
 				return "register";
@@ -64,5 +67,10 @@ public class UserController {
 			model.addAttribute("message", "Unable to save the user " + username);
 			return "register";
 		}
+	}
+	
+	@RequestMapping(value="/startRegister")
+	public String startRegister(ModelMap model) {
+		return "register";
 	}
 }
