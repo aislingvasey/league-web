@@ -11,6 +11,14 @@
     <c:if test="${not empty message}">    
         <h3>${message}</h3>
     </c:if>
+    
+    <!-- Temporary to get to team's page -->
+    This is temporary as the MXIT username should be picked up from a header...<br/>
+    Enter your username:
+    <form action="team/list" method="get">
+        <input type="text" value="${username}" name="username"></input>
+        <input type="submit" value="Go"></input>
+    </form> 
   </body>
 
 </html>

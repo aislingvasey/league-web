@@ -24,8 +24,8 @@ public class UserController extends BaseLeagueController {
 	private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String checkUser(@RequestParam(required = false, value = "username") String username,
-			                    @RequestParam(required = false, value = "password") String password, 
+	public String checkUser(@RequestParam(required = false, value=USERNAME_PARAM) String username,
+			                    @RequestParam(required = false, value="password") String password, 
 			                    ModelMap model) {
 		try {
 			if (username != null && !username.trim().equals("")) {
@@ -49,7 +49,7 @@ public class UserController extends BaseLeagueController {
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
-	public String registerUser(@RequestParam(required = false, value = "username") String username, ModelMap model) {
+	public String registerUser(@RequestParam(required=false, value=USERNAME_PARAM) String username, ModelMap model) {
 		try {
 			if (username != null && !username.trim().equals("")) {
 				User user = new User();
@@ -70,7 +70,10 @@ public class UserController extends BaseLeagueController {
 	}
 	
 	@RequestMapping(value="/startRegister")
-	public String startRegister(ModelMap model) {
+	public String startRegister(@RequestParam(required=false, value=USERNAME_PARAM) String username, ModelMap model) {
+		if (username != null) {
+			model.addAttribute(USERNAME_PARAM, username);
+		}
 		return "register";
 	}
 }

@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
   <head>
-    <title>League -Teams</title>
+    <title>League - Teams</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   </head>
 
@@ -11,7 +11,8 @@
   
   <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
     
-    <h1>Your Teams</h1>
+    <b>Your Teams</b><br/>
+    
     <c:if test="${not empty message}">    
       <h3>${message}</h3>
     </c:if>
@@ -25,23 +26,23 @@
         </form>   
     </c:if>
     
-    
-    
     <c:if test="${not empty teams}">
     
         <c:forEach items="${teams}" var="team">
             <b>${team.name}</b><br/>
-            League:&nbsp;<a href="league/view?leagueid=${team.userLeague.id}">${team.userLeague.name}</a><br/>
+            League:&nbsp;<a href="${contextPath}/league/view?leagueid=${team.userLeague.id}&userid=${userid}">${team.userLeague.name}</a>            
+            TODO Current position in league
+            <br/>            
             Current Score: ${team.currentScore}<br/>            
             Available Money: <fmt:formatNumber value="${team.availableMoney}" type="currency" currencySymbol="R"/><br/>
-            Format: <a href="/team/changeFormat?userid=${userid}&teamid=${team.id}">${team.currentFormat.name}</a><br/>
             <c:if test="${team.validTeam}">
                 Status: Ready to Play!
             </c:if> 
             <c:if test="${not team.validTeam}">
-                Status: Not ready yet
-            </c:if>
-            <br/><a href="/team/players?userid=${userid}&teamid=${team.id}">Your Players</a><br/>            
+                Status: Not Ready
+            </c:if>            
+            <br/>
+            <a href="${contextPath}/team/players?userid=${userid}&teamid=${team.id}">Your Players</a><br/>            
         </c:forEach>
     </c:if>
 

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.africaapps.league.exception.LeagueException;
+import com.africaapps.league.model.game.User;
 import com.africaapps.league.service.user.UserService;
 
 public class BaseLeagueController {
@@ -15,15 +16,49 @@ public class BaseLeagueController {
 	
 	protected static final String NEW_USER_PARAM = "newuser";
 	protected static final String USER_ID_PARAM = "userid";
+	protected static final String USERNAME_PARAM = "username";
 	protected static final String TEAM_NAME_PARAM = "teamname";
+	protected static final String LEAGUE_ID_PARAM = "leagueid";
 	
 	protected static final String TEAMS_PAGE_MAPPING = "teams";
 	protected static final String REGISTER = "register";
+	protected static final String LEAGUE_PAGE_MAPPING = "league";
 	
 	@Autowired
 	private UserService userService;
 	
 	private static Logger logger = LoggerFactory.getLogger(BaseLeagueController.class);
+	
+	protected User getUser(HttpServletRequest request, String userId, String username) {
+		Long uId = null;
+		if (isValidId(userId)) {
+			uId = Long.valueOf(userId);
+		} else {
+			uId = getUserId(request);
+		}
+		if (uId != null) {
+			try {
+				User user = userService.getUser(uId);
+				logger.debug("Got user for id: " + uId + " - " + user);
+				return user;
+			} catch (LeagueException e) {
+				logger.error("Error getting user by id:", e);
+				return null;
+			}
+		} else if (username != null) {
+			try {
+				User user = userService.getUser(username, null);
+				logger.debug("Got user for username: " + username + " - " + user);
+				return user;
+			} catch (LeagueException e) {
+				logger.error("Error getting user by username:", e);
+				return null;
+			}
+		} else {
+			logger.error("No userid or username found");
+			return null;
+		}
+	}
 	
 	protected String getUsername(HttpServletRequest request) {		
 		if (request.getParameter("username") != null) {
@@ -60,7 +95,11 @@ public class BaseLeagueController {
 	}
 	
 	protected boolean isValidId(String value) {
-		return value.matches(NUMERIC_REG_EXP);
+		if (value != null && value.matches(NUMERIC_REG_EXP)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	protected boolean isValid(String value) {
