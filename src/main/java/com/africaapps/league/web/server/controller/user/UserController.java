@@ -52,9 +52,12 @@ public class UserController extends BaseLeagueController {
 	public String registerUser(@RequestParam(required=false, value=USERNAME_PARAM) String username, ModelMap model) {
 		try {
 			if (username != null && !username.trim().equals("")) {
-				User user = new User();
-				user.setUsername(username);
-				userService.saveUser(user);
+				User user = userService.getUser(username, null);
+				if (user == null) {
+					user = new User();
+					user.setUsername(username);
+					userService.saveUser(user);
+				}
 				model.addAttribute(USER_ID_PARAM, user.getId().toString());
 				model.addAttribute("newUser", true);
 				return "redirect:/team/list?"+NEW_USER_PARAM+"=true&"+USER_ID_PARAM+"="+user.getId();

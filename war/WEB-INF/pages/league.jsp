@@ -41,7 +41,7 @@
                 </c:forEach>
            </c:if>                 
 	  </c:if>
-	  <a href="${contextPath}/team/list?userid=${userid}">Your Teams</a>
+	  <a href="${contextPath}/team/list?userid=${userid}">Back</a>
   </body>
 
 </html>

@@ -22,7 +22,7 @@ INSERT INTO game_user_details(id, cell_number, email_address, first_name, last_n
 
 -- User League
 INSERT INTO game_user_league(id, default_league, description, name, status, type, owner_id, league_id) 
-    VALUES((select nextval('user_league_seq')), true, 'General league for all teams', 'General League', 'INPROGRESS', 'PUBLIC', (select id from game_user_details where username='admin'), (select id from league where name = 'ABSA Premier SoccerLeague'));
+    VALUES((select nextval('user_league_seq')), true, 'General league for all teams', 'General League', 'INPROGRESS', 'PUBLIC', (select id from game_user_details where username='admin'), (select id from league where name = 'ABSA Premier Soccer League'));
 
 
 -- Team Formats
