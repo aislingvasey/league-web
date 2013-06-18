@@ -33,8 +33,10 @@ public class UserController extends BaseLeagueController {
 				if (user != null) {
 					model.addAttribute(USER_ID_PARAM, user.getId().toString());
 					return "redirect:/team/list?"+USER_ID_PARAM+"="+user.getId();
-				} else {		
-					model.addAttribute("username", username);
+				} else {	
+					if (!model.containsAttribute("username")) {
+						model.addAttribute("username", username);
+					}
 					return "register";
 				}
 			} else {
@@ -58,9 +60,11 @@ public class UserController extends BaseLeagueController {
 					user.setUsername(username);
 					userService.saveUser(user);
 				}
+				model.remove(USER_ID_PARAM);
 				model.addAttribute(USER_ID_PARAM, user.getId().toString());
+				model.remove("newUser");
 				model.addAttribute("newUser", true);
-				return "redirect:/team/list?"+NEW_USER_PARAM+"=true&"+USER_ID_PARAM+"="+user.getId();
+				return "redirect:/team/list";
 			} else {
 				model.addAttribute("message", "Enter your username!");
 				return "register";

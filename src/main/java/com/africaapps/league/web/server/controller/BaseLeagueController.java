@@ -20,6 +20,7 @@ public class BaseLeagueController {
 	protected static final String TEAM_NAME_PARAM = "teamname";
 	protected static final String TEAM_ID_PARAM = "teamid";
 	protected static final String LEAGUE_ID_PARAM = "leagueid";
+	protected static final String PLAYER_ID_PARAM = "playerid";
 	
 	protected static final String TEAMS_PAGE_MAPPING = "teams";
 	protected static final String PLAYERS_PAGE_MAPPING = "players";
@@ -27,6 +28,7 @@ public class BaseLeagueController {
 	protected static final String LEAGUE_PAGE_MAPPING = "league";
 	protected static final String TEAMS_SEARCH_PAGE_MAPPING = "searchTeams";
 	protected static final String TEAM_PLAYERS_PAGE_MAPPING = "teamPlayers";
+	protected static final String CHANGE_TEAM_FORMAT_MAPPING = "format";
 	
 	@Autowired
 	private UserService userService;

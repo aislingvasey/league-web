@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.africaapps.league.dto.TeamSummary;
 import com.africaapps.league.dto.UserPlayerSummary;
 import com.africaapps.league.dto.UserTeamSummary;
+import com.africaapps.league.exception.InvalidPlayerException;
 import com.africaapps.league.exception.LeagueException;
 import com.africaapps.league.model.game.TeamFormat;
 import com.africaapps.league.model.game.User;
@@ -44,12 +45,14 @@ public class TeamController extends BaseLeagueController {
 		logger.info("Getting teams for user: " + userId + " newUser:" + newUser + " username: " + username);
 		User user = getUser(request, userId, username);
 		if (user != null) {
+			model.remove(USER_ID_PARAM);
 			model.addAttribute(USER_ID_PARAM, user.getId().toString());
-			logger.debug("Found correcponding user: " + user);
+			logger.debug("Found corresponding user: " + user);
 		} else {
-			logger.error("Unknown user!");
+			logger.error("Teams: list() Unknown user!");
 			if (username != null) {
-				model.addAttribute("username", username);
+				model.remove(USERNAME_PARAM);
+				model.addAttribute(USERNAME_PARAM, username);
 			}
 			return "redirect:/user/startRegister";
 		}
@@ -61,7 +64,7 @@ public class TeamController extends BaseLeagueController {
 				model.addAttribute("teams", teams);
 			} catch (LeagueException e) {
 				model.addAttribute("message", "Unable to load your teams");
-				return "teams";
+				return TEAMS_PAGE_MAPPING;
 			}
 		} else {
 			model.addAttribute("newUser", "true");
@@ -75,9 +78,10 @@ public class TeamController extends BaseLeagueController {
 			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
 			@RequestParam(required = false, value = USERNAME_PARAM) String username, ModelMap model) {
 		User user = getUser(request, userId, username);
-
 		try {
 			if (user != null) {
+				model.remove(USER_ID_PARAM);
+				model.addAttribute(USER_ID_PARAM, user.getId().toString());
 				if (isValid(teamName)) {
 					UserTeam userTeam = userTeamService.getTeam(user.getId(), teamName);
 					if (userTeam == null) {
@@ -99,10 +103,10 @@ public class TeamController extends BaseLeagueController {
 					model.addAttribute("teams", teams);
 				} else {
 					model.addAttribute("message", "Enter a team name");
-					return "teams";
+					return TEAMS_PAGE_MAPPING;
 				}
 			} else {
-				logger.error("Unknown user!");
+				logger.error("startCreateTeam() Unknown user!");
 				return REGISTER;
 			}
 		} catch (LeagueException e) {
@@ -128,7 +132,8 @@ public class TeamController extends BaseLeagueController {
 	@RequestMapping(value = "/players")
 	public String getUserTeams(HttpServletRequest request,
 			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
-			@RequestParam(required = false, value = TEAM_ID_PARAM) String teamId, ModelMap model) {
+			@RequestParam(required = false, value = TEAM_ID_PARAM) String teamId, 
+			ModelMap model) {
 		logger.info("Getting players for user: " + userId + " teamId:" + teamId);
 		User user = getUser(request, userId, null);
 		try {
@@ -168,8 +173,11 @@ public class TeamController extends BaseLeagueController {
 				if (isValidId(teamId)) {
 					List<TeamSummary> teams = teamService.getTeams(Long.valueOf(teamId));
 					model.addAttribute("teams", teams);
+					model.remove(USER_ID_PARAM);
 					model.addAttribute("userid", userId);
+					model.remove(TEAM_ID_PARAM);
 					model.addAttribute("teamid", teamId);
+					model.remove("type");
 					model.addAttribute("type", playerType);
 					return TEAMS_SEARCH_PAGE_MAPPING;
 				} else {
@@ -186,7 +194,6 @@ public class TeamController extends BaseLeagueController {
 		return "/team/players?userid="+userId+"&teamid="+teamId;
 	}
 	
-	//teamPlayers?userid=${userid}&teamid=${teamid}&type=${type}&team=${team.teamId}
 	@RequestMapping(value = "/teamPlayers")
 	public String findPlayer(HttpServletRequest request,
 			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
@@ -201,9 +208,13 @@ public class TeamController extends BaseLeagueController {
 				if (isValidId(teamId) && isValidId(team)) {
 					List<UserPlayerSummary> players = userTeamService.getTeamPlayers(Long.valueOf(team), Long.valueOf(teamId), type);
 					model.addAttribute("players", players);
-					model.addAttribute("userid", userId);
+					model.remove(USER_ID_PARAM);
+					model.addAttribute(USER_ID_PARAM, userId);
+					model.remove("teamid");
 					model.addAttribute("teamid", teamId); //user's team
+					model.remove("team");
 					model.addAttribute("team", team);  //actual team
+					model.remove("type");
 					model.addAttribute("type", type);
 					return TEAM_PLAYERS_PAGE_MAPPING;
 				} else {
@@ -218,5 +229,131 @@ public class TeamController extends BaseLeagueController {
 			model.addAttribute("message", "Unable to view team's players");
 		}
 		return "/team/players?userid="+userId+"&teamid="+teamId;
+	}
+	
+	@RequestMapping(value = "/addPlayer")
+	public String addPlayer(HttpServletRequest request,
+			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
+			@RequestParam(required = false, value = TEAM_ID_PARAM) String teamId, 
+			@RequestParam(required = false, value="type") String type,
+			@RequestParam(required = false, value = "team") String team,
+			@RequestParam(required = false, value = PLAYER_ID_PARAM) String playerId, 
+			ModelMap model) {
+		logger.info("Finding team's player: " + userId + " teamId:" + teamId+" playerType:"+type+" team:"+team);
+		User user = getUser(request, userId, null);
+		try {
+			if (user != null) {
+				if (isValidId(teamId) && isValidId(team) && isValidId(playerId)) {
+					String message = userTeamService.addPlayerToUserTeam(user, Long.valueOf(teamId), Long.valueOf(team), Long.valueOf(playerId), type); 
+					if (message != null) {
+						model.addAttribute("message", message);
+					}
+					try {
+						List<UserPlayerSummary> players = userTeamService.getTeamPlayers(Long.valueOf(team), Long.valueOf(teamId), type);
+						model.addAttribute("players", players);
+						logger.info("Added player successfully");
+					} catch (InvalidPlayerException e) {
+						logger.error("Unable to add player: "+e.getMessage());
+						model.addAttribute("message", e.getMessage());
+					}
+					model.remove(USER_ID_PARAM);
+					model.addAttribute(USER_ID_PARAM, userId);
+					model.remove("teamid");
+					model.addAttribute("teamid", teamId); //user's team
+					model.remove("team");
+					model.addAttribute("team", team);  //actual team
+					model.remove("type");
+					model.addAttribute("type", type);
+					return TEAM_PLAYERS_PAGE_MAPPING;
+				} else {
+					model.addAttribute("message", "No team or player specified");
+				}
+			} else {
+				logger.error("Unknown user!");
+				return REGISTER;
+			}
+		} catch (LeagueException e) {
+			logger.error("Error getting team's players: ", e);
+			model.addAttribute("message", "Unable to view team's players");
+		}
+		return "/team/players?userid="+userId+"&teamid="+teamId;
+	}
+	
+	//team/changeFormat?userid=4&teamid=3
+	@RequestMapping(value = "/changeFormat")
+	public String startChangeFormat(HttpServletRequest request,
+			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
+			@RequestParam(required = false, value = TEAM_ID_PARAM) String teamId, 
+			ModelMap model) {
+		logger.info("Finding team's current format: " + userId + " teamId:" + teamId);
+		User user = getUser(request, userId, null);
+		try {
+			if (user != null) {
+				model.remove(USER_ID_PARAM);
+				model.addAttribute(USER_ID_PARAM, userId);
+				if (isValidId(teamId)) {					
+					UserTeam team = userTeamService.getTeam(Long.valueOf(teamId));
+					model.remove("formats");
+					if (team != null) {						
+						model.remove("team");
+						model.addAttribute("team", team);
+						List<TeamFormat> formats = userTeamService.getTeamFormats(team.getUserLeague().getLeague().getId());
+						for(int i=formats.size()-1;i>=0;i--) {
+							TeamFormat format = formats.get(i);
+							if (format.getId().equals(team.getCurrentFormat().getId())) {
+								formats.remove(i);
+								break;
+							}
+						}
+						model.addAttribute("formats", formats);
+						logger.info("Added formats:"+formats.size());
+					} else {
+						model.addAttribute("formats", new ArrayList<TeamFormat>());
+					}					
+					return CHANGE_TEAM_FORMAT_MAPPING;
+				} else {
+					model.addAttribute("message", "No teams specified");
+				}
+			} else {
+				logger.error("Unknown user!");
+				return REGISTER;
+			}
+		} catch (LeagueException e) {
+			logger.error("Error getting team formats: ", e);
+			model.addAttribute("message", "Unable to get team formats");
+		}
+		return "redirect:/team/players";
+	}
+	
+	//}/team/setFormat?teamid=${team.id}&userid=${userid}&formatid=${format.id}
+	@RequestMapping(value = "/setFormat")
+	public String changeFormat(HttpServletRequest request,
+			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
+			@RequestParam(required = false, value = TEAM_ID_PARAM) String teamId,
+			@RequestParam(required = false, value = "formatid") String formatId,
+			ModelMap model) {
+		logger.info("Changing team's current format userId: " + userId + " teamId:" + teamId+" formatId:"+formatId);
+		User user = getUser(request, userId, null);
+		try {
+			if (user != null) {
+				model.remove(USER_ID_PARAM);
+				model.addAttribute(USER_ID_PARAM, userId);
+				model.remove("team");
+				model.remove("teamid");
+				model.addAttribute("teamid", teamId);
+				if (isValidId(teamId) && isValidId(formatId)) {					
+					userTeamService.setTeamFormat(Long.valueOf(teamId), Long.valueOf(formatId));
+				} else {
+					model.addAttribute("message", "No team or format specified");
+				}
+			} else {
+				logger.error("Unknown user!");
+				return REGISTER;
+			}
+		} catch (LeagueException e) {
+			logger.error("Error changing team format: ", e);
+			model.addAttribute("message", "Unable to change team's format");
+		}
+		return "redirect:/team/players";
 	}
 }

@@ -20,9 +20,8 @@
     <c:if test="${not empty team}"> 
        
         Team Name:&nbsp;${team.teamName}<br/>
-        Team Format:&nbsp;${team.teamFormat.name}<br/>
-        Squad Count:&nbsp;${team.playersCount} out of 15
-        
+        Team Format:&nbsp;<a href="${contextPath}/team/changeFormat?userid=${team.userId}&teamid=${team.teamId}">${team.teamFormat.name}</a><br/>
+        Squad Count:&nbsp;${team.playersCount} out of 15 players assigned        
         <br/>Defenders:    
         <c:forEach items="${team.defenders}" var="d">
             <br/>
@@ -73,6 +72,11 @@
         <c:if test="${team.requiresGoalKeepers}">
             <a href="${contextPath}/team/findPlayer?userid=${team.userId}&teamid=${team.teamId}&type=goalkeeper">Add Goal Keeper</a> 
         </c:if>  
+        
+        <br/>
+        <c:if test="${team.requiresSubstitutes}">
+            <a href="${contextPath}/team/findPlayer?userid=${team.userId}&teamid=${team.teamId}&type=substitute">Add Substitute</a> 
+        </c:if> 
                
         <br/>
         <a href="${contextPath}/team/list?userid=${team.userId}">Back</a>

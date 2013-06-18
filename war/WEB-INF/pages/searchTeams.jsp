@@ -23,7 +23,7 @@
         </c:forEach>
     </c:if>
     <c:if test="${empty teams}">
-        No teams available
+        No teams available<br/>
     </c:if>
     <a href="${contextPath}/team/players?userid=${userid}&teamid=${teamid}">Back</a><br/>
   </body>

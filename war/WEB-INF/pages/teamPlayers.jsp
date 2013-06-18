@@ -19,7 +19,7 @@
     Player Type:&nbsp;${type}<br/>
     <c:if test="${not empty players}">
         <c:forEach items="${players}" var="p">
-            <a href="${contextPath}/team/addPlayer?userid=${userid}&teamid=${teamid}&type=${type}&team=${team}">
+            <a href="${contextPath}/team/addPlayer?userid=${userid}&teamid=${teamid}&type=${type}&team=${team}&playerid=${p.id}">
             ${p.firstName}&nbsp;${p.lastName} - Price:&nbsp;${p.price}
             </a>
             <br/>
