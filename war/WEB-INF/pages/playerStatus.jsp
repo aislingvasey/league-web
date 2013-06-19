@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
   <head>
-    <title>League - Teams Players</title>
+    <title>League - Player Status</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   </head>
 
@@ -11,22 +11,25 @@
   
   <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
     
-    <b>Players</b><br/>
+    <b>Player Status</b>
+    <br/>
     
     <c:if test="${not empty message}">    
-      <h3>${message}</h3>
+      <b>${message}</b><br/>
     </c:if>
-    Player Type:&nbsp;${type}<br/>
-    <c:if test="${not empty players}">
-        <c:forEach items="${players}" var="p">
-            <a href="${contextPath}/team/addPlayer?userid=${userid}&teamid=${teamid}&type=${type}&team=${team}&poolplayerid=${p.poolPlayerId}">
-            ${p.firstName}&nbsp;${p.lastName} - Price:&nbsp;${p.price}
+    
+    <c:if test="${not empty player}">
+        Player: ${player.firstName} ${player.lastName}&nbsp;Status:${player.status}
+        <br/>
+        <c:forEach items="${statuses}" var="s">            
+            <a href="${contextPath}/team/setPlayerStatus?userid=${userid}&teamid=${teamid}&poolplayerid=${player.poolPlayerId}&status=${s}">
+            Change status to ${s}
             </a>
             <br/>
         </c:forEach>
     </c:if>
 
-    <a href="${contextPath}/team/findPlayer?userid=${userid}&teamid=${teamid}&type=${type}">Back</a>
+    <a href="${contextPath}/team/players?userid=${userid}&teamid=${teamid}">Back</a><br/>
 
   </body>
 

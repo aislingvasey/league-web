@@ -14,69 +14,87 @@
     <b>Your Players</b><br/>
     
     <c:if test="${not empty message}">    
-      <h3>${message}</h3>
+      <b>${message}</b><br/>
     </c:if>
     
     <c:if test="${not empty team}"> 
        
         Team Name:&nbsp;${team.teamName}<br/>
         Team Format:&nbsp;<a href="${contextPath}/team/changeFormat?userid=${team.userId}&teamid=${team.teamId}">${team.teamFormat.name}</a><br/>
-        Squad Count:&nbsp;${team.playersCount} out of 15 players assigned        
-        <br/>Defenders:    
+        Squad Count:&nbsp;${team.playersCount} out of 15 players assigned<br/> 
+        Captain: ${team.captain}       
+        <br/>
+        <b>Defenders:</b>
+        <c:if test="${team.requiresDefenders}">
+            <a href="${contextPath}/team/findPlayer?userid=${team.userId}&teamid=${team.teamId}&type=defender">Add Defender</a> 
+        </c:if>              
         <c:forEach items="${team.defenders}" var="d">
-            <br/>
-            Player:&nbsp;${d.firstName}&nbsp;${d.lastName}<br/>
-            Status:&nbsp;${d.status}&nbsp;
-            Type:&nbsp;${d.blockType}<br/>
-            Price:&nbsp;${d.price}&nbsp;
-            Current Score:&nbsp;${g.currentScore}<br/>                          
+        <br/>
+            ${d.firstName}&nbsp;${d.lastName}&nbsp;
+            Status:&nbsp;
+            <a href="${contextPath}/team/changePlayerStatus?userid=${team.userId}&teamid=${team.teamId}&type=defender&poolplayerid=${d.poolPlayerId}">
+            ${d.status}</a>&nbsp;
+            <%-- Price:&nbsp;${d.price}&nbsp;
+            Current Score:&nbsp;${g.currentScore}            --%>                       
         </c:forEach>
-        <c:if test="${team.requiresDefenders}">
-            <br/><a href="${contextPath}/team/findPlayer?userid=${team.userId}&teamid=${team.teamId}&type=defender">Add Defender</a> 
-        </c:if>        
-        
-        <br/>Mid Fielders:    
-        <c:forEach items="${team.defenders}" var="f">
-            <br/>
-            Player:&nbsp;${f.firstName}&nbsp;${f.lastName}<br/>
-            Status:&nbsp;${f.status}&nbsp;
-            Type:&nbsp;${f.blockType}<br/>
-            Price:&nbsp;${f.price}&nbsp;
-            Current Score:&nbsp;${f.currentScore}<br/>                          
-        </c:forEach>
+
+        <br/>
+        <b>Mid Fielders:</b>
         <c:if test="${team.requiresMidFielders}">
-            <br/><a href="${contextPath}/team/findPlayer?userid=${team.userId}&teamid=${team.teamId}&type=midfielder">Add Mid Fielder</a> 
-        </c:if>  
-        
-        <br/>Strikers:  
-        <c:forEach items="${team.defenders}" var="s">
-            <br/>
-            Player:&nbsp;${s.firstName}&nbsp;${s.lastName}<br/>
-            Status:&nbsp;${s.status}&nbsp;
-            Type:&nbsp;${s.blockType}<br/>
-            Price:&nbsp;${s.price}&nbsp;
-            Current Score:&nbsp;${s.currentScore}<br/>                          
+            <a href="${contextPath}/team/findPlayer?userid=${team.userId}&teamid=${team.teamId}&type=midfielder">Add Mid Fielder</a> 
+        </c:if>      
+        <c:forEach items="${team.midfielders}" var="f">
+                <br/>
+            ${f.firstName}&nbsp;${f.lastName}&nbsp;
+            Status:&nbsp;
+            <a href="${contextPath}/team/changePlayerStatus?userid=${team.userId}&teamid=${team.teamId}&type=midfielder&poolplayerid=${f.poolPlayerId}">
+            ${f.status}</a>&nbsp;
+            <%-- Price:&nbsp;${f.price}&nbsp;
+            Current Score:&nbsp;${f.currentScore}       --%>               
         </c:forEach>
-        <c:if test="${team.requiresDefenders}">
-            <br/><a href="${contextPath}/team/findPlayer?userid=${team.userId}&teamid=${team.teamId}&type=striker">Add Striker</a> 
-        </c:if>  
         
-        <br/>Goal Keepers:<br/>    
-        <c:forEach items="${team.goalKeepers}" var="g">
-            Player:&nbsp;${g.firstName}&nbsp;${g.lastName}<br/>
-            Status:&nbsp;${g.status}&nbsp;
-            Type:&nbsp;${g.blockType}<br/>
-            Price:&nbsp;${g.price}&nbsp;
-            Current Score:&nbsp;${g.currentScore}<br/>	                        
-        </c:forEach>
-        <c:if test="${team.requiresGoalKeepers}">
-            <a href="${contextPath}/team/findPlayer?userid=${team.userId}&teamid=${team.teamId}&type=goalkeeper">Add Goal Keeper</a> 
-        </c:if>  
         
         <br/>
+        <b>Strikers:</b>  
+        <c:if test="${team.requiresStrikers}">
+            <a href="${contextPath}/team/findPlayer?userid=${team.userId}&teamid=${team.teamId}&type=striker">Add Striker</a> 
+        </c:if>  
+        <c:forEach items="${team.strikers}" var="s">
+            <br/>
+            ${s.firstName}&nbsp;${s.lastName}&nbsp;
+            Status:&nbsp;<a href="${contextPath}/team/changePlayerStatus?userid=${team.userId}&teamid=${team.teamId}&type=striker&poolplayerid=${s.poolPlayerId}">
+            ${s.status}</a>&nbsp;
+            <%-- Price:&nbsp;${s.price}&nbsp;
+            Current Score:&nbsp;${s.currentScore}     --%>               
+        </c:forEach>        
+        
+        <br/>
+        <b>Goal Keepers:</b>
+        <c:if test="${team.requiresGoalKeepers}">
+            <a href="${contextPath}/team/findPlayer?userid=${team.userId}&teamid=${team.teamId}&type=goalkeeper">Add Goal Keeper</a> 
+        </c:if>   
+        <c:forEach items="${team.goalKeepers}" var="g">
+            <br/>
+            ${g.firstName}&nbsp;${g.lastName}&nbsp;
+            Status:&nbsp;<a href="${contextPath}/team/changePlayerStatus?userid=${team.userId}&teamid=${team.teamId}&type=goalkeeper&poolplayerid=${g.poolPlayerId}">
+            ${g.status}</a>&nbsp;
+            <%-- Price:&nbsp;${g.price}&nbsp;
+            Current Score:&nbsp;${g.currentScore}	 --%>                        
+        </c:forEach>         
+        
+        <br/>
+        <b>Substitutes:</b>
         <c:if test="${team.requiresSubstitutes}">
             <a href="${contextPath}/team/findPlayer?userid=${team.userId}&teamid=${team.teamId}&type=substitute">Add Substitute</a> 
         </c:if> 
+        <c:forEach items="${team.substitutes}" var="s">
+            <br/>
+            ${s.firstName}&nbsp;${s.lastName}&nbsp;
+            Status:&nbsp;<a href="${contextPath}/team/changePlayerStatus?userid=${team.userId}&teamid=${team.teamId}&type=substitute&poolplayerid=${s.poolPlayerId}">
+            ${s.status}</a>&nbsp;
+            <%-- Price:&nbsp;${s.price}&nbsp;
+            Current Score:&nbsp;${s.currentScore}  --%>                          
+        </c:forEach>  
                
         <br/>
         <a href="${contextPath}/team/list?userid=${team.userId}">Back</a>

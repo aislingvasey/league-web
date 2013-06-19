@@ -31,7 +31,7 @@
         <c:forEach items="${teams}" var="team">
             <b>${team.name}</b><br/>
             League:&nbsp;<a href="${contextPath}/league/view?leagueid=${team.userLeague.id}&userid=${userid}">${team.userLeague.name}</a>            
-            TODO Current position in league
+            <br/>Current League Position: x out of y teams
             <br/>            
             Current Score: ${team.currentScore}<br/>            
             Available Money: <fmt:formatNumber value="${team.availableMoney}" type="currency" currencySymbol="R"/><br/>

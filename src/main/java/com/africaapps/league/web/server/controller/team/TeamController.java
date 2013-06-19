@@ -1,6 +1,8 @@
 package com.africaapps.league.web.server.controller.team;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +23,7 @@ import com.africaapps.league.exception.LeagueException;
 import com.africaapps.league.model.game.TeamFormat;
 import com.africaapps.league.model.game.User;
 import com.africaapps.league.model.game.UserLeague;
+import com.africaapps.league.model.game.UserPlayerStatus;
 import com.africaapps.league.model.game.UserTeam;
 import com.africaapps.league.service.game.team.UserTeamService;
 import com.africaapps.league.service.team.TeamService;
@@ -41,7 +44,8 @@ public class TeamController extends BaseLeagueController {
 	public String getUserTeams(HttpServletRequest request,
 			@RequestParam(required = false, value = NEW_USER_PARAM) String newUser,
 			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
-			@RequestParam(required = false, value = USERNAME_PARAM) String username, ModelMap model) {
+			@RequestParam(required = false, value = USERNAME_PARAM) String username, 
+			ModelMap model) {
 		logger.info("Getting teams for user: " + userId + " newUser:" + newUser + " username: " + username);
 		User user = getUser(request, userId, username);
 		if (user != null) {
@@ -130,9 +134,10 @@ public class TeamController extends BaseLeagueController {
 	}
 
 	@RequestMapping(value = "/players")
-	public String getUserTeams(HttpServletRequest request,
+	public String getUserTeamPlayers(HttpServletRequest request,
 			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
-			@RequestParam(required = false, value = TEAM_ID_PARAM) String teamId, 
+			@RequestParam(required = false, value = TEAM_ID_PARAM) String teamId,
+			@RequestParam(required = false, value = "message") String message,
 			ModelMap model) {
 		logger.info("Getting players for user: " + userId + " teamId:" + teamId);
 		User user = getUser(request, userId, null);
@@ -141,9 +146,15 @@ public class TeamController extends BaseLeagueController {
 				if (isValidId(teamId)) {
 					UserTeamSummary userTeam = userTeamService.getTeamWithPlayers(Long.valueOf(teamId));
 					if (userTeam != null) {
+						logger.info("UserTeamSummary: "+userTeam.getDefenders().size()+", "+userTeam.getGoalKeepers().size()
+								+", "+userTeam.getMidfielders().size()+", "+userTeam.getStrikers().size()
+								+", sub:"+userTeam.getSubstitutes().size());
 						userTeam.setUserId(user.getId());
 					}
 					model.addAttribute("team", userTeam);
+					if (message != null && !message.trim().equals("")) {
+						model.addAttribute("message", message);
+					}
 					return PLAYERS_PAGE_MAPPING;
 				} else {
 					model.addAttribute("message", "No team specified");
@@ -172,6 +183,11 @@ public class TeamController extends BaseLeagueController {
 			if (user != null) {
 				if (isValidId(teamId)) {
 					List<TeamSummary> teams = teamService.getTeams(Long.valueOf(teamId));
+					Collections.sort(teams, new Comparator<TeamSummary>() {
+						@Override
+						public int compare(TeamSummary o1, TeamSummary o2) {
+							return o1.getTeamName().compareTo(o2.getTeamName());
+						}});
 					model.addAttribute("teams", teams);
 					model.remove(USER_ID_PARAM);
 					model.addAttribute("userid", userId);
@@ -207,6 +223,13 @@ public class TeamController extends BaseLeagueController {
 			if (user != null) {
 				if (isValidId(teamId) && isValidId(team)) {
 					List<UserPlayerSummary> players = userTeamService.getTeamPlayers(Long.valueOf(team), Long.valueOf(teamId), type);
+					Collections.sort(players, new Comparator<UserPlayerSummary>(){
+						@Override
+						public int compare(UserPlayerSummary o1, UserPlayerSummary o2) {
+							String n1 = o1.getFirstName() + " " + o1.getLastName();
+							String n2 = o2.getFirstName() + " " + o2.getFirstName();
+							return n1.compareTo(n2);
+						}});
 					model.addAttribute("players", players);
 					model.remove(USER_ID_PARAM);
 					model.addAttribute(USER_ID_PARAM, userId);
@@ -237,34 +260,21 @@ public class TeamController extends BaseLeagueController {
 			@RequestParam(required = false, value = TEAM_ID_PARAM) String teamId, 
 			@RequestParam(required = false, value="type") String type,
 			@RequestParam(required = false, value = "team") String team,
-			@RequestParam(required = false, value = PLAYER_ID_PARAM) String playerId, 
+			@RequestParam(required = false, value = POOL_PLAYER_ID_PARAM) String poolPlayerId, 
 			ModelMap model) {
-		logger.info("Finding team's player: " + userId + " teamId:" + teamId+" playerType:"+type+" team:"+team);
+		logger.info("Adding player to team  userId:" + userId + " teamId:" + teamId+" playerType:"+type+" team:"+team + " poolPlayerId:"+poolPlayerId);
 		User user = getUser(request, userId, null);
 		try {
 			if (user != null) {
-				if (isValidId(teamId) && isValidId(team) && isValidId(playerId)) {
-					String message = userTeamService.addPlayerToUserTeam(user, Long.valueOf(teamId), Long.valueOf(team), Long.valueOf(playerId), type); 
-					if (message != null) {
-						model.addAttribute("message", message);
-					}
-					try {
-						List<UserPlayerSummary> players = userTeamService.getTeamPlayers(Long.valueOf(team), Long.valueOf(teamId), type);
-						model.addAttribute("players", players);
-						logger.info("Added player successfully");
-					} catch (InvalidPlayerException e) {
-						logger.error("Unable to add player: "+e.getMessage());
-						model.addAttribute("message", e.getMessage());
-					}
+				if (isValidId(teamId) && isValidId(team) && isValidId(poolPlayerId)) {
 					model.remove(USER_ID_PARAM);
 					model.addAttribute(USER_ID_PARAM, userId);
-					model.remove("teamid");
-					model.addAttribute("teamid", teamId); //user's team
-					model.remove("team");
-					model.addAttribute("team", team);  //actual team
-					model.remove("type");
-					model.addAttribute("type", type);
-					return TEAM_PLAYERS_PAGE_MAPPING;
+					model.remove(TEAM_ID_PARAM);
+					model.addAttribute(TEAM_ID_PARAM, teamId);
+					String message = userTeamService.addPlayerToUserTeam(user, Long.valueOf(teamId), Long.valueOf(team), Long.valueOf(poolPlayerId), type); 
+					if (message != null) {
+						model.addAttribute("message", message);
+					}					
 				} else {
 					model.addAttribute("message", "No team or player specified");
 				}
@@ -272,14 +282,105 @@ public class TeamController extends BaseLeagueController {
 				logger.error("Unknown user!");
 				return REGISTER;
 			}
+		} catch (InvalidPlayerException e) {
+			logger.error("Invalid player to add to team:"+e.getMessage());
+			model.addAttribute("message", e.getMessage());
 		} catch (LeagueException e) {
-			logger.error("Error getting team's players: ", e);
-			model.addAttribute("message", "Unable to view team's players");
+			logger.error("Error adding player to team: ", e);
+			model.addAttribute("message", "Unable to add player to team");
 		}
-		return "/team/players?userid="+userId+"&teamid="+teamId;
+		String url = "redirect:/team/players";
+		logger.info("Going back to players page:"+url);
+		return url;
+	}
+
+	@RequestMapping(value = "/changePlayerStatus")
+	public String startChangePlayerStatus(HttpServletRequest request,
+			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
+			@RequestParam(required = false, value = TEAM_ID_PARAM) String teamId, 
+			@RequestParam(required = false, value="type") String type,
+			@RequestParam(required = false, value = POOL_PLAYER_ID_PARAM) String poolPlayerId, 
+			ModelMap model) {
+		logger.info("Changing player's status - userId:" + userId + " teamId:" + teamId+" playerType:"+type+ " poolPlayerId:"+poolPlayerId);
+		User user = getUser(request, userId, null);
+		try {
+			if (user != null) {
+				model.remove(USER_ID_PARAM);
+				model.addAttribute(USER_ID_PARAM, userId);
+				model.remove(TEAM_ID_PARAM);
+				model.addAttribute(TEAM_ID_PARAM, teamId); //user's team id
+				if (isValidId(teamId) && isValidId(poolPlayerId)) {
+					UserPlayerSummary player = userTeamService.getTeamPlayer(Long.valueOf(teamId), Long.valueOf(poolPlayerId));
+					if (player != null) {
+						model.remove("statuses");
+						model.addAttribute("statuses", getStatuses(player.getStatus()));
+						model.remove("player");
+						model.addAttribute("player", player);
+					}					
+				} else {
+					model.addAttribute("message", "No team or player specified");
+				}
+			} else {
+				logger.error("Unknown user!");
+				return REGISTER;
+			}
+		} catch (InvalidPlayerException e) {
+			logger.error("Invalid player to change status:"+e.getMessage());
+			model.addAttribute("message", e.getMessage());
+		} catch (LeagueException e) {
+			logger.error("Error getting player to change status: ", e);
+			model.addAttribute("message", "Unable to change player's status");
+		}
+		return "playerStatus";
 	}
 	
-	//team/changeFormat?userid=4&teamid=3
+	@RequestMapping(value = "/setPlayerStatus")
+	public String setPlayerStatus(HttpServletRequest request,
+			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
+			@RequestParam(required = false, value = TEAM_ID_PARAM) String teamId, 
+			@RequestParam(required = false, value = POOL_PLAYER_ID_PARAM) String poolPlayerId, 
+			@RequestParam(required = false, value = "status") String status, 
+			ModelMap model) {
+		logger.info("Changing player's status - userId:" + userId + " teamId:" + teamId+" poolPlayerId:"+poolPlayerId+" status:"+status);
+		User user = getUser(request, userId, null);
+		try {
+			if (user != null) {
+				model.remove(USER_ID_PARAM);
+				model.addAttribute(USER_ID_PARAM, userId);
+				model.remove(TEAM_ID_PARAM);
+				model.addAttribute(TEAM_ID_PARAM, teamId); //user's team
+				if (isValidId(teamId) && isValidId(poolPlayerId) && isValid(status)) {
+					try {
+						userTeamService.setPlayerStatus(Long.valueOf(teamId), Long.valueOf(poolPlayerId), status);
+					} catch (InvalidPlayerException e) {
+						model.addAttribute("message", e.getMessage());
+					}
+				} else {
+					model.addAttribute("message", "No player or status specified");
+				}
+			} else {
+				logger.error("Unknown user!");
+				return REGISTER;
+			}
+		} catch (LeagueException e) {
+			logger.error("Error changing player's status: ", e);
+			model.addAttribute("message", "Unable to change player's status");
+		}
+		String url = "redirect:/team/players";
+		logger.info("Going back to players page:"+url);
+		return url;
+	}
+	
+	private List<String> getStatuses(UserPlayerStatus playerStatus) {
+		List<String> statuses = new ArrayList<String>();
+		for(UserPlayerStatus s : UserPlayerStatus.values()) {
+			if (s != playerStatus) {
+				statuses.add(s.name());
+			}
+		}
+		return statuses;
+	}
+	
 	@RequestMapping(value = "/changeFormat")
 	public String startChangeFormat(HttpServletRequest request,
 			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
@@ -322,10 +423,9 @@ public class TeamController extends BaseLeagueController {
 			logger.error("Error getting team formats: ", e);
 			model.addAttribute("message", "Unable to get team formats");
 		}
-		return "redirect:/team/players";
+		return "/team/players?userid="+userId+"&teamid="+teamId;
 	}
 	
-	//}/team/setFormat?teamid=${team.id}&userid=${userid}&formatid=${format.id}
 	@RequestMapping(value = "/setFormat")
 	public String changeFormat(HttpServletRequest request,
 			@RequestParam(required = false, value = USER_ID_PARAM) String userId,

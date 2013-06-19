@@ -14,7 +14,8 @@
     <c:if test="${not empty message}">    
       <h3>${message}</h3>
     </c:if>
-    <form action="register" method="get">
+    <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+    <form action="${contextPath}/user/register" method="get">
         <input type="text" value="${username}" name="username"></input>
         <input type="submit" value="OK"></input>
     </form> 

@@ -21,6 +21,7 @@ public class BaseLeagueController {
 	protected static final String TEAM_ID_PARAM = "teamid";
 	protected static final String LEAGUE_ID_PARAM = "leagueid";
 	protected static final String PLAYER_ID_PARAM = "playerid";
+	protected static final String POOL_PLAYER_ID_PARAM = "poolplayerid";
 	
 	protected static final String TEAMS_PAGE_MAPPING = "teams";
 	protected static final String PLAYERS_PAGE_MAPPING = "players";
