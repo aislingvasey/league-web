@@ -75,7 +75,12 @@ INSERT INTO event(id, description, event_id, points, league_type_id)
 -- Custom events
 INSERT INTO event(id, description, event_id, points, league_type_id)
   VALUES((select nextval('event_seq')), 'Player Appearance', -1, 15, (select id from league_type where name = 'Soccer'));    
-  
+INSERT INTO event(id, description, event_id, points, league_type_id, block_type)
+  VALUES((select nextval('event_seq')), 'Goal Conceeded', -2, -10, (select id from league_type where name = 'Soccer'), 'GOALKEEPER');
+INSERT INTO event(id, description, event_id, points, league_type_id, block_type)
+  VALUES((select nextval('event_seq')), 'Goal Conceeded', -2, -5, (select id from league_type where name = 'Soccer'), 'DEFENDER');  
+INSERT INTO event(id, description, event_id, points, league_type_id)
+  VALUES((select nextval('event_seq')), 'Team Clean Sheet', -3, 5, (select id from league_type where name = 'Soccer')); 
   
 -- Team Formats
 -- 4-4-2 = 4 defenders, 4 midfielders and two forwards
