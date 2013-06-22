@@ -80,7 +80,8 @@ public class TeamController extends BaseLeagueController {
 	public String startCreateTeam(HttpServletRequest request,
 			@RequestParam(required = false, value = TEAM_NAME_PARAM) String teamName,
 			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
-			@RequestParam(required = false, value = USERNAME_PARAM) String username, ModelMap model) {
+			@RequestParam(required = false, value = USERNAME_PARAM) String username, 
+			ModelMap model) {
 		User user = getUser(request, userId, username);
 		try {
 			if (user != null) {
@@ -89,13 +90,14 @@ public class TeamController extends BaseLeagueController {
 				if (isValid(teamName)) {
 					UserTeam userTeam = userTeamService.getTeam(user.getId(), teamName);
 					if (userTeam == null) {
+						UserLeague league = getDefaultUserLeague();
 						userTeam = new UserTeam();
 						userTeam.setName(teamName);
 						userTeam.setCurrentScore(0);
 						userTeam.setAvailableMoney(getInitTeamMoney());
-						userTeam.setCurrentFormat(getDefaultTeamFormat());
+						userTeam.setCurrentFormat(getDefaultTeamFormat(league.getLeague().getLeagueType().getId()));
 						userTeam.setValidTeam(false);
-						userTeam.setUserLeague(getDefaultUserLeague());
+						userTeam.setUserLeague(league);
 						userTeam.setUser(user);
 						userTeamService.saveTeam(userTeam);
 						logger.info("Created team: " + userTeam);
@@ -129,8 +131,8 @@ public class TeamController extends BaseLeagueController {
 		return userTeamService.getDefaultUserLeague();
 	}
 
-	protected TeamFormat getDefaultTeamFormat() throws LeagueException {
-		return userTeamService.getDefaultTeamFormat();
+	protected TeamFormat getDefaultTeamFormat(long leagueTypeId) throws LeagueException {
+		return userTeamService.getDefaultTeamFormat(leagueTypeId);
 	}
 
 	@RequestMapping(value = "/players")
@@ -230,6 +232,8 @@ public class TeamController extends BaseLeagueController {
 							String n2 = o2.getFirstName() + " " + o2.getFirstName();
 							return n1.compareTo(n2);
 						}});
+					logger.info("Got "+players.size()+" of type:"+type);
+					model.remove("players");
 					model.addAttribute("players", players);
 					model.remove(USER_ID_PARAM);
 					model.addAttribute(USER_ID_PARAM, userId);
@@ -398,7 +402,7 @@ public class TeamController extends BaseLeagueController {
 					if (team != null) {						
 						model.remove("team");
 						model.addAttribute("team", team);
-						List<TeamFormat> formats = userTeamService.getTeamFormats(team.getUserLeague().getLeague().getId());
+						List<TeamFormat> formats = userTeamService.getTeamFormats(team.getUserLeague().getLeague().getLeagueType().getId());
 						for(int i=formats.size()-1;i>=0;i--) {
 							TeamFormat format = formats.get(i);
 							if (format.getId().equals(team.getCurrentFormat().getId())) {

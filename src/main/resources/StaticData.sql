@@ -72,16 +72,20 @@ INSERT INTO event(id, description, event_id, points, league_type_id)
   VALUES((select nextval('event_seq')), 'Player in', 21, 5, (select id from league_type where name = 'Soccer'));
 INSERT INTO event(id, description, event_id, points, league_type_id)
   VALUES((select nextval('event_seq')), 'Player out', 22, 0, (select id from league_type where name = 'Soccer'));    
-    
+-- Custom events
+INSERT INTO event(id, description, event_id, points, league_type_id)
+  VALUES((select nextval('event_seq')), 'Player Appearance', -1, 15, (select id from league_type where name = 'Soccer'));    
+  
+  
 -- Team Formats
 -- 4-4-2 = 4 defenders, 4 midfielders and two forwards
-INSERT INTO game_team_format(id, name, description, default_format, defender_count, midfielder_count, striker_count) 
-    VALUES((select nextval('team_format_seq')), '4-4-2', 'Default soccer team format', true, 4, 4, 2);
-INSERT INTO game_team_format(id, name, description, default_format, defender_count, midfielder_count, striker_count) 
-    VALUES((select nextval('team_format_seq')), '3-4-3', 'Soccer team format', false, 3, 4, 3);  
-INSERT INTO game_team_format(id, name, description, default_format, defender_count, midfielder_count, striker_count) 
-    VALUES((select nextval('team_format_seq')), '4-3-3', 'Soccer team format', false, 4, 3, 3);
-INSERT INTO game_team_format(id, name, description, default_format, defender_count, midfielder_count, striker_count) 
-    VALUES((select nextval('team_format_seq')), '4-5-1', 'Soccer team format', false, 4, 5, 1);    
-INSERT INTO game_team_format(id, name, description, default_format, defender_count, midfielder_count, striker_count) 
-    VALUES((select nextval('team_format_seq')), '3-5-2', 'Soccer team format', false, 3, 5, 2);    
+INSERT INTO game_team_format(id, name, description, default_format, defender_count, midfielder_count, striker_count, league_type_id) 
+    VALUES((select nextval('team_format_seq')), '4-4-2', 'Default soccer team format', true, 4, 4, 2, (select id from league_type where name = 'Soccer'));
+INSERT INTO game_team_format(id, name, description, default_format, defender_count, midfielder_count, striker_count, league_type_id) 
+    VALUES((select nextval('team_format_seq')), '3-4-3', 'Soccer team format', false, 3, 4, 3, (select id from league_type where name = 'Soccer'));  
+INSERT INTO game_team_format(id, name, description, default_format, defender_count, midfielder_count, striker_count, league_type_id) 
+    VALUES((select nextval('team_format_seq')), '4-3-3', 'Soccer team format', false, 4, 3, 3, (select id from league_type where name = 'Soccer'));
+INSERT INTO game_team_format(id, name, description, default_format, defender_count, midfielder_count, striker_count, league_type_id) 
+    VALUES((select nextval('team_format_seq')), '4-5-1', 'Soccer team format', false, 4, 5, 1, (select id from league_type where name = 'Soccer'));    
+INSERT INTO game_team_format(id, name, description, default_format, defender_count, midfielder_count, striker_count, league_type_id) 
+    VALUES((select nextval('team_format_seq')), '3-5-2', 'Soccer team format', false, 3, 5, 2, (select id from league_type where name = 'Soccer'));    
