@@ -21,7 +21,7 @@
         <c:forEach items="${players}" var="p">
             <a href="${contextPath}/team/addPlayer?userid=${userid}&teamid=${teamid}&type=${type}&team=${team}&poolplayerid=${p.poolPlayerId}">
             ${p.firstName}&nbsp;${p.lastName} - Price:&nbsp;${p.price}
-            </a>
+            </a>                     
             <br/>
         </c:forEach>
     </c:if>
