@@ -43,7 +43,7 @@ INSERT INTO event(id, description, event_id, points, league_type_id)
 INSERT INTO event(id, description, event_id, points, league_type_id)
   VALUES((select nextval('event_seq')), 'Own goal', 7, -25, (select id from league_type where name = 'Soccer'));
 INSERT INTO event(id, description, event_id, points, league_type_id)
-  VALUES((select nextval('event_seq')), 'Penalty', 8, -20, (select id from league_type where name = 'Soccer'));
+  VALUES((select nextval('event_seq')), 'Penalty', 8, 20, (select id from league_type where name = 'Soccer'));
 INSERT INTO event(id, description, event_id, points, league_type_id)
   VALUES((select nextval('event_seq')), 'Chance', 9, 5, (select id from league_type where name = 'Soccer'));
 INSERT INTO event(id, description, event_id, points, league_type_id)
@@ -57,7 +57,7 @@ INSERT INTO event(id, description, event_id, points, league_type_id)
 INSERT INTO event(id, description, event_id, points, league_type_id)
   VALUES((select nextval('event_seq')), 'Cross', 14, 0, (select id from league_type where name = 'Soccer'));
 INSERT INTO event(id, description, event_id, points, league_type_id)
-  VALUES((select nextval('event_seq')), 'Successful cross', 10, 5, (select id from league_type where name = 'Soccer'));
+  VALUES((select nextval('event_seq')), 'Successful cross', 15, 5, (select id from league_type where name = 'Soccer'));
 INSERT INTO event(id, description, event_id, points, league_type_id)
   VALUES((select nextval('event_seq')), 'Foul made', 16, -2, (select id from league_type where name = 'Soccer'));
 INSERT INTO event(id, description, event_id, points, league_type_id)
@@ -65,16 +65,16 @@ INSERT INTO event(id, description, event_id, points, league_type_id)
 INSERT INTO event(id, description, event_id, points, league_type_id)
   VALUES((select nextval('event_seq')), 'Red card', 18, -25, (select id from league_type where name = 'Soccer'));
 INSERT INTO event(id, description, event_id, points, league_type_id)
-  VALUES((select nextval('event_seq')), 'Catch', 19, 0, (select id from league_type where name = 'Soccer'));
+  VALUES((select nextval('event_seq')), 'Catch', 19, 5, (select id from league_type where name = 'Soccer'));
 INSERT INTO event(id, description, event_id, points, league_type_id)
-  VALUES((select nextval('event_seq')), 'Punch', 20, 0, (select id from league_type where name = 'Soccer'));
+  VALUES((select nextval('event_seq')), 'Punch', 20, 5, (select id from league_type where name = 'Soccer'));
 INSERT INTO event(id, description, event_id, points, league_type_id)
   VALUES((select nextval('event_seq')), 'Player in', 21, 5, (select id from league_type where name = 'Soccer'));
 INSERT INTO event(id, description, event_id, points, league_type_id)
   VALUES((select nextval('event_seq')), 'Player out', 22, 0, (select id from league_type where name = 'Soccer'));    
 -- Custom events
 INSERT INTO event(id, description, event_id, points, league_type_id)
-  VALUES((select nextval('event_seq')), 'Player Appearance', -1, 15, (select id from league_type where name = 'Soccer'));    
+  VALUES((select nextval('event_seq')), 'Match Appearance', -1, 10, (select id from league_type where name = 'Soccer'));    
 INSERT INTO event(id, description, event_id, points, league_type_id, block_type)
   VALUES((select nextval('event_seq')), 'Goal Conceeded', -2, -10, (select id from league_type where name = 'Soccer'), 'GOALKEEPER');
 INSERT INTO event(id, description, event_id, points, league_type_id, block_type)
