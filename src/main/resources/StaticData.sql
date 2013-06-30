@@ -65,9 +65,9 @@ INSERT INTO event(id, description, event_id, points, league_type_id)
 INSERT INTO event(id, description, event_id, points, league_type_id)
   VALUES((select nextval('event_seq')), 'Red card', 18, -25, (select id from league_type where name = 'Soccer'));
 INSERT INTO event(id, description, event_id, points, league_type_id)
-  VALUES((select nextval('event_seq')), 'Catch', 19, 5, (select id from league_type where name = 'Soccer'));
+  VALUES((select nextval('event_seq')), 'Catch', 19, 2, (select id from league_type where name = 'Soccer'));
 INSERT INTO event(id, description, event_id, points, league_type_id)
-  VALUES((select nextval('event_seq')), 'Punch', 20, 5, (select id from league_type where name = 'Soccer'));
+  VALUES((select nextval('event_seq')), 'Punch', 20, 2, (select id from league_type where name = 'Soccer'));
 INSERT INTO event(id, description, event_id, points, league_type_id)
   VALUES((select nextval('event_seq')), 'Player in', 21, 5, (select id from league_type where name = 'Soccer'));
 INSERT INTO event(id, description, event_id, points, league_type_id)
@@ -94,3 +94,91 @@ INSERT INTO game_team_format(id, name, description, default_format, defender_cou
     VALUES((select nextval('team_format_seq')), '4-5-1', 'Soccer team format', false, 4, 5, 1, (select id from league_type where name = 'Soccer'));    
 INSERT INTO game_team_format(id, name, description, default_format, defender_count, midfielder_count, striker_count, league_type_id) 
     VALUES((select nextval('team_format_seq')), '3-5-2', 'Soccer team format', false, 3, 5, 2, (select id from league_type where name = 'Soccer'));    
+
+    
+-- Playiing Weeks
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2012-08-04 00:00:00.0', '2012-08-10 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2012-08-11 00:00:00.0', '2012-08-17 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2012-08-18 00:00:00.0', '2012-08-24 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2012-08-25 00:00:00.0', '2012-08-31 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2012-09-01 00:00:00.0', '2012-09-07 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2012-09-08 00:00:00.0', '2012-09-14 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2012-09-15 00:00:00.0', '2012-09-21 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2012-09-22 00:00:00.0', '2012-09-28 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2012-09-29 00:00:00.0', '2012-10-05 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2012-10-06 00:00:00.0', '2012-10-12 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2012-10-13 00:00:00.0', '2012-10-19 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2012-10-20 00:00:00.0', '2012-10-26 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2012-10-27 00:00:00.0', '2012-11-02 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2012-11-03 00:00:00.0', '2012-11-09 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2012-11-10 00:00:00.0', '2012-11-16 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2012-11-17 00:00:00.0', '2012-11-23 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2012-11-24 00:00:00.0', '2012-11-30 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2012-12-01 00:00:00.0', '2012-12-07 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2012-12-08 00:00:00.0', '2012-12-14 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2012-12-15 00:00:00.0', '2012-12-21 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2012-12-22 00:00:00.0', '2012-12-28 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2012-12-29 00:00:00.0', '2013-01-04 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2013-01-05 00:00:00.0', '2013-01-11 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2013-01-12 00:00:00.0', '2013-01-18 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2013-01-19 00:00:00.0', '2013-01-25 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2013-01-26 00:00:00.0', '2013-02-01 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2013-02-02 00:00:00.0', '2013-02-08 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2013-02-09 00:00:00.0', '2013-02-15 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2013-02-16 00:00:00.0', '2013-02-22 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2013-02-23 00:00:00.0', '2013-03-01 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2013-03-02 00:00:00.0', '2013-03-08 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2013-03-09 00:00:00.0', '2013-03-15 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2013-03-16 00:00:00.0', '2013-03-22 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2013-03-23 00:00:00.0', '2013-03-29 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2013-03-30 00:00:00.0', '2013-04-05 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2013-04-06 00:00:00.0', '2013-04-12 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2013-04-13 00:00:00.0', '2013-04-19 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2013-04-20 00:00:00.0', '2013-04-26 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2013-04-27 00:00:00.0', '2013-05-03 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2013-05-04 00:00:00.0', '2013-05-10 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2013-05-11 00:00:00.0', '2013-05-17 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id)
+ VALUES ((select nextval('pool_seq')), '2013-05-18 00:00:00.0', '2013-05-24 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));
+   

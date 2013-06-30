@@ -18,6 +18,8 @@
     </c:if>
     
     <c:if test="${not empty team}"> 
+    
+      <c:if test="${team.teamStatus == 'INCOMPLETE'}">  
        
         Team Name:&nbsp;${team.teamName}<br/>
         Team Format:&nbsp;<a href="${contextPath}/team/changeFormat?userid=${team.userId}&teamid=${team.teamId}">${team.teamFormat.name}</a><br/>
@@ -97,7 +99,69 @@
         </c:forEach>  
                
         <br/>
+        <a href="${contextPath}/team/set?userid=${team.userId}&teamid=${team.teamId}">Set Team</a>
+        <br/>
         <a href="${contextPath}/team/list?userid=${team.userId}">Back</a>
+
+     </c:if>  
+     
+             
+ <!-- Team is complete/locked -->    
+     <c:if test="${team.teamStatus == 'COMPLETE'}">
+        Team Name:&nbsp;${team.teamName}<br/>
+        Team Format:&nbsp;${team.teamFormat.name}<br/>
+        Squad Count:&nbsp;${team.playersCount} out of 15 players assigned<br/> 
+        Captain: ${team.captain}       
+        <br/>
+        <b>Defenders:</b>             
+        <c:forEach items="${team.defenders}" var="d">
+        <br/>
+            <a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${d.poolPlayerId}">
+            ${d.firstName}&nbsp;${d.lastName}
+            </a>
+            Status:&nbsp;${d.status}&nbsp;                                  
+        </c:forEach>
+
+        <br/>
+        <b>Mid Fielders:</b>     
+        <c:forEach items="${team.midfielders}" var="f">
+                <br/>
+            <a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${f.poolPlayerId}">
+            ${f.firstName}&nbsp;${f.lastName}</a>
+            Status:&nbsp;${f.status}&nbsp;               
+        </c:forEach>
+                
+        <br/>
+        <b>Strikers:</b>   
+        <c:forEach items="${team.strikers}" var="s">
+            <br/>
+            <a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${s.poolPlayerId}">
+            ${s.firstName}&nbsp;${s.lastName}</a>
+            Status:&nbsp;${s.status}&nbsp;             
+        </c:forEach>        
+        
+        <br/>
+        <b>Goal Keepers:</b>  
+        <c:forEach items="${team.goalKeepers}" var="g">
+            <br/>
+            <a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${g.poolPlayerId}">
+            ${g.firstName}&nbsp;${g.lastName}</a>
+            Status:&nbsp;${g.status}&nbsp;
+        </c:forEach>         
+        
+        <br/>
+        <b>Substitutes:</b>
+        <c:forEach items="${team.substitutes}" var="s">
+            <br/>
+            <a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${s.poolPlayerId}">
+            ${s.firstName}&nbsp;${s.lastName}</a>
+            Status:&nbsp;${s.status}&nbsp;                          
+        </c:forEach>  
+               
+        <br/>
+        <a href="${contextPath}/team/list?userid=${team.userId}">Back</a>        
+     </c:if> 
+      
     </c:if>
     
   </body>

@@ -35,12 +35,7 @@
             <br/>            
             Current Score: ${team.currentScore}<br/>            
             Available Money: <fmt:formatNumber value="${team.availableMoney}" type="currency" currencySymbol="R"/><br/>
-            <c:if test="${team.validTeam}">
-                Status: Ready to Play!
-            </c:if> 
-            <c:if test="${not team.validTeam}">
-                Status: Not Ready
-            </c:if>            
+            Status: ${team.status}
             <br/>
             <a href="${contextPath}/team/players?userid=${userid}&teamid=${team.id}">Your Players</a><br/>            
         </c:forEach>

@@ -15,6 +15,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.africaapps.league.dto.PlayerMatchEventSummary;
+import com.africaapps.league.dto.PlayerMatchSummary;
 import com.africaapps.league.dto.TeamSummary;
 import com.africaapps.league.dto.UserPlayerSummary;
 import com.africaapps.league.dto.UserTeamSummary;
@@ -25,6 +27,7 @@ import com.africaapps.league.model.game.User;
 import com.africaapps.league.model.game.UserLeague;
 import com.africaapps.league.model.game.UserPlayerStatus;
 import com.africaapps.league.model.game.UserTeam;
+import com.africaapps.league.model.game.UserTeamStatus;
 import com.africaapps.league.service.game.team.UserTeamService;
 import com.africaapps.league.service.team.TeamService;
 import com.africaapps.league.web.server.controller.BaseLeagueController;
@@ -96,7 +99,7 @@ public class TeamController extends BaseLeagueController {
 						userTeam.setCurrentScore(0);
 						userTeam.setAvailableMoney(getInitTeamMoney());
 						userTeam.setCurrentFormat(getDefaultTeamFormat(league.getLeague().getLeagueType().getId()));
-						userTeam.setValidTeam(false);
+						userTeam.setStatus(UserTeamStatus.INCOMPLETE);
 						userTeam.setUserLeague(league);
 						userTeam.setUser(user);
 						userTeamService.saveTeam(userTeam);
@@ -375,6 +378,40 @@ public class TeamController extends BaseLeagueController {
 		return url;
 	}
 	
+	@RequestMapping(value = "/set")
+	public String acceptTeam(HttpServletRequest request,
+			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
+			@RequestParam(required = false, value = TEAM_ID_PARAM) String teamId, 
+			ModelMap model) {
+		User user = getUser(request, userId, null);
+		try {
+			if (user != null) {
+				if (isValidId(teamId)) {
+					model.remove(USER_ID_PARAM);
+					model.addAttribute(USER_ID_PARAM, userId);
+					model.remove(TEAM_ID_PARAM);
+					model.addAttribute(TEAM_ID_PARAM, teamId);
+					
+					String message = userTeamService.setTeam(user, Long.valueOf(teamId)); 
+					if (message != null) {
+						model.addAttribute("message", message);
+					}					
+				} else {
+					model.addAttribute("message", "No team or player specified");
+				}
+			} else {
+				logger.error("Unknown user!");
+				return REGISTER;
+			}
+		} catch (LeagueException e) {
+			logger.error("Error accepting team: ", e);
+			model.addAttribute("message", "Unable to accept team");
+		}
+		String url = "redirect:/team/players";
+		logger.info("Going back to players page:"+url);
+		return url;
+	}
+	
 	private List<String> getStatuses(UserPlayerStatus playerStatus) {
 		List<String> statuses = new ArrayList<String>();
 		for(UserPlayerStatus s : UserPlayerStatus.values()) {
@@ -459,5 +496,79 @@ public class TeamController extends BaseLeagueController {
 			model.addAttribute("message", "Unable to change team's format");
 		}
 		return "redirect:/team/players";
+	}
+
+	@RequestMapping(value = "/viewPlayerMatches")
+	public String viewPlayerMatches(HttpServletRequest request,
+			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
+			@RequestParam(required = false, value = TEAM_ID_PARAM) String teamId,
+			@RequestParam(required = false, value = POOL_PLAYER_ID_PARAM) String poolPlayerId,
+			ModelMap model) {
+		User user = getUser(request, userId, null);
+		try {
+			if (user != null) {
+				if (isValidId(teamId) && isValidId(poolPlayerId)) {
+					model.remove(USER_ID_PARAM);
+					model.addAttribute(USER_ID_PARAM, userId);
+					model.remove(TEAM_ID_PARAM);
+					model.addAttribute(TEAM_ID_PARAM, teamId);
+					model.remove(POOL_PLAYER_ID_PARAM);
+					model.addAttribute(POOL_PLAYER_ID_PARAM, poolPlayerId);					
+					List<PlayerMatchSummary> matches = userTeamService.getPoolPlayerMatches(Long.valueOf(poolPlayerId));					
+					model.addAttribute("matches", matches);
+					return PLAYER_MATCHES_PAGE_MAPPING;				
+				} else {
+					model.addAttribute("message", "No team or player specified");
+				}
+			} else {
+				logger.error("Unknown user!");
+				return REGISTER;
+			}
+		} catch (LeagueException e) {
+			logger.error("Error getting player's matches team: ", e);
+			model.addAttribute("message", "Unable to view player's matches");
+		}
+		String url = "redirect:/team/viewPlayerMatches";
+		logger.info("Going back to players page:"+url);
+		return url;
+	}
+	
+	//viewMatchEvents?userid=${userid}&teamid=${teamid}&poolplayerid=${match.poolPlayerId}&matchid=${match.matchId}
+	@RequestMapping(value = "/viewMatchEvents")
+	public String viewPlayerMatchEvents(HttpServletRequest request,
+			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
+			@RequestParam(required = false, value = TEAM_ID_PARAM) String teamId,
+			@RequestParam(required = false, value = POOL_PLAYER_ID_PARAM) String poolPlayerId,
+			@RequestParam(required = false, value = MATCH_ID_PARAM) String matchId,
+			ModelMap model) {
+		User user = getUser(request, userId, null);
+		try {
+			if (user != null) {
+				if (isValidId(teamId) && isValidId(poolPlayerId) && isValidId(matchId)) {
+					model.remove(USER_ID_PARAM);
+					model.addAttribute(USER_ID_PARAM, userId);
+					model.remove(TEAM_ID_PARAM);
+					model.addAttribute(TEAM_ID_PARAM, teamId);
+					model.remove(POOL_PLAYER_ID_PARAM);
+					model.addAttribute(POOL_PLAYER_ID_PARAM, poolPlayerId);
+					model.remove(MATCH_ID_PARAM);
+					model.addAttribute(MATCH_ID_PARAM, matchId);
+					List<PlayerMatchEventSummary> events = userTeamService.getPoolPlayerMatchEvents(Long.valueOf(poolPlayerId), Long.valueOf(matchId));					
+					model.addAttribute("events", events);
+					return PLAYER_MATCH_EVENTS_PAGE_MAPPING;				
+				} else {
+					model.addAttribute("message", "No team, player or match specified");
+				}
+			} else {
+				logger.error("Unknown user!");
+				return REGISTER;
+			}
+		} catch (LeagueException e) {
+			logger.error("Error getting player's matches team: ", e);
+			model.addAttribute("message", "Unable to view player's matches");
+		}
+		String url = "redirect:/team/players";
+		logger.info("Going back to players page:"+url);
+		return url;
 	}
 }

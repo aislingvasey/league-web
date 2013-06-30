@@ -28,8 +28,10 @@
     
     <!--  Quartz tasks --> 
     <task:scheduled-tasks>
-        <!-- Fire at 00:15am every day: 0 15 0 ? * * -->
-        <task:scheduled ref="service.task" method="processMatches" cron="30 41 19 ? * *"/>
+        <!-- Process the match feed daily -->
+        <task:scheduled ref="service.task" method="processMatches" cron="30 46 20 ? * *"/>
+        <!-- Complete playing week once a week -->
+        <task:scheduled ref="service.task" method="onPlayingWeekEnd" cron="0 46 20 ? * *"/>
     </task:scheduled-tasks> 
     
 </beans>
