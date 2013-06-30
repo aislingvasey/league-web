@@ -5,6 +5,9 @@
   <head>
     <title>League - Search Teams</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        .message { color: #FF0000 ; font-weight: bold; }
+    </style>
   </head>
 
   <body>  
@@ -14,7 +17,7 @@
     <b>Search Teams</b><br/>
     
     <c:if test="${not empty message}">    
-      <h3>${message}</h3>
+      <span class="message">${message}</span><br/>
     </c:if>
     
     <c:if test="${not empty teams}">

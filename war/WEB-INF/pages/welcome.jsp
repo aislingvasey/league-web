@@ -4,12 +4,16 @@
   <head>
     <title>League</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        .message { color: #FF0000 ; font-weight: bold; }
+    </style>
   </head>
 
   <body>  
     <h1>Welcome to the League!</h1>
+    
     <c:if test="${not empty message}">    
-        <h3>${message}</h3>
+      <span class="message">${message}</span><br/>
     </c:if>
     
     <!-- Temporary to get to team's page -->

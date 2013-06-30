@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
   <head>
-    <title>League - Match Events</title>
+    <title>League - User Team Players History</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <style>
         .message { color: #FF0000 ; font-weight: bold; }
@@ -14,33 +14,33 @@
   
   <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
     
-    <b>Player's Match Events</b><br/>
+    <b>User Team Players History</b><br/>
     
     <c:if test="${not empty message}">    
       <span class="message">${message}</span><br/>
     </c:if>
-    
-    <c:if test="${not empty events}">
-        Player: 
-        <c:out value="${events[0].firstName}" />&nbsp;<c:out value="${events[0].lastName}" />&nbsp;<c:out value="${events[0].playerBlock}" />
-        <br/> Match: <c:out value="${events[0].matchDate}" /> Points: <c:out value="${events[0].matchPoints}" /> 
+
+    <c:if test="${not empty scores}">
+        Team: 
+        <c:out value="${scores[0].teamName}" />&nbsp;Current Score:<c:out value="${scores[0].teamCurrentScore}" /> 
+        <br/>
+        Match: ${scores[0].matchDate}&nbsp; Score: ${scores[0].matchPoints}
         <br/>
         <table>
         <tr>
-            <td><b>Match Event</b></td> <td><b>Time</b></td> <td><b>Points</b></td>
+            <td><b>Player</b></td> <td><b>Points</b></td>
         </tr>
-        <c:forEach items="${events}" var="event">
+        <c:forEach items="${scores}" var="score">
             <tr>
-                <td>${event.description}</td>
-                <td align="right">${event.matchTime}</td>
-                <td align="right">${event.eventPoints}</td>
+                <td>${score.playerFirstName}&nbsp;${score.playerLastName}</td>
+                <td align="right">${score.playerPoints}</td>
             </tr>                               
         </c:forEach>
         
         </table>
     </c:if>
     
-    <a href="${contextPath}/team/viewPlayerMatches?userid=${userid}&teamid=${teamid}&poolplayerid=${poolplayerid}">Back</a>
+    <a href="${contextPath}/team/teamHistory?userid=${userid}&teamid=${teamid}">Back</a>    
     
   </body>
 </html>  

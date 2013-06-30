@@ -5,6 +5,9 @@
   <head>
     <title>League - User League</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        .message { color: #FF0000 ; font-weight: bold; }
+    </style>
   </head>
 
   <body>  
@@ -17,8 +20,9 @@
 	      <b>League</b><br/>
 	  </c:if>    
 	  <c:if test="${not empty message}">    
-	    <h3>${message}</h3>
-	  </c:if>
+        <span class="message">${message}</span><br/>
+      </c:if>
+    
 	  <c:if test="${not empty league}">  
 	       <c:set var="count" value="${league.teamCount}"/>  
 	       Overall Number of Teams:&nbsp;${count}

@@ -19,6 +19,7 @@ import com.africaapps.league.dto.PlayerMatchEventSummary;
 import com.africaapps.league.dto.PlayerMatchSummary;
 import com.africaapps.league.dto.TeamSummary;
 import com.africaapps.league.dto.UserPlayerSummary;
+import com.africaapps.league.dto.UserTeamScoreHistorySummary;
 import com.africaapps.league.dto.UserTeamSummary;
 import com.africaapps.league.exception.InvalidPlayerException;
 import com.africaapps.league.exception.LeagueException;
@@ -48,6 +49,7 @@ public class TeamController extends BaseLeagueController {
 			@RequestParam(required = false, value = NEW_USER_PARAM) String newUser,
 			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
 			@RequestParam(required = false, value = USERNAME_PARAM) String username, 
+			@RequestParam(required = false, value = MESSAGE_PARAM) String message, 
 			ModelMap model) {
 		logger.info("Getting teams for user: " + userId + " newUser:" + newUser + " username: " + username);
 		User user = getUser(request, userId, username);
@@ -76,6 +78,11 @@ public class TeamController extends BaseLeagueController {
 		} else {
 			model.addAttribute("newUser", "true");
 		}
+		if (isValid(message)) {
+			model.remove("message");
+			model.addAttribute("message", message);
+		}
+		logger.info("Any message ?: "+model.get("message"));
 		return TEAMS_PAGE_MAPPING;
 	}
 
@@ -508,12 +515,7 @@ public class TeamController extends BaseLeagueController {
 		try {
 			if (user != null) {
 				if (isValidId(teamId) && isValidId(poolPlayerId)) {
-					model.remove(USER_ID_PARAM);
-					model.addAttribute(USER_ID_PARAM, userId);
-					model.remove(TEAM_ID_PARAM);
-					model.addAttribute(TEAM_ID_PARAM, teamId);
-					model.remove(POOL_PLAYER_ID_PARAM);
-					model.addAttribute(POOL_PLAYER_ID_PARAM, poolPlayerId);					
+					updateAttributes(model, userId, teamId, poolPlayerId, null);			
 					List<PlayerMatchSummary> matches = userTeamService.getPoolPlayerMatches(Long.valueOf(poolPlayerId));					
 					model.addAttribute("matches", matches);
 					return PLAYER_MATCHES_PAGE_MAPPING;				
@@ -545,14 +547,7 @@ public class TeamController extends BaseLeagueController {
 		try {
 			if (user != null) {
 				if (isValidId(teamId) && isValidId(poolPlayerId) && isValidId(matchId)) {
-					model.remove(USER_ID_PARAM);
-					model.addAttribute(USER_ID_PARAM, userId);
-					model.remove(TEAM_ID_PARAM);
-					model.addAttribute(TEAM_ID_PARAM, teamId);
-					model.remove(POOL_PLAYER_ID_PARAM);
-					model.addAttribute(POOL_PLAYER_ID_PARAM, poolPlayerId);
-					model.remove(MATCH_ID_PARAM);
-					model.addAttribute(MATCH_ID_PARAM, matchId);
+					updateAttributes(model, userId, teamId, poolPlayerId, matchId);					
 					List<PlayerMatchEventSummary> events = userTeamService.getPoolPlayerMatchEvents(Long.valueOf(poolPlayerId), Long.valueOf(matchId));					
 					model.addAttribute("events", events);
 					return PLAYER_MATCH_EVENTS_PAGE_MAPPING;				
@@ -570,5 +565,70 @@ public class TeamController extends BaseLeagueController {
 		String url = "redirect:/team/players";
 		logger.info("Going back to players page:"+url);
 		return url;
+	}
+	
+	@RequestMapping(value = "/teamHistory")
+	public String viewTeamHistoryPoints(HttpServletRequest request,
+			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
+			@RequestParam(required = false, value = TEAM_ID_PARAM) String teamId,
+			@RequestParam(required = false, value = MESSAGE_PARAM) String message,
+			ModelMap model) {
+		logger.info("Getting team's history userId:"+userId+" teamId:"+teamId);
+		User user = getUser(request, userId, null);
+		if (message != null) {
+			model.remove("message");
+			model.addAttribute("message", message);
+		}
+		try {
+			if (user != null) {
+				if (isValidId(teamId)) {
+					updateAttributes(model, userId, teamId, null, null);					
+					List<UserTeamScoreHistorySummary> scores = userTeamService.getUserTeamScoreHistory(user, Long.valueOf(teamId));					
+					model.addAttribute("scores", scores);
+					logger.info("Got scores: "+scores.size());
+					return USER_TEAM_SCORE_HISTORY_PAGE_MAPPING;				
+				} else {
+					model.addAttribute("message", "No team specified");
+				}
+			} else {
+				logger.error("Unknown user!");
+				return REGISTER;
+			}
+		} catch (LeagueException e) {
+			logger.error("Error getting team's history: ", e);
+			model.addAttribute("message", "Unable to view team's history");
+		}
+		return "redirect:/team/list";
+	}
+	
+	//teamHistoryPlayerPoints
+	@RequestMapping(value = "/teamHistoryPlayersPoints")
+	public String viewTeamHistoryPlayersPoints(HttpServletRequest request,
+			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
+			@RequestParam(required = false, value = TEAM_ID_PARAM) String teamId,
+			@RequestParam(required = false, value = MATCH_ID_PARAM) String matchId,
+			ModelMap model) {
+		logger.info("Getting team's player points history userId:"+userId+" teamId:"+teamId+" matchId: "+matchId);
+		User user = getUser(request, userId, null);
+		try {
+			if (user != null) {
+				if (isValidId(teamId) && isValidId(matchId)) {
+					updateAttributes(model, userId, teamId, null, matchId);					
+					List<UserTeamScoreHistorySummary> scores = userTeamService.getUserTeamScorePlayersHistory(user, Long.valueOf(teamId), Long.valueOf(matchId));					
+					model.addAttribute("scores", scores);
+					logger.info("Got scores: "+scores.size());
+					return USER_TEAM_SCORE_PLAYERS_HISTORY_PAGE_MAPPING;				
+				} else {
+					model.addAttribute("message", "No team or match specified");
+				}
+			} else {
+				logger.error("Unknown user!");
+				return REGISTER;
+			}
+		} catch (LeagueException e) {
+			logger.error("Error getting team's player points history: ", e);
+			model.addAttribute("message", "Unable to view team's player points history");
+		}
+		return "redirect:/team/teamHistory";
 	}
 }

@@ -4,6 +4,9 @@
   <head>
     <title>League</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        .message { color: #FF0000 ; font-weight: bold; }
+    </style>
   </head>
 
   <body>  
@@ -11,9 +14,11 @@
     <p>
     Are you new around here? Please enter your user name to join up with the League!
     </p>
+    
     <c:if test="${not empty message}">    
-      <h3>${message}</h3>
+      <span class="message">${message}</span><br/>
     </c:if>
+    
     <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
     <form action="${contextPath}/user/register" method="get">
         <input type="text" value="${username}" name="username"></input>

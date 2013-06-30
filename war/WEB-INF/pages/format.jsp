@@ -5,14 +5,18 @@
   <head>
     <title>League - Team Format</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        .message { color: #FF0000 ; font-weight: bold; }
+    </style>
   </head>
 
   <body>  
       <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
         
-      <c:if test="${not empty message}">    
-        <h3>${message}</h3>
-      </c:if>
+    <c:if test="${not empty message}">    
+      <span class="message">${message}</span><br/>
+    </c:if>
+
       <c:if test="${not empty team}">  
            Current Team Format:&nbsp;${team.currentFormat.name}
            <br/>

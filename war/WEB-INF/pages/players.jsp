@@ -5,6 +5,9 @@
   <head>
     <title>League - Team Players</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        .message { color: #FF0000 ; font-weight: bold; }
+    </style>
   </head>
 
   <body>  
@@ -14,7 +17,7 @@
     <b>Your Players</b><br/>
     
     <c:if test="${not empty message}">    
-      <b>${message}</b><br/>
+      <span class="message">${message}</span><br/>
     </c:if>
     
     <c:if test="${not empty team}"> 

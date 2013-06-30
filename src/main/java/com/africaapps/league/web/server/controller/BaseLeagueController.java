@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
 
 import com.africaapps.league.exception.LeagueException;
 import com.africaapps.league.model.game.User;
@@ -12,6 +13,8 @@ import com.africaapps.league.service.user.UserService;
 
 public class BaseLeagueController {
 
+	protected static final int DEFAULT_PAGE_SIZE = 15;
+	
 	protected static final String NUMERIC_REG_EXP = "[0-9]+";
 	
 	protected static final String NEW_USER_PARAM = "newuser";
@@ -23,6 +26,9 @@ public class BaseLeagueController {
 	protected static final String PLAYER_ID_PARAM = "playerid";
 	protected static final String POOL_PLAYER_ID_PARAM = "poolplayerid";
 	protected static final String MATCH_ID_PARAM = "matchid";
+	protected static final String MESSAGE_PARAM = "message";
+	protected static final String PAGE_PARAM = "page";
+	protected static final String PAGE_SIZE_PARAM = "size";
 	
 	protected static final String TEAMS_PAGE_MAPPING = "teams";
 	protected static final String PLAYERS_PAGE_MAPPING = "players";
@@ -33,6 +39,9 @@ public class BaseLeagueController {
 	protected static final String CHANGE_TEAM_FORMAT_MAPPING = "format";
 	protected static final String PLAYER_MATCHES_PAGE_MAPPING = "playerMatches";
 	protected static final String PLAYER_MATCH_EVENTS_PAGE_MAPPING = "playerMatchEvents";
+	protected static final String USER_TEAM_SCORE_HISTORY_PAGE_MAPPING = "userTeamHistory";
+	protected static final String USER_TEAM_SCORE_PLAYERS_HISTORY_PAGE_MAPPING = "userTeamPlayersHistory";
+	protected static final String POOL_PLAYERS_PAGE_MAPPING = "poolPlayers";
 	
 	@Autowired
 	private UserService userService;
@@ -112,11 +121,41 @@ public class BaseLeagueController {
 		}
 	}
 	
+	protected boolean isValidInteger(String value) {
+		if (value != null && value.matches(NUMERIC_REG_EXP)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	protected boolean isValid(String value) {
 		if (value != null && !value.trim().equals("")) {
 			return true;
 		} else {
 			return false;
+		}
+	}
+	
+	protected void updateAttributes(ModelMap model, String userId, String teamId, String poolPlayerId, String matchId) {
+		model.remove(USER_ID_PARAM);
+		if (userId != null) {
+			model.addAttribute(USER_ID_PARAM, userId);
+		}
+		
+		model.remove(TEAM_ID_PARAM);
+		if (teamId != null) {
+			model.addAttribute(TEAM_ID_PARAM, teamId);
+		}
+		
+		model.remove(POOL_PLAYER_ID_PARAM);
+		if (poolPlayerId != null) {
+			model.addAttribute(POOL_PLAYER_ID_PARAM, poolPlayerId);
+		}
+		
+		model.remove(MATCH_ID_PARAM);
+		if (matchId != null) {
+			model.addAttribute(MATCH_ID_PARAM, matchId);
 		}
 	}
 }
