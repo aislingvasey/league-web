@@ -355,7 +355,7 @@ public class TeamController extends BaseLeagueController {
 			@RequestParam(required = false, value = POOL_PLAYER_ID_PARAM) String poolPlayerId, 
 			@RequestParam(required = false, value = "status") String status, 
 			ModelMap model) {
-		logger.info("Changing player's status - userId:" + userId + " teamId:" + teamId+" poolPlayerId:"+poolPlayerId+" status:"+status);
+		logger.info("Updating player's status - userId:" + userId + " teamId:" + teamId+" poolPlayerId:"+poolPlayerId+" status:"+status);
 		User user = getUser(request, userId, null);
 		try {
 			if (user != null) {
@@ -422,7 +422,7 @@ public class TeamController extends BaseLeagueController {
 	private List<String> getStatuses(UserPlayerStatus playerStatus) {
 		List<String> statuses = new ArrayList<String>();
 		for(UserPlayerStatus s : UserPlayerStatus.values()) {
-			if (s != playerStatus) {
+			if (s != playerStatus && !(s == UserPlayerStatus.CAPTAIN && playerStatus == UserPlayerStatus.SUBSTITUTE )) {
 				statuses.add(s.name());
 			}
 		}

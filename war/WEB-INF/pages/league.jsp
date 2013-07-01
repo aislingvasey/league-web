@@ -25,24 +25,43 @@
     
 	  <c:if test="${not empty league}">  
 	       <c:set var="count" value="${league.teamCount}"/>  
-	       Overall Number of Teams:&nbsp;${count}
+	       Total Teams:&nbsp;${count}
 	       <br/>
 	       <c:if test="${not empty league.userTeamSummary}">
 	           <b>Your Teams:</b><br/>
+	           <table>
+	           <tr>
+	               <td><b>Name</b></td>
+	               <td><b>Score</b></td>
+	               <td><b>Position</b></td>
+	           </tr>
 	           <c:forEach items="${league.userTeamSummary}" var="userTeam">
-		            ${userTeam.teamName}&nbsp;
-		            Current Score:&nbsp;${userTeam.currentScore}&nbsp;
-		            Position:&nbsp;${userTeam.positionInLeague} out of ${count}<br/>		                        
+	               <tr>
+		            <td>${userTeam.teamName}</td>
+		            <td align="right">${userTeam.currentScore}</td>
+		            <td align="right">${userTeam.positionInLeague} / ${count}</td>
+		           </tr> 		                        
                 </c:forEach>
+                </table>
 	       </c:if> 
 	       <c:if test="${not empty league.leagueTeamSummary}">
                <b>Top ${league.currentCount} Teams in the League:</b><br/>
+               <table>
+               <tr>
+                <td><b>Owner</b></td>
+                <td><b>Name</b></td>
+                <td><b>Score</b></td>
+                <td><b>Position</b></td>
+               </tr>
                <c:forEach items="${league.leagueTeamSummary}" var="team">
-                    ${team.teamName}&nbsp;
-                    Current Score:&nbsp;${team.currentScore}&nbsp;
-                    Position:&nbsp;${team.positionInLeague} out of ${league.teamCount}
-                    &nbsp;${team.username}<br/>                               
+                    <tr>
+                    <td>${team.username}</td>
+                    <td>${team.teamName}</td>
+                    <td align="right">${team.currentScore}</td>
+                    <td align="right">${team.positionInLeague} / ${league.teamCount}</td>                    
+                    </tr>                               
                 </c:forEach>
+                </table>
            </c:if>                 
 	  </c:if>
 	  <a href="${contextPath}/team/list?userid=${userid}">Back</a>

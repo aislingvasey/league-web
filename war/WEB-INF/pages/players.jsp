@@ -102,7 +102,7 @@
         </c:forEach>  
                
         <br/>
-        <a href="${contextPath}/team/set?userid=${team.userId}&teamid=${team.teamId}">Set Team</a>
+        <a href="${contextPath}/team/set?userid=${team.userId}&teamid=${team.teamId}">Submit Team</a>
         <br/>
         <a href="${contextPath}/team/list?userid=${team.userId}">Back</a>
 
