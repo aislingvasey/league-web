@@ -28,11 +28,12 @@
         <br/>
         <table>
         <tr>
-            <td><b>Player</b></td> <td><b>Points</b></td>
+            <td><b>Player</b></td> <td><b>Team</b></td> <td><b>Points</b></td>
         </tr>
         <c:forEach items="${scores}" var="score">
             <tr>
                 <td>${score.playerFirstName}&nbsp;${score.playerLastName}</td>
+                <td>${score.teamOneName}</td>
                 <td align="right">${score.playerPoints}</td>
             </tr>                               
         </c:forEach>

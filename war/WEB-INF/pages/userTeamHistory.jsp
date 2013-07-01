@@ -26,16 +26,21 @@
         <br/>
         <table>
         <tr>
-            <td><b>Match</b></td> <td><b>Points</b></td>
+            <td><b>Match</b></td> <td><b>Teams<b></td> <td><b>Points</b></td>
         </tr>
         <c:forEach items="${scores}" var="score">
             <tr>
                 <td>
-                <a href="${contextPath}/team/teamHistoryPlayersPoints?userid=${userid}&teamid=${teamid}&matchid=${score.matchId}">                
-                ${score.matchDate}
-                </a>
+                    <a href="${contextPath}/team/teamHistoryPlayersPoints?userid=${userid}&teamid=${teamid}&matchid=${score.matchId}">                
+                    ${score.matchDate}
+                    </a>
                 </td>
-                <td align="right">${score.matchPoints}</td>
+                <td>
+                    ${score.teamOneName} v ${score.teamTwoName}    
+                </td>
+                <td align="right">
+                    ${score.matchPoints}
+                </td>
             </tr>                               
         </c:forEach>
         
