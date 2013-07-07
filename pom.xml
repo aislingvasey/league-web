@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<parent>
-		<groupId>za.co.pnp</groupId>
+		<groupId>com.africaapps</groupId>
 		<artifactId>league-parent</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../pom.xml</relativePath>
@@ -52,6 +52,13 @@
         <version>1.1.2</version>
     </dependency>
 
+    <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
+        <version>3.1.0</version>
+        <scope>provided</scope>
+    </dependency>
+    
 	</dependencies>
 
 	<build>
