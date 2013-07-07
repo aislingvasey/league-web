@@ -30,6 +30,7 @@ public class BaseLeagueController {
 	protected static final String PAGE_PARAM = "page";
 	protected static final String PAGE_SIZE_PARAM = "size";
 	
+	protected static final String DEFAULT_MAPPING = "welcome";
 	protected static final String TEAMS_PAGE_MAPPING = "teams";
 	protected static final String PLAYERS_PAGE_MAPPING = "players";
 	protected static final String REGISTER = "register";
@@ -157,5 +158,10 @@ public class BaseLeagueController {
 		if (matchId != null) {
 			model.addAttribute(MATCH_ID_PARAM, matchId);
 		}
+	}
+	
+	protected void removeAndAdd(ModelMap model, String name, Object value) {
+		model.remove(name);
+		model.addAttribute(name, value);
 	}
 }

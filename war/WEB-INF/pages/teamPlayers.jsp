@@ -24,7 +24,7 @@
     <c:if test="${not empty players}">
         <c:forEach items="${players}" var="p">
             <a href="${contextPath}/team/addPlayer?userid=${userid}&teamid=${teamid}&type=${type}&team=${team}&poolplayerid=${p.poolPlayerId}">
-            ${p.firstName}&nbsp;${p.lastName} - Price:&nbsp;${p.price}
+            ${p.firstName}&nbsp;${p.lastName} - Price:&nbsp;<fmt:formatNumber value="${p.price}" type="currency" currencySymbol="R"/>
             </a>                     
             <br/>
         </c:forEach>

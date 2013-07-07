@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
   <head>
-    <title>League</title>
+    <title>League - Register</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <style>
         .message { color: #FF0000 ; font-weight: bold; }
@@ -10,10 +10,9 @@
   </head>
 
   <body>  
-    <h1>Join the League!</h1>
-    <p>
-    Are you new around here? Please enter your user name to join up with the League!
-    </p>
+    <b>Join the League!</b><br/>
+    Please enter your user name to join up with the League!
+    <br/>
     
     <c:if test="${not empty message}">    
       <span class="message">${message}</span><br/>

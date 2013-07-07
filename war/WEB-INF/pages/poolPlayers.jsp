@@ -51,6 +51,10 @@
         </table>
     </c:if>
     
+    <c:if test="${empty message && empty results.poolPlayers}">
+        No current pool players to view<br/>
+    </c:if>
+    
     <a href="${contextPath}/team/list?userid=${userid}">Back</a>    
     
   </body>

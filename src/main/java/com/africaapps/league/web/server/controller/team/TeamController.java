@@ -19,6 +19,7 @@ import com.africaapps.league.dto.PlayerMatchEventSummary;
 import com.africaapps.league.dto.PlayerMatchSummary;
 import com.africaapps.league.dto.TeamSummary;
 import com.africaapps.league.dto.UserPlayerSummary;
+import com.africaapps.league.dto.UserTeamListSummary;
 import com.africaapps.league.dto.UserTeamScoreHistorySummary;
 import com.africaapps.league.dto.UserTeamSummary;
 import com.africaapps.league.exception.InvalidPlayerException;
@@ -43,6 +44,16 @@ public class TeamController extends BaseLeagueController {
 	private TeamService teamService;
 
 	private static Logger logger = LoggerFactory.getLogger(TeamController.class);
+	
+	@RequestMapping(value="")
+	public String catchAll(@RequestParam(required = false, value = NEW_USER_PARAM) String newUser,
+			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
+			@RequestParam(required = false, value = USERNAME_PARAM) String username, 
+			@RequestParam(required = false, value = MESSAGE_PARAM) String message, 
+			@RequestParam(required = false, value = "notification") String notification, 
+			ModelMap model) {
+		return "redirect:/team/list";
+	}
 
 	@RequestMapping(value = "/list")
 	public String getUserTeams(HttpServletRequest request,
@@ -50,15 +61,23 @@ public class TeamController extends BaseLeagueController {
 			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
 			@RequestParam(required = false, value = USERNAME_PARAM) String username, 
 			@RequestParam(required = false, value = MESSAGE_PARAM) String message, 
+			@RequestParam(required = false, value = "notification") String notification, 
 			ModelMap model) {
-		logger.info("Getting teams for user: " + userId + " newUser:" + newUser + " username: " + username);
+		logger.info("/list: Getting teams for user: " + userId + " newUser:" + newUser + " username: " + username);
+		//Check for any of the user's identification and if nothing, go back to the default mapping
+		if ((userId == null || userId.equals("")) && (username == null || username.equals(""))) {
+			removeAndAdd(model, MESSAGE_PARAM, "No user identification found :( ");
+			return DEFAULT_MAPPING;
+		}
+		//Otherwise get the current user
 		User user = getUser(request, userId, username);
 		if (user != null) {
 			model.remove(USER_ID_PARAM);
 			model.addAttribute(USER_ID_PARAM, user.getId().toString());
 			logger.debug("Found corresponding user: " + user);
 		} else {
-			logger.error("Teams: list() Unknown user!");
+			//TODO could auto create the user and send them to the team page but let user decide for now...
+			logger.error("Teams: list() Unknown user: get them to register");
 			if (username != null) {
 				model.remove(USERNAME_PARAM);
 				model.addAttribute(USERNAME_PARAM, username);
@@ -68,7 +87,7 @@ public class TeamController extends BaseLeagueController {
 
 		if (newUser == null || !newUser.equalsIgnoreCase("true")) {
 			try {
-				List<UserTeam> teams = userTeamService.getTeams(user.getId());
+				List<UserTeamListSummary> teams = userTeamService.getTeamSummaries(user.getId());
 				logger.info("Got teams: " + teams.size());
 				model.addAttribute("teams", teams);
 			} catch (LeagueException e) {
@@ -82,7 +101,10 @@ public class TeamController extends BaseLeagueController {
 			model.remove("message");
 			model.addAttribute("message", message);
 		}
-		logger.info("Any message ?: "+model.get("message"));
+		if (isValid(notification)) {
+			model.remove("notification");
+			model.addAttribute("notification", notification);
+		}
 		return TEAMS_PAGE_MAPPING;
 	}
 
@@ -95,8 +117,7 @@ public class TeamController extends BaseLeagueController {
 		User user = getUser(request, userId, username);
 		try {
 			if (user != null) {
-				model.remove(USER_ID_PARAM);
-				model.addAttribute(USER_ID_PARAM, user.getId().toString());
+				removeAndAdd(model, USER_ID_PARAM, user.getId().toString());
 				if (isValid(teamName)) {
 					UserTeam userTeam = userTeamService.getTeam(user.getId(), teamName);
 					if (userTeam == null) {
@@ -114,9 +135,7 @@ public class TeamController extends BaseLeagueController {
 					} else {
 						logger.info("Got existing team: " + userTeam);
 					}
-					List<UserTeam> teams = new ArrayList<>();
-					teams.add(userTeam);
-					model.addAttribute("teams", teams);
+					return "redirect:/team/list";
 				} else {
 					model.addAttribute("message", "Enter a team name");
 					return TEAMS_PAGE_MAPPING;
@@ -133,8 +152,8 @@ public class TeamController extends BaseLeagueController {
 	}
 
 	protected Long getInitTeamMoney() {
-		// TODO
-		return Long.valueOf("25000000"); // 25 million
+		// TODO put in config file somewhere
+		return Long.valueOf("4000000");
 	}
 
 	protected UserLeague getDefaultUserLeague() throws LeagueException {
@@ -153,7 +172,10 @@ public class TeamController extends BaseLeagueController {
 			ModelMap model) {
 		logger.info("Getting players for user: " + userId + " teamId:" + teamId);
 		User user = getUser(request, userId, null);
+		//TODO get user from team?
 		try {
+			removeAndAdd(model, USER_ID_PARAM, userId);
+			removeAndAdd(model, TEAM_ID_PARAM, teamId);
 			if (user != null) {
 				if (isValidId(teamId)) {
 					UserTeamSummary userTeam = userTeamService.getTeamWithPlayers(Long.valueOf(teamId));
@@ -168,19 +190,20 @@ public class TeamController extends BaseLeagueController {
 						model.addAttribute("message", message);
 					}
 					return PLAYERS_PAGE_MAPPING;
-				} else {
+				} else {					
 					model.addAttribute("message", "No team specified");
-					return TEAMS_PAGE_MAPPING;
+					return PLAYERS_PAGE_MAPPING;
 				}
 			} else {
-				logger.error("Unknown user!");
-				return REGISTER;
+				//Check for any of the user's identification and if nothing, go back to the default mapping
+				removeAndAdd(model, MESSAGE_PARAM, "No user identification found :( ");
+				return DEFAULT_MAPPING;
 			}
 		} catch (LeagueException e) {
 			logger.error("Error getting team's players: ", e);
 			model.addAttribute("message", "Unable to view your players");
+			return TEAMS_PAGE_MAPPING;
 		}
-		return TEAMS_PAGE_MAPPING;
 	}
 	
 	@RequestMapping(value = "/findPlayer")
@@ -192,8 +215,11 @@ public class TeamController extends BaseLeagueController {
 		logger.info("Finding player: " + userId + " teamId:" + teamId+" playerType:"+playerType);
 		User user = getUser(request, userId, null);
 		try {
+			removeAndAdd(model, USER_ID_PARAM, userId);
+			removeAndAdd(model, TEAM_ID_PARAM, teamId);
+			removeAndAdd(model, "type", playerType);			
 			if (user != null) {
-				if (isValidId(teamId)) {
+				if (isValid(playerType) && isValidId(teamId)) {
 					List<TeamSummary> teams = teamService.getTeams(Long.valueOf(teamId));
 					Collections.sort(teams, new Comparator<TeamSummary>() {
 						@Override
@@ -201,25 +227,24 @@ public class TeamController extends BaseLeagueController {
 							return o1.getTeamName().compareTo(o2.getTeamName());
 						}});
 					model.addAttribute("teams", teams);
-					model.remove(USER_ID_PARAM);
-					model.addAttribute("userid", userId);
-					model.remove(TEAM_ID_PARAM);
-					model.addAttribute("teamid", teamId);
-					model.remove("type");
-					model.addAttribute("type", playerType);
+					return TEAMS_SEARCH_PAGE_MAPPING;
+				} else if(!isValid(playerType)) {
+					model.addAttribute("message", "No player type specified");
 					return TEAMS_SEARCH_PAGE_MAPPING;
 				} else {
 					model.addAttribute("message", "No team specified");
+					return TEAMS_SEARCH_PAGE_MAPPING;
 				}
 			} else {
-				logger.error("Unknown user!");
-				return REGISTER;
+				//Check for any of the user's identification and if nothing, go back to the default mapping
+				removeAndAdd(model, MESSAGE_PARAM, "No user identification found :( ");
+				return DEFAULT_MAPPING;
 			}
 		} catch (LeagueException e) {
 			logger.error("Error getting teams: ", e);
 			model.addAttribute("message", "Unable to view teams");
-		}
-		return "/team/players?userid="+userId+"&teamid="+teamId;
+			return TEAM_PLAYERS_PAGE_MAPPING;
+		}		
 	}
 	
 	@RequestMapping(value = "/teamPlayers")
@@ -232,6 +257,10 @@ public class TeamController extends BaseLeagueController {
 		logger.info("Finding team's player: " + userId + " teamId:" + teamId+" playerType:"+type+" team:"+team);
 		User user = getUser(request, userId, null);
 		try {
+			removeAndAdd(model, USER_ID_PARAM, userId);
+			removeAndAdd(model, TEAM_ID_PARAM, teamId);
+			removeAndAdd(model, "type", type);			
+			removeAndAdd(model, "team", team);
 			if (user != null) {
 				if (isValidId(teamId) && isValidId(team)) {
 					List<UserPlayerSummary> players = userTeamService.getTeamPlayers(Long.valueOf(team), Long.valueOf(teamId), type);
@@ -243,23 +272,16 @@ public class TeamController extends BaseLeagueController {
 							return n1.compareTo(n2);
 						}});
 					logger.info("Got "+players.size()+" of type:"+type);
-					model.remove("players");
-					model.addAttribute("players", players);
-					model.remove(USER_ID_PARAM);
-					model.addAttribute(USER_ID_PARAM, userId);
-					model.remove("teamid");
-					model.addAttribute("teamid", teamId); //user's team
-					model.remove("team");
-					model.addAttribute("team", team);  //actual team
-					model.remove("type");
-					model.addAttribute("type", type);
+					removeAndAdd(model, "players", players);
 					return TEAM_PLAYERS_PAGE_MAPPING;
 				} else {
 					model.addAttribute("message", "No teams specified");
+					return TEAM_PLAYERS_PAGE_MAPPING;
 				}
 			} else {
-				logger.error("Unknown user!");
-				return REGISTER;
+				//Check for any of the user's identification and if nothing, go back to the default mapping
+				removeAndAdd(model, MESSAGE_PARAM, "No user identification found :( ");
+				return DEFAULT_MAPPING;
 			}
 		} catch (LeagueException e) {
 			logger.error("Error getting team's players: ", e);
@@ -293,8 +315,9 @@ public class TeamController extends BaseLeagueController {
 					model.addAttribute("message", "No team or player specified");
 				}
 			} else {
-				logger.error("Unknown user!");
-				return REGISTER;
+				//Check for any of the user's identification and if nothing, go back to the default mapping
+				removeAndAdd(model, MESSAGE_PARAM, "No user identification found :( ");
+				return DEFAULT_MAPPING;
 			}
 		} catch (InvalidPlayerException e) {
 			logger.error("Invalid player to add to team:"+e.getMessage());
@@ -318,11 +341,9 @@ public class TeamController extends BaseLeagueController {
 		logger.info("Changing player's status - userId:" + userId + " teamId:" + teamId+" playerType:"+type+ " poolPlayerId:"+poolPlayerId);
 		User user = getUser(request, userId, null);
 		try {
+			removeAndAdd(model, USER_ID_PARAM, userId);
+			removeAndAdd(model, TEAM_ID_PARAM, teamId);
 			if (user != null) {
-				model.remove(USER_ID_PARAM);
-				model.addAttribute(USER_ID_PARAM, userId);
-				model.remove(TEAM_ID_PARAM);
-				model.addAttribute(TEAM_ID_PARAM, teamId); //user's team id
 				if (isValidId(teamId) && isValidId(poolPlayerId)) {
 					UserPlayerSummary player = userTeamService.getTeamPlayer(Long.valueOf(teamId), Long.valueOf(poolPlayerId));
 					if (player != null) {
@@ -335,8 +356,9 @@ public class TeamController extends BaseLeagueController {
 					model.addAttribute("message", "No team or player specified");
 				}
 			} else {
-				logger.error("Unknown user!");
-				return REGISTER;
+				//Check for any of the user's identification and if nothing, go back to the default mapping
+				removeAndAdd(model, MESSAGE_PARAM, "No user identification found :( ");
+				return DEFAULT_MAPPING;
 			}
 		} catch (InvalidPlayerException e) {
 			logger.error("Invalid player to change status:"+e.getMessage());
@@ -358,23 +380,26 @@ public class TeamController extends BaseLeagueController {
 		logger.info("Updating player's status - userId:" + userId + " teamId:" + teamId+" poolPlayerId:"+poolPlayerId+" status:"+status);
 		User user = getUser(request, userId, null);
 		try {
-			if (user != null) {
-				model.remove(USER_ID_PARAM);
-				model.addAttribute(USER_ID_PARAM, userId);
-				model.remove(TEAM_ID_PARAM);
-				model.addAttribute(TEAM_ID_PARAM, teamId); //user's team
-				if (isValidId(teamId) && isValidId(poolPlayerId) && isValid(status)) {
+			removeAndAdd(model, USER_ID_PARAM, userId);
+			removeAndAdd(model, TEAM_ID_PARAM, teamId);
+			if (user != null) {				
+				if (isValidId(teamId)) {
+					if (isValidId(poolPlayerId) && isValid(status)) {
 					try {
 						userTeamService.setPlayerStatus(Long.valueOf(teamId), Long.valueOf(poolPlayerId), status);
 					} catch (InvalidPlayerException e) {
 						model.addAttribute("message", e.getMessage());
 					}
+					} else {
+						model.addAttribute("message", "No team specified");
+					}
 				} else {
 					model.addAttribute("message", "No player or status specified");
 				}
 			} else {
-				logger.error("Unknown user!");
-				return REGISTER;
+				//Check for any of the user's identification and if nothing, go back to the default mapping
+				removeAndAdd(model, MESSAGE_PARAM, "No user identification found :( ");
+				return DEFAULT_MAPPING;
 			}
 		} catch (LeagueException e) {
 			logger.error("Error changing player's status: ", e);
@@ -390,25 +415,29 @@ public class TeamController extends BaseLeagueController {
 			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
 			@RequestParam(required = false, value = TEAM_ID_PARAM) String teamId, 
 			ModelMap model) {
+		logger.info("Setting team's status userId:"+userId+" teamId:"+teamId);
 		User user = getUser(request, userId, null);
 		try {
+			updateAttributes(model, userId, teamId, null, null);
 			if (user != null) {
-				if (isValidId(teamId)) {
-					model.remove(USER_ID_PARAM);
-					model.addAttribute(USER_ID_PARAM, userId);
-					model.remove(TEAM_ID_PARAM);
-					model.addAttribute(TEAM_ID_PARAM, teamId);
-					
-					String message = userTeamService.setTeam(user, Long.valueOf(teamId)); 
-					if (message != null) {
-						model.addAttribute("message", message);
-					}					
+				if (isValidId(teamId)) {					
+					try {
+						String message = userTeamService.setTeam(user, Long.valueOf(teamId)); 
+						if (message != null) {
+							logger.info("Got status message: "+message);
+							model.addAttribute("notification", message);
+							return "redirect:/team/list";
+						}			
+					} catch (InvalidPlayerException e) {
+						model.addAttribute("message", e.getMessage());
+					}
 				} else {
-					model.addAttribute("message", "No team or player specified");
+					model.addAttribute("message", "No team specified");					
 				}
 			} else {
-				logger.error("Unknown user!");
-				return REGISTER;
+				//Check for any of the user's identification and if nothing, go back to the default mapping
+				removeAndAdd(model, MESSAGE_PARAM, "No user identification found :( ");
+				return DEFAULT_MAPPING;
 			}
 		} catch (LeagueException e) {
 			logger.error("Error accepting team: ", e);
@@ -437,6 +466,8 @@ public class TeamController extends BaseLeagueController {
 		logger.info("Finding team's current format: " + userId + " teamId:" + teamId);
 		User user = getUser(request, userId, null);
 		try {
+			removeAndAdd(model, USER_ID_PARAM, userId);
+			removeAndAdd(model, TEAM_ID_PARAM, teamId);
 			if (user != null) {
 				model.remove(USER_ID_PARAM);
 				model.addAttribute(USER_ID_PARAM, userId);
@@ -461,11 +492,13 @@ public class TeamController extends BaseLeagueController {
 					}					
 					return CHANGE_TEAM_FORMAT_MAPPING;
 				} else {
-					model.addAttribute("message", "No teams specified");
+					model.addAttribute("message", "No team specified");
+					return CHANGE_TEAM_FORMAT_MAPPING;
 				}
 			} else {
-				logger.error("Unknown user!");
-				return REGISTER;
+				//Check for any of the user's identification and if nothing, go back to the default mapping
+				removeAndAdd(model, MESSAGE_PARAM, "No user identification found :( ");
+				return DEFAULT_MAPPING;
 			}
 		} catch (LeagueException e) {
 			logger.error("Error getting team formats: ", e);
@@ -483,20 +516,26 @@ public class TeamController extends BaseLeagueController {
 		logger.info("Changing team's current format userId: " + userId + " teamId:" + teamId+" formatId:"+formatId);
 		User user = getUser(request, userId, null);
 		try {
-			if (user != null) {
-				model.remove(USER_ID_PARAM);
-				model.addAttribute(USER_ID_PARAM, userId);
+			removeAndAdd(model, USER_ID_PARAM, userId);
+			if (user != null) {				
 				model.remove("team");
 				model.remove("teamid");
 				model.addAttribute("teamid", teamId);
-				if (isValidId(teamId) && isValidId(formatId)) {					
-					userTeamService.setTeamFormat(Long.valueOf(teamId), Long.valueOf(formatId));
-				} else {
-					model.addAttribute("message", "No team or format specified");
+				if (isValidId(teamId) && isValidId(formatId)) {	
+					try {
+						userTeamService.setTeamFormat(Long.valueOf(teamId), Long.valueOf(formatId));
+					} catch (InvalidPlayerException e) {
+						model.addAttribute("message", e.getMessage());
+					}
+				} else if (!isValidId(teamId)) {
+					model.addAttribute("message", "No team specified");
+				} else if (!isValidId(formatId)) {
+					model.addAttribute("message", "No format specified");
 				}
 			} else {
-				logger.error("Unknown user!");
-				return REGISTER;
+				//Check for any of the user's identification and if nothing, go back to the default mapping
+				removeAndAdd(model, MESSAGE_PARAM, "No user identification found :( ");
+				return DEFAULT_MAPPING;
 			}
 		} catch (LeagueException e) {
 			logger.error("Error changing team format: ", e);
@@ -521,10 +560,12 @@ public class TeamController extends BaseLeagueController {
 					return PLAYER_MATCHES_PAGE_MAPPING;				
 				} else {
 					model.addAttribute("message", "No team or player specified");
+					return PLAYER_MATCHES_PAGE_MAPPING;		
 				}
 			} else {
-				logger.error("Unknown user!");
-				return REGISTER;
+				//Check for any of the user's identification and if nothing, go back to the default mapping
+				removeAndAdd(model, MESSAGE_PARAM, "No user identification found :( ");
+				return DEFAULT_MAPPING;
 			}
 		} catch (LeagueException e) {
 			logger.error("Error getting player's matches team: ", e);
@@ -553,10 +594,12 @@ public class TeamController extends BaseLeagueController {
 					return PLAYER_MATCH_EVENTS_PAGE_MAPPING;				
 				} else {
 					model.addAttribute("message", "No team, player or match specified");
+					return PLAYER_MATCH_EVENTS_PAGE_MAPPING;
 				}
 			} else {
-				logger.error("Unknown user!");
-				return REGISTER;
+				//Check for any of the user's identification and if nothing, go back to the default mapping
+				removeAndAdd(model, MESSAGE_PARAM, "No user identification found :( ");
+				return DEFAULT_MAPPING;
 			}
 		} catch (LeagueException e) {
 			logger.error("Error getting player's matches team: ", e);
@@ -576,29 +619,30 @@ public class TeamController extends BaseLeagueController {
 		logger.info("Getting team's history userId:"+userId+" teamId:"+teamId);
 		User user = getUser(request, userId, null);
 		if (message != null) {
-			model.remove("message");
-			model.addAttribute("message", message);
+			removeAndAdd(model, MESSAGE_PARAM, message);
 		}
 		try {
+			updateAttributes(model, userId, teamId, null, null);		
 			if (user != null) {
-				if (isValidId(teamId)) {
-					updateAttributes(model, userId, teamId, null, null);					
+				if (isValidId(teamId)) {							
 					List<UserTeamScoreHistorySummary> scores = userTeamService.getUserTeamScoreHistory(user, Long.valueOf(teamId));					
 					model.addAttribute("scores", scores);
 					logger.info("Got scores: "+scores.size());
 					return USER_TEAM_SCORE_HISTORY_PAGE_MAPPING;				
 				} else {
 					model.addAttribute("message", "No team specified");
+					return USER_TEAM_SCORE_HISTORY_PAGE_MAPPING;			
 				}
 			} else {
-				logger.error("Unknown user!");
-				return REGISTER;
+				//Check for any of the user's identification and if nothing, go back to the default mapping
+				removeAndAdd(model, MESSAGE_PARAM, "No user identification found :( ");
+				return DEFAULT_MAPPING;
 			}
 		} catch (LeagueException e) {
 			logger.error("Error getting team's history: ", e);
 			model.addAttribute("message", "Unable to view team's history");
-		}
-		return "redirect:/team/list";
+			return "redirect:/team/list";
+		}		
 	}
 	
 	//teamHistoryPlayerPoints
@@ -611,19 +655,21 @@ public class TeamController extends BaseLeagueController {
 		logger.info("Getting team's player points history userId:"+userId+" teamId:"+teamId+" matchId: "+matchId);
 		User user = getUser(request, userId, null);
 		try {
+			updateAttributes(model, userId, teamId, null, matchId);			
 			if (user != null) {
-				if (isValidId(teamId) && isValidId(matchId)) {
-					updateAttributes(model, userId, teamId, null, matchId);					
+				if (isValidId(teamId) && isValidId(matchId)) {						
 					List<UserTeamScoreHistorySummary> scores = userTeamService.getUserTeamScorePlayersHistory(user, Long.valueOf(teamId), Long.valueOf(matchId));					
 					model.addAttribute("scores", scores);
 					logger.info("Got scores: "+scores.size());
 					return USER_TEAM_SCORE_PLAYERS_HISTORY_PAGE_MAPPING;				
 				} else {
 					model.addAttribute("message", "No team or match specified");
+					return USER_TEAM_SCORE_PLAYERS_HISTORY_PAGE_MAPPING;
 				}
 			} else {
-				logger.error("Unknown user!");
-				return REGISTER;
+				//Check for any of the user's identification and if nothing, go back to the default mapping
+				removeAndAdd(model, MESSAGE_PARAM, "No user identification found :( ");
+				return DEFAULT_MAPPING;
 			}
 		} catch (LeagueException e) {
 			logger.error("Error getting team's player points history: ", e);

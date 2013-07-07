@@ -25,7 +25,19 @@ public class PoolController extends BaseLeagueController {
 
 	private static Logger logger = LoggerFactory.getLogger(PoolController.class);
 	
-	//view?userid=${userid}&teamid=${team.id}
+	@RequestMapping(value = "")
+	public String catchAll(
+			HttpServletRequest request,
+			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
+			@RequestParam(required = false, value = TEAM_ID_PARAM) String userTeamId, 
+			@RequestParam(required = false, value = MESSAGE_PARAM) String message,
+			@RequestParam(required = false, value = PAGE_PARAM) String page,
+			@RequestParam(required = false, value = PAGE_SIZE_PARAM) String pageSize,
+			ModelMap model) {
+		logger.info("Catch all: "+userId+" "+userTeamId+" "+page+" "+pageSize);
+		return "/pool/view";
+	}
+	
 	@RequestMapping(value = "/view")
 	public String viewPoolPlayers(
 			HttpServletRequest request,
@@ -46,19 +58,21 @@ public class PoolController extends BaseLeagueController {
 			pageSizeInt = Integer.valueOf(pageSize);
 		}
 		try {
+			updateAttributes(model, userId, userTeamId, null, null);	
 			if (user != null) {
-				if (isValidId(userTeamId)) {
-					updateAttributes(model, userId, userTeamId, null, null);					
+				if (isValidId(userTeamId)) {									
 					PoolPlayersResults results = poolService.getPoolPlayers(Long.valueOf(userTeamId), pageInt, pageSizeInt);
 					model.addAttribute("results", results);
 					logger.info("Got players: "+results.getPoolPlayers().size());
 					return POOL_PLAYERS_PAGE_MAPPING;				
 				} else {
-					model.addAttribute("message", "No team specified");
+					model.addAttribute("message", "No user team specified");
+					return POOL_PLAYERS_PAGE_MAPPING;			
 				}
 			} else {
-				logger.error("Unknown user!");
-				return REGISTER;
+				//Check for any of the user's identification and if nothing, go back to the default mapping
+				removeAndAdd(model, MESSAGE_PARAM, "No user identification found :( ");
+				return DEFAULT_MAPPING;
 			}
 		} catch (LeagueException e) {
 			logger.error("Error getting pool players: ", e);

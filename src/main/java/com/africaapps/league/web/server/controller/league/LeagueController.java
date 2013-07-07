@@ -25,6 +25,16 @@ public class LeagueController extends BaseLeagueController {
 
 	private static Logger logger = LoggerFactory.getLogger(LeagueController.class);
 	
+	@RequestMapping(value = "")
+	public String catchAll(HttpServletRequest request,
+			@RequestParam(required = false, value = LEAGUE_ID_PARAM) String leagueId,
+			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
+			ModelMap model) {
+		logger.info("Hit catch all for League: "+userId+" "+leagueId);
+		removeAndAdd(model, USER_ID_PARAM, userId);
+		return "redirect:/league/view";
+	}
+	
 	@RequestMapping(value = "/view")
 	public String getUserTeams(HttpServletRequest request,
 			@RequestParam(required = false, value = LEAGUE_ID_PARAM) String leagueId,
@@ -33,7 +43,7 @@ public class LeagueController extends BaseLeagueController {
 		logger.info("Viewing league: "+leagueId+" userid:" + userId);
 		User user = getUser(request, userId, null);
 		if (user != null) {
-			model.addAttribute(USER_ID_PARAM, user.getId().toString());
+			removeAndAdd(model, USER_ID_PARAM, user.getId().toString());
 			logger.debug("Found correcponding user: " + user);
 		}
 
@@ -47,9 +57,9 @@ public class LeagueController extends BaseLeagueController {
 		} else if (leagueId == null) {
 			model.addAttribute("message", "Unknown league");
 		} else if (user == null) {
-			model.addAttribute("message", "Unknown user");
+			removeAndAdd(model, MESSAGE_PARAM, "No user identification found :( ");
+			return DEFAULT_MAPPING;
 		}
 		return LEAGUE_PAGE_MAPPING;
-	}
-	
+	}	
 }

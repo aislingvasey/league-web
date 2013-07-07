@@ -22,13 +22,12 @@
     
     <c:if test="${not empty team}"> 
     
-      <c:if test="${team.teamStatus == 'INCOMPLETE'}">  
-       
+      <c:if test="${team.teamStatus == 'INCOMPLETE'}">         
         Team Name:&nbsp;${team.teamName}<br/>
         Team Format:&nbsp;<a href="${contextPath}/team/changeFormat?userid=${team.userId}&teamid=${team.teamId}">${team.teamFormat.name}</a><br/>
         Squad Count:&nbsp;${team.playersCount} out of 15 players assigned<br/> 
-        Captain: ${team.captain}       
-        <br/>
+        Available Money:&nbsp;<fmt:formatNumber value="${team.availableMoney}" type="currency" currencySymbol="R"/><br/>
+        Captain: ${team.captain}<br/>
         <b>Defenders:</b>
         <c:if test="${team.requiresDefenders}">
             <a href="${contextPath}/team/findPlayer?userid=${team.userId}&teamid=${team.teamId}&type=defender">Add Defender</a> 
@@ -57,8 +56,7 @@
             <%-- Price:&nbsp;${f.price}&nbsp;
             Current Score:&nbsp;${f.currentScore}       --%>               
         </c:forEach>
-        
-        
+                
         <br/>
         <b>Strikers:</b>  
         <c:if test="${team.requiresStrikers}">
@@ -103,9 +101,6 @@
                
         <br/>
         <a href="${contextPath}/team/set?userid=${team.userId}&teamid=${team.teamId}">Submit Team</a>
-        <br/>
-        <a href="${contextPath}/team/list?userid=${team.userId}">Back</a>
-
      </c:if>  
      
              
@@ -160,12 +155,11 @@
             ${s.firstName}&nbsp;${s.lastName}</a>
             Status:&nbsp;${s.status}&nbsp;                          
         </c:forEach>  
-               
-        <br/>
-        <a href="${contextPath}/team/list?userid=${team.userId}">Back</a>        
      </c:if> 
       
     </c:if>
+    
+    <a href="${contextPath}/team/list?userid=${userid}">Back</a>
     
   </body>
 

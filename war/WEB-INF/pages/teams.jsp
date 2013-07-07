@@ -7,6 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <style>
         .message { color: #FF0000 ; font-weight: bold; }
+        .notification { color: green; font-weight: bold; }
     </style>
   </head>
 
@@ -19,11 +20,14 @@
     <c:if test="${not empty message}">    
       <span class="message">${message}</span><br/>
     </c:if>
+    
+    <c:if test="${not empty notification}">    
+      <span class="notification">${notification}</span><br/>
+    </c:if>
 
-    <c:if test="${not empty newUser || empty teams}">    
-        <form action="create" method="post">
-            Create your Team
-            <input type="text" value="" name="teamname"></input>
+    <c:if test="${(not empty newUser || empty teams) && empty message}">
+        <form action="create" method="get">
+            Create your team. Name:<input type="text" value="" name="teamname"></input>
             <input type="hidden" value="${userid}" name="userid" />
             <input type="submit" value="Go"></input>
         </form>   
@@ -32,23 +36,24 @@
     <c:if test="${not empty teams}">
     
         <c:forEach items="${teams}" var="team">
-            <b>${team.name}</b>            
+            <b>${team.teamName}</b>                        
             <br/>
-            League Position: x out of y teams
-            <br/>
-            League:&nbsp;<a href="${contextPath}/league/view?leagueid=${team.userLeague.id}&userid=${userid}">${team.userLeague.name}</a>                        
+            League:&nbsp;<a href="${contextPath}/league/view?leagueid=${team.leagueId}&userid=${userid}">${team.leagueName}</a>
+            <c:if test="${team.teamStatus != 'INCOMPLETE'}">
+                &nbsp;Position: ${team.positionInLeague} / ${team.leagueCount}
+            </c:if>                        
             <br/>         
             Current Score: ${team.currentScore}
             <br/>            
             Available Money: <fmt:formatNumber value="${team.availableMoney}" type="currency" currencySymbol="R"/>
             <br/>
-            Status: ${team.status}
+            Status: ${team.teamStatus}
             <br/>
-            <a href="${contextPath}/team/players?userid=${userid}&teamid=${team.id}">Your Players</a>
-            <br/>  
-            <a href="${contextPath}/team/teamHistory?userid=${userid}&teamid=${team.id}">Team History</a>
-            <br/>          
-            <a href="${contextPath}/pool/view?userid=${userid}&teamid=${team.id}">Pool Players</a>
+            <a href="${contextPath}/team/players?userid=${userid}&teamid=${team.teamId}">Your Players</a> 
+            &nbsp;
+            <a href="${contextPath}/team/teamHistory?userid=${userid}&teamid=${team.teamId}">Team History</a>
+            &nbsp;
+            <a href="${contextPath}/pool/view?userid=${userid}&teamid=${team.teamId}">Pool Players</a>
             <br/>
         </c:forEach>
     </c:if>

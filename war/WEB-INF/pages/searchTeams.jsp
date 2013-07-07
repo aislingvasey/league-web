@@ -25,10 +25,10 @@
             <a href="${contextPath}/team/teamPlayers?userid=${userid}&teamid=${teamid}&type=${type}&team=${team.teamId}">${team.teamName}</a><br/>
         </c:forEach>
     </c:if>
-    <c:if test="${empty teams}">
+    <c:if test="${empty message && empty teams}">
         No teams available<br/>
     </c:if>
-    <a href="${contextPath}/team/players?userid=${userid}&teamid=${teamid}">Back</a><br/>
+    <a href="${contextPath}/team/players?userid=${userid}&teamid=${teamid}">Back</a>
   </body>
 
 </html>

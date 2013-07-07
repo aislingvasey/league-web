@@ -13,6 +13,8 @@
   <body>  
       <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
         
+      <b>Team Format</b><br/>  
+        
     <c:if test="${not empty message}">    
       <span class="message">${message}</span><br/>
     </c:if>
@@ -25,9 +27,10 @@
                <c:forEach items="${formats}" var="format">
                     <a href="${contextPath}/team/setFormat?teamid=${team.id}&userid=${userid}&formatid=${format.id}">${format.name}</a><br/>                               
                 </c:forEach>
-           </c:if>                 
-        <a href="${contextPath}/team/players?userid=${userid}&teamid=${team.id}">Back</a>
+           </c:if>                         
       </c:if>      
+      
+      <a href="${contextPath}/team/players?userid=${userid}&teamid=${teamid}">Back</a>
   </body>
 
 </html>

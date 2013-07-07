@@ -13,11 +13,13 @@
   <body>  
 	  <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 	    
+	  League:   
+	    
 	  <c:if test="${not empty league}">
-	      <b>League: ${league.leagueName}</b><br/>
+	      <b>${league.leagueName}</b><br/>
 	  </c:if>
 	  <c:if test="${empty league}">
-	      <b>League</b><br/>
+	      <br/><span class="message">No League specified</span><br/>
 	  </c:if>    
 	  <c:if test="${not empty message}">    
         <span class="message">${message}</span><br/>
@@ -25,8 +27,10 @@
     
 	  <c:if test="${not empty league}">  
 	       <c:set var="count" value="${league.teamCount}"/>  
-	       Total Teams:&nbsp;${count}
+	       Competing Teams:&nbsp;${count}
 	       <br/>
+	       
+	       <!-- 
 	       <c:if test="${not empty league.userTeamSummary}">
 	           <b>Your Teams:</b><br/>
 	           <table>
@@ -39,11 +43,13 @@
 	               <tr>
 		            <td>${userTeam.teamName}</td>
 		            <td align="right">${userTeam.currentScore}</td>
-		            <td align="right">${userTeam.positionInLeague} / ${count}</td>
+		            <td align="right">${userTeam.positionInLeague} / ${userTeam.leagueCount}</td>
 		           </tr> 		                        
                 </c:forEach>
                 </table>
 	       </c:if> 
+	       -->
+	        
 	       <c:if test="${not empty league.leagueTeamSummary}">
                <b>Top ${league.currentCount} Teams in the League:</b><br/>
                <table>

@@ -22,33 +22,39 @@ public class UserController extends BaseLeagueController {
 	private UserService userService;
 
 	private static Logger logger = LoggerFactory.getLogger(UserController.class);
-
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String checkUser(@RequestParam(required = false, value=USERNAME_PARAM) String username,
-			                    @RequestParam(required = false, value="password") String password, 
-			                    ModelMap model) {
-		try {
-			if (username != null && !username.trim().equals("")) {
-				User user = userService.getUser(username, password);
-				if (user != null) {
-					model.addAttribute(USER_ID_PARAM, user.getId().toString());
-					return "redirect:/team/list?"+USER_ID_PARAM+"="+user.getId();
-				} else {	
-					if (!model.containsAttribute("username")) {
-						model.addAttribute("username", username);
-					}
-					return "register";
-				}
-			} else {
-				model.addAttribute("message", "No username specified");
-				logger.error("No username");
-			}
-		} catch (LeagueException e) {
-			logger.error("Error getting user: ", e);
-			model.addAttribute("message", "Sorry unable to retrieve your user " + username);
-		}
-		return "welcome";
+	
+	@RequestMapping(value="")
+	public String catchAll(@RequestParam(required=false, value=USERNAME_PARAM) String username, ModelMap model) {
+		removeAndAdd(model, USERNAME_PARAM, username);
+		return "register";
 	}
+
+//	@RequestMapping(value = "/login", method = RequestMethod.GET)
+//	public String checkUser(@RequestParam(required = false, value=USERNAME_PARAM) String username,
+//			                    @RequestParam(required = false, value="password") String password, 
+//			                    ModelMap model) {
+//		try {
+//			if (username != null && !username.trim().equals("")) {
+//				User user = userService.getUser(username, password);
+//				if (user != null) {
+//					model.addAttribute(USER_ID_PARAM, user.getId().toString());
+//					return "redirect:/team/list?"+USER_ID_PARAM+"="+user.getId();
+//				} else {	
+//					if (!model.containsAttribute("username")) {
+//						model.addAttribute("username", username);
+//					}
+//					return "register";
+//				}
+//			} else {
+//				model.addAttribute("message", "No username specified");
+//				logger.error("No username");
+//			}
+//		} catch (LeagueException e) {
+//			logger.error("Error getting user: ", e);
+//			model.addAttribute("message", "Sorry unable to retrieve your user " + username);
+//		}
+//		return "welcome";
+//	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public String registerUser(@RequestParam(required=false, value=USERNAME_PARAM) String username, ModelMap model) {

@@ -47,6 +47,10 @@
         </table>
     </c:if>
     
+    <c:if test="${empty message && empty scores}">
+    No team history to display yet<br/>
+    </c:if>
+    
     <a href="${contextPath}/team/list?userid=${userid}">Back</a>    
     
   </body>

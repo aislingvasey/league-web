@@ -2,29 +2,24 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
   <head>
-    <title>League</title>
+    <title>League - Error</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <style>
         .message { color: #FF0000 ; font-weight: bold; }
     </style>
   </head>
 
-  <body>  
-    <b>Welcome to the League!</b><br/>
+  <body>
+    <b>Error</b>  
+    That page seem to have disappeared :(<br/>
     
     <c:if test="${not empty message}">    
       <span class="message">${message}</span><br/>
     </c:if>
     
     <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-    
-    <!-- Temporary to get to team's page -->
-    This is temporary as the MXIT username should be picked up from a header...<br/>
-    Enter your username:
-    <form action="${contextPath}/team/list" method="get">
-        <input type="text" value="${username}" name="username"></input>
-        <input type="submit" value="Go"></input>
-    </form> 
+
+    <a href="${contextPath}">Back to the beginning</a>
   </body>
 
 </html>
