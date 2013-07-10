@@ -12,9 +12,7 @@
 
   <body>  
 	  <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-	    
-	  League:   
-	    
+	    	    
 	  <c:if test="${not empty league}">
 	      <b>${league.leagueName}</b><br/>
 	  </c:if>

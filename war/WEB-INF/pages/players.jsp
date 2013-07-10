@@ -119,49 +119,61 @@
         Squad Count:&nbsp;${team.playersCount} out of 15 players assigned<br/> 
         Captain: ${team.captain}       
         <br/>
-        <b>Defenders:</b>             
+        
+        <c:set var="count" value="1" scope="page" />
+        
+        <b>Defenders: ${team.defendersCount}/${team.teamFormat.defenderCount}</b>             
         <c:forEach items="${team.defenders}" var="d">
         <br/>
-            <a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${d.poolPlayerId}">
+            ${count}&nbsp;<a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${d.poolPlayerId}">
             ${d.firstName}&nbsp;${d.lastName}
             </a>
-            Status:&nbsp;${d.status}&nbsp;                                  
+            Status:&nbsp;${d.status}&nbsp;  
+            <c:set var="count" value="${count + 1}" scope="page"/>                                    
         </c:forEach>
 
+        <c:set var="count" value="1" scope="page"/>
         <br/>
-        <b>Mid Fielders:</b>     
+        <b>Mid Fielders: ${team.midfieldersCount}/${team.teamFormat.midfielderCount}</b>     
         <c:forEach items="${team.midfielders}" var="f">
                 <br/>
-            <a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${f.poolPlayerId}">
+            ${count}&nbsp;<a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${f.poolPlayerId}">
             ${f.firstName}&nbsp;${f.lastName}</a>
-            Status:&nbsp;${f.status}&nbsp;               
+            Status:&nbsp;${f.status}&nbsp;        
+            <c:set var="count" value="${count + 1}" scope="page"/>       
         </c:forEach>
                 
+        <c:set var="count" value="1" scope="page"/>        
         <br/>
-        <b>Strikers:</b>   
+        <b>Strikers: ${team.strikersCount}/${team.teamFormat.strikerCount}</b>   
         <c:forEach items="${team.strikers}" var="s">
             <br/>
-            <a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${s.poolPlayerId}">
+            ${count}&nbsp;<a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${s.poolPlayerId}">
             ${s.firstName}&nbsp;${s.lastName}</a>
-            Status:&nbsp;${s.status}&nbsp;             
+            Status:&nbsp;${s.status}&nbsp;   
+            <c:set var="count" value="${count + 1}" scope="page"/>          
         </c:forEach>        
         
+        <c:set var="count" value="1" scope="page"/>
         <br/>
-        <b>Goal Keepers:</b>  
+        <b>Goal Keepers: 1/1</b>  
         <c:forEach items="${team.goalKeepers}" var="g">
             <br/>
-            <a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${g.poolPlayerId}">
+            ${count}&nbsp;<a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${g.poolPlayerId}">
             ${g.firstName}&nbsp;${g.lastName}</a>
             Status:&nbsp;${g.status}&nbsp;
+            <c:set var="count" value="${count + 1}" scope="page"/>
         </c:forEach>         
         
+        <c:set var="count" value="1" scope="page"/>
         <br/>
-        <b>Substitutes:</b>
+        <b>Substitutes: ${team.substitutesCount}/4</b>
         <c:forEach items="${team.substitutes}" var="s">
             <br/>
-            <a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${s.poolPlayerId}">
+            ${count}&nbsp;<a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${s.poolPlayerId}">
             ${s.firstName}&nbsp;${s.lastName}</a>
-            Status:&nbsp;${s.status}&nbsp;                          
+            Status:&nbsp;${s.status}&nbsp; 
+            <c:set var="count" value="${count + 1}" scope="page"/>                         
         </c:forEach>  
         
         <%--

@@ -12,18 +12,15 @@
 
   <body>  
   
-  <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-    
-    <b>User Team Players History</b><br/>
-    
+  <c:set var="contextPath" value="${pageContext.request.contextPath}"/>    
     <c:if test="${not empty message}">    
       <span class="message">${message}</span><br/>
     </c:if>
 
     <c:if test="${not empty scores}">
-        Team: 
-        <c:out value="${scores[0].teamName}" />&nbsp;Current Score:<c:out value="${scores[0].teamCurrentScore}" /> 
+        <b>Team: <c:out value="${scores[0].teamName}" /></b> 
         <br/>
+        Current Score:<c:out value="${scores[0].teamCurrentScore}" /><br/>
         Match: ${scores[0].matchDate}&nbsp; Score: ${scores[0].matchPoints}
         <br/>
         <table>
