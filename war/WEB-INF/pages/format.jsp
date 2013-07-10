@@ -13,17 +13,20 @@
   <body>  
       <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
         
-      <b>Team Format</b><br/>  
+      
         
     <c:if test="${not empty message}">    
       <span class="message">${message}</span><br/>
     </c:if>
 
       <c:if test="${not empty team}">  
-           Current Team Format:&nbsp;${team.currentFormat.name}
+           <b>Current Team Format:&nbsp;${team.currentFormat.name}</b>           
            <br/>
+           Defenders - Mid Fielders - Strikers 
+           <br/>
+           
            <c:if test="${not empty formats}">
-               Select new team format:<br/>     
+               Select a new team format:<br/>     
                <c:forEach items="${formats}" var="format">
                     <a href="${contextPath}/team/setFormat?teamid=${team.id}&userid=${userid}&formatid=${format.id}">${format.name}</a><br/>                               
                 </c:forEach>

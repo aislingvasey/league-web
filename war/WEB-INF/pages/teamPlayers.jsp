@@ -21,6 +21,9 @@
     </c:if>
     
     Player Type:&nbsp;${type}<br/>
+    <c:if test="${not empty availableMoney}">
+        Available Money: <fmt:formatNumber value="${availableMoney}" type="currency" currencySymbol="R"/><br/>
+    </c:if>
     <c:if test="${not empty players}">
         <c:forEach items="${players}" var="p">
             <a href="${contextPath}/team/addPlayer?userid=${userid}&teamid=${teamid}&type=${type}&team=${team}&poolplayerid=${p.poolPlayerId}">

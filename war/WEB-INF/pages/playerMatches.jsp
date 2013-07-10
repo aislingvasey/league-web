@@ -14,14 +14,13 @@
   
   <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
     
-    <b>Player's Match Points</b><br/>
-    
     <c:if test="${not empty message}">    
       <span class="message">${message}</span><br/>
     </c:if>
 
     <c:if test="${not empty matches}">
-        Player: <c:out value="${matches[0].firstName}" />&nbsp;<c:out value="${matches[0].lastName}" />&nbsp;<c:out value="${matches[0].playerBlock}" />
+        <b>Player: <c:out value="${matches[0].firstName}" />&nbsp;<c:out value="${matches[0].lastName}" /></b><br/>
+        Position:&nbsp;<c:out value="${matches[0].playerBlock}" />
         <br/>
         <table>
         <tr>

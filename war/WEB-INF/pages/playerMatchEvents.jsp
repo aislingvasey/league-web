@@ -13,17 +13,16 @@
   <body>  
   
   <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-    
-    <b>Player's Match Events</b><br/>
-    
+        
     <c:if test="${not empty message}">    
       <span class="message">${message}</span><br/>
     </c:if>
     
     <c:if test="${not empty events}">
-        Player: 
-        <c:out value="${events[0].firstName}" />&nbsp;<c:out value="${events[0].lastName}" />&nbsp;<c:out value="${events[0].playerBlock}" />
-        <br/> Match: <c:out value="${events[0].matchDate}" /> Points: <c:out value="${events[0].matchPoints}" /> 
+        <b>Player: <c:out value="${events[0].firstName}" />&nbsp;<c:out value="${events[0].lastName}" /></b><br/>
+        Position:&nbsp;<c:out value="${events[0].playerBlock}" />
+        <br/>    
+        Match: <c:out value="${events[0].matchDate}" /> Points: <c:out value="${events[0].matchPoints}" /> 
         <br/>
         <table>
         <tr>

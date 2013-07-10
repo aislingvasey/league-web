@@ -15,8 +15,6 @@
   
   <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
     
-    <b>Your Teams</b><br/>
-    
     <c:if test="${not empty message}">    
       <span class="message">${message}</span><br/>
     </c:if>
@@ -38,6 +36,13 @@
         <c:forEach items="${teams}" var="team">
             <b>${team.teamName}</b>                        
             <br/>
+            <c:if test="${team.teamStatus == 'INCOMPLETE'}">
+                <span class="message">You team is not ready to play. Use the View your Players link to complete your team.</span>
+            </c:if>
+            <c:if test="${team.teamStatus == 'COMPLETE'}">
+                <span class="notification">Your team is doing fine!</span>
+            </c:if>
+            <br/>
             League:&nbsp;<a href="${contextPath}/league/view?leagueid=${team.leagueId}&userid=${userid}">${team.leagueName}</a>
             <c:if test="${team.teamStatus != 'INCOMPLETE'}">
                 &nbsp;Position: ${team.positionInLeague} / ${team.leagueCount}
@@ -45,11 +50,9 @@
             <br/>         
             Current Score: ${team.currentScore}
             <br/>            
-            Available Money: <fmt:formatNumber value="${team.availableMoney}" type="currency" currencySymbol="R"/>
+            Available Money: <fmt:formatNumber value="${team.availableMoney}" type="currency" currencySymbol="R"/>          
             <br/>
-            Status: ${team.teamStatus}
-            <br/>
-            <a href="${contextPath}/team/players?userid=${userid}&teamid=${team.teamId}">Your Players</a> 
+            <a href="${contextPath}/team/players?userid=${userid}&teamid=${team.teamId}">View your Players</a> 
             &nbsp;
             <a href="${contextPath}/team/teamHistory?userid=${userid}&teamid=${team.teamId}">Team History</a>
             &nbsp;
