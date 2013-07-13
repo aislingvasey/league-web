@@ -27,29 +27,9 @@
 	       <c:set var="count" value="${league.teamCount}"/>  
 	       Competing Teams:&nbsp;${count}
 	       <br/>
-	       
-	       <!-- 
-	       <c:if test="${not empty league.userTeamSummary}">
-	           <b>Your Teams:</b><br/>
-	           <table>
-	           <tr>
-	               <td><b>Name</b></td>
-	               <td><b>Score</b></td>
-	               <td><b>Position</b></td>
-	           </tr>
-	           <c:forEach items="${league.userTeamSummary}" var="userTeam">
-	               <tr>
-		            <td>${userTeam.teamName}</td>
-		            <td align="right">${userTeam.currentScore}</td>
-		            <td align="right">${userTeam.positionInLeague} / ${userTeam.leagueCount}</td>
-		           </tr> 		                        
-                </c:forEach>
-                </table>
-	       </c:if> 
-	       -->
 	        
 	       <c:if test="${not empty league.leagueTeamSummary}">
-               <b>Top ${league.currentCount} Teams in the League:</b><br/>
+               <b>Top <%-- ${league.currentCount} --%> Teams in the League:</b><br/>
                <table>
                <tr>
                 <td><b>Owner</b></td>

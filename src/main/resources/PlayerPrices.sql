@@ -200,7 +200,7 @@ INSERT INTO game_player_price(id, firstname, lastname, price) VALUES((select nex
 INSERT INTO game_player_price(id, firstname, lastname, price) VALUES((select nextval('player_price_seq')), 'Philani','Cele',189290);
 INSERT INTO game_player_price(id, firstname, lastname, price) VALUES((select nextval('player_price_seq')), 'Buyani','Sali',190535);
 INSERT INTO game_player_price(id, firstname, lastname, price) VALUES((select nextval('player_price_seq')), 'Sihle','Mpuqa',190535);
-INSERT INTO game_player_price(id, firstname, lastname, price) VALUES((select nextval('player_price_seq')), 'Roger','daCosta',191781);
+INSERT INTO game_player_price(id, firstname, lastname, price) VALUES((select nextval('player_price_seq')), 'Roger','da Costa',191781);
 INSERT INTO game_player_price(id, firstname, lastname, price) VALUES((select nextval('player_price_seq')), 'Rooi Petros','Mahamutsa',193026);
 INSERT INTO game_player_price(id, firstname, lastname, price) VALUES((select nextval('player_price_seq')), 'Aaron','Mokoena',193026);
 INSERT INTO game_player_price(id, firstname, lastname, price) VALUES((select nextval('player_price_seq')), 'James','Mayinga',196762);
@@ -372,7 +372,7 @@ INSERT INTO game_player_price(id, firstname, lastname, price) VALUES((select nex
 INSERT INTO game_player_price(id, firstname, lastname, price) VALUES((select nextval('player_price_seq')), 'Method','Mwanjale',315068);
 INSERT INTO game_player_price(id, firstname, lastname, price) VALUES((select nextval('player_price_seq')), 'Thamsanqa','Sangweni',316314);
 INSERT INTO game_player_price(id, firstname, lastname, price) VALUES((select nextval('player_price_seq')), 'TefuJunaid','Mashamaite',316314);
-INSERT INTO game_player_price(id, firstname, lastname, price) VALUES((select nextval('player_price_seq')), 'Ryan Christopher','DeJongh',316314);
+INSERT INTO game_player_price(id, firstname, lastname, price) VALUES((select nextval('player_price_seq')), 'Ryan Christopher','De Jongh',316314);
 INSERT INTO game_player_price(id, firstname, lastname, price) VALUES((select nextval('player_price_seq')), 'Tshidiso Piet','Mosikidi',317559);
 INSERT INTO game_player_price(id, firstname, lastname, price) VALUES((select nextval('player_price_seq')), 'Nkanyiso Russel','Mlotshwa',317559);
 INSERT INTO game_player_price(id, firstname, lastname, price) VALUES((select nextval('player_price_seq')), 'Robin','Rhode',317559);

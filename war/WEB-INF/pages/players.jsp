@@ -24,11 +24,28 @@
         
       <c:if test="${team.teamStatus == 'INCOMPLETE'}">         
         Team Name:&nbsp;${team.teamName}<br/>
-        Team Format:&nbsp;<a href="${contextPath}/team/changeFormat?userid=${team.userId}&teamid=${team.teamId}">${team.teamFormat.name}</a><br/>
-        Squad Count:&nbsp;${team.playersCount} out of 15 players assigned<br/> 
-        Available Money:&nbsp;<fmt:formatNumber value="${team.availableMoney}" type="currency" currencySymbol="R"/><br/>
-        Captain: ${team.captain}<br/>
+
+        <c:if test="${team.complete}">            
+            <a href="${contextPath}/team/set?userid=${team.userId}&teamid=${team.teamId}">Submit Your Team</a>
+            <br/>
+        </c:if>
+
+        <c:if test="${empty team.captain}">
+            <b>Captain:</b> <span class="message">None yet</span><br/>
+        </c:if>
+        <c:if test="${not empty team.captain}">
+            <b>Captain:</b> ${team.captain}<br/>
+        </c:if>
+        <b>Team Format:</b>&nbsp;<a href="${contextPath}/team/changeFormat?userid=${team.userId}&teamid=${team.teamId}">${team.teamFormat.name}</a><br/>
         
+        <c:if test="${team.playersCount < 15}">
+            <b>Squad Count:</b>&nbsp;<span class="message">${team.playersCount} out of 15 players</span><br/> 
+        </c:if>    
+        <c:if test="${team.playersCount == 15}">
+            <b>Squad Count:</b>&nbsp;${team.playersCount} / 15<br/> 
+        </c:if>
+        
+        <b>Available Money:</b>&nbsp;<fmt:formatNumber value="${team.availableMoney}" type="currency" currencySymbol="R"/><br/>
         <c:set var="count" value="1" scope="page" />
         
         <b>Defenders: ${team.defendersCount}/${team.teamFormat.defenderCount}</b>
@@ -103,12 +120,7 @@
             Status:&nbsp;<a href="${contextPath}/team/changePlayerStatus?userid=${team.userId}&teamid=${team.teamId}&type=substitute&poolplayerid=${s.poolPlayerId}">
             ${s.status}</a>&nbsp;                    
             <c:set var="count" value="${count + 1}" scope="page"/>        
-        </c:forEach>  
-                       
-        <c:if test="${team.complete}">
-            <br/>
-            <a href="${contextPath}/team/set?userid=${team.userId}&teamid=${team.teamId}">Submit Team</a>
-        </c:if>
+        </c:forEach>                                
      </c:if>  
      
              
@@ -118,6 +130,8 @@
         Team Format:&nbsp;${team.teamFormat.name}<br/>
         Squad Count:&nbsp;${team.playersCount} out of 15 players assigned<br/> 
         Captain: ${team.captain}       
+        <br/>        
+        <a href="${contextPath}/team/startTrade?userid=${userid}&teamid=${team.teamId}">Trade a Player</a>
         <br/>
         
         <c:set var="count" value="1" scope="page" />
@@ -175,13 +189,7 @@
             Status:&nbsp;${s.status}&nbsp; 
             <c:set var="count" value="${count + 1}" scope="page"/>                         
         </c:forEach>  
-        
-        <%--
-        <br/>
-         <a href="${contextPath}/team/startTrade?userid=${userid}&teamid=${team.teamId}">Trade a Player</a> --%>
-        
-     </c:if> 
-      
+     </c:if>       
     </c:if>
     
     <br/>

@@ -37,12 +37,13 @@
             <b>${team.teamName}</b>                        
             <br/>
             <c:if test="${team.teamStatus == 'INCOMPLETE'}">
-                <span class="message">You team is not ready to play. Use the View your Players link to complete your team.</span>
+                <span class="message">You team is not ready to play. Use the <a href="${contextPath}/team/players?userid=${userid}&teamid=${team.teamId}">View your Players</a> link to complete your team.</span>
+                <br/>
             </c:if>
-            <c:if test="${team.teamStatus == 'COMPLETE'}">
+            <c:if test="${team.teamStatus == 'COMPLETE' && empty notification}">
                 <span class="notification">Your team is doing fine!</span>
-            </c:if>
-            <br/>
+                <br/>
+            </c:if>            
             League:&nbsp;<a href="${contextPath}/league/view?leagueid=${team.leagueId}&userid=${userid}">${team.leagueName}</a>
             <c:if test="${team.teamStatus != 'INCOMPLETE'}">
                 &nbsp;Position: ${team.positionInLeague} / ${team.leagueCount}

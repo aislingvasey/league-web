@@ -96,7 +96,8 @@ INSERT INTO game_team_format(id, name, description, default_format, defender_cou
     VALUES((select nextval('team_format_seq')), '3-5-2', 'Soccer team format', false, 3, 5, 2, (select id from league_type where name = 'Soccer'));    
 
     
--- Playiing Weeks
+-- Playing Weeks
+-- Saturday to Friday
 INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id, playing_week_order)
  VALUES ((select nextval('pool_seq')), '2012-08-04 00:00:00.0', '2012-08-10 23:59:59.999', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')), 1);
 INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id, playing_week_order)

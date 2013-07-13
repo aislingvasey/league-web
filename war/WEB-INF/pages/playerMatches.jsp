@@ -18,6 +18,10 @@
       <span class="message">${message}</span><br/>
     </c:if>
 
+    <c:if test="${empty matches}">
+    No player matches available yet<br/>
+    </c:if>
+
     <c:if test="${not empty matches}">
         <b>Player: <c:out value="${matches[0].firstName}" />&nbsp;<c:out value="${matches[0].lastName}" /></b><br/>
         Position:&nbsp;<c:out value="${matches[0].playerBlock}" />
