@@ -47,7 +47,7 @@ public class TeamController extends BaseLeagueController {
 	private TeamService teamService;
 	@Autowired
 	private PoolService poolService;
-	
+
 	private static Logger logger = LoggerFactory.getLogger(TeamController.class);
 
 	@RequestMapping(value = "")
@@ -181,9 +181,9 @@ public class TeamController extends BaseLeagueController {
 				if (isValidId(teamId)) {
 					UserTeamSummary userTeam = userTeamService.getTeamWithPlayers(Long.valueOf(teamId));
 					if (userTeam != null) {
-						logger.info("UserTeamSummary: def:" + userTeam.getDefenders().size() + " goalie:" + userTeam.getGoalKeepers().size()
-								+ " mid:" + userTeam.getMidfielders().size() + " strikers:" + userTeam.getStrikers().size() + " sub:"
-								+ userTeam.getSubstitutes().size());
+						logger.info("UserTeamSummary: def:" + userTeam.getDefenders().size() + " goalie:"
+								+ userTeam.getGoalKeepers().size() + " mid:" + userTeam.getMidfielders().size() + " strikers:"
+								+ userTeam.getStrikers().size() + " sub:" + userTeam.getSubstitutes().size());
 						userTeam.setUserId(user.getId());
 					}
 					model.addAttribute("team", userTeam);
@@ -208,8 +208,7 @@ public class TeamController extends BaseLeagueController {
 	}
 
 	@RequestMapping(value = "/findPlayer")
-	public String addPlayer(HttpServletRequest request, 
-			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
+	public String addPlayer(HttpServletRequest request, @RequestParam(required = false, value = USER_ID_PARAM) String userId,
 			@RequestParam(required = false, value = TEAM_ID_PARAM) String teamId,
 			@RequestParam(required = false, value = "type") String playerType, ModelMap model) {
 		logger.info("Finding player: " + userId + " teamId:" + teamId + " playerType:" + playerType);
@@ -252,8 +251,7 @@ public class TeamController extends BaseLeagueController {
 	public String findPlayer(HttpServletRequest request, @RequestParam(required = false, value = USER_ID_PARAM) String userId,
 			@RequestParam(required = false, value = TEAM_ID_PARAM) String teamId,
 			@RequestParam(required = false, value = "type") String type,
-			@RequestParam(required = false, value = "team") String team, 
-			ModelMap model) {
+			@RequestParam(required = false, value = "team") String team, ModelMap model) {
 		logger.info("Finding team's player: " + userId + " teamId:" + teamId + " playerType:" + type + " team:" + team);
 		User user = getUser(request, userId, null);
 		try {
@@ -274,9 +272,9 @@ public class TeamController extends BaseLeagueController {
 					});
 					logger.info("Got " + players.size() + " of type:" + type);
 					removeAndAdd(model, "players", players);
-					//User Team's money
+					// User Team's money
 					Long availableMoney = userTeamService.getAvailableMoney(Long.valueOf(teamId));
-					removeAndAdd(model, "availableMoney", availableMoney);					
+					removeAndAdd(model, "availableMoney", availableMoney);
 					return TEAM_PLAYERS_PAGE_MAPPING;
 				} else {
 					model.addAttribute("message", "No teams specified");
@@ -310,10 +308,7 @@ public class TeamController extends BaseLeagueController {
 					model.addAttribute(USER_ID_PARAM, userId);
 					model.remove(TEAM_ID_PARAM);
 					model.addAttribute(TEAM_ID_PARAM, teamId);
-					String message = userTeamService.addPlayerToUserTeam(user, Long.valueOf(teamId), Long.valueOf(poolPlayerId), type);
-					if (message != null) {
-						model.addAttribute("message", message);
-					}
+					userTeamService.addPlayerToUserTeam(user, Long.valueOf(teamId), Long.valueOf(poolPlayerId), type);
 				} else {
 					model.addAttribute("message", "No team or player specified");
 				}
@@ -339,24 +334,61 @@ public class TeamController extends BaseLeagueController {
 			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
 			@RequestParam(required = false, value = TEAM_ID_PARAM) String teamId,
 			@RequestParam(required = false, value = "type") String type,
-			@RequestParam(required = false, value = POOL_PLAYER_ID_PARAM) String poolPlayerId, ModelMap model) {
+			@RequestParam(required = false, value = POOL_PLAYER_ID_PARAM) String poolPlayerId,
+			@RequestParam(required = false, value = "captain") String captain,
+			@RequestParam(required = false, value = "teamstatus") String teamStatus,
+			@RequestParam(required = false, value = "captainid") String captainId,
+			ModelMap model) {
 		logger.info("Changing player's status - userId:" + userId + " teamId:" + teamId + " playerType:" + type
-				+ " poolPlayerId:" + poolPlayerId);
+				+ " poolPlayerId:" + poolPlayerId + " captain:" + captain);
 		User user = getUser(request, userId, null);
 		try {
 			removeAndAdd(model, USER_ID_PARAM, userId);
 			removeAndAdd(model, TEAM_ID_PARAM, teamId);
+			removeAndAdd(model, "captainid", captainId);
 			if (user != null) {
-				if (isValidId(teamId) && isValidId(poolPlayerId)) {
-					UserPlayerSummary player = userTeamService.getTeamPlayer(Long.valueOf(teamId), Long.valueOf(poolPlayerId));
-					if (player != null) {
-						model.remove("statuses");
-						model.addAttribute("statuses", getStatuses(player.getStatus()));
-						model.remove("player");
-						model.addAttribute("player", player);
+				if (isValidId(teamId)) {
+					if (isValid(captain) && Boolean.TRUE.toString().equals(captain)) {
+						logger.info("Choosing the captain...");
+						// Chose the captain
+						UserTeamSummary userTeam = userTeamService.getTeamWithPlayers(Long.valueOf(teamId));
+						if (userTeam != null) {
+							userTeam.setUserId(user.getId());
+							logger.info("UserTeamSummary: def:" + userTeam.getDefenders().size() + " goalie:"
+									+ userTeam.getGoalKeepers().size() + " mid:" + userTeam.getMidfielders().size() + " strikers:"
+									+ userTeam.getStrikers().size() + " sub:" + userTeam.getSubstitutes().size());
+						}
+						model.addAttribute("team", userTeam);
+						// Indicate the current captain
+						model.addAttribute("captainId", poolPlayerId);
+						return "captainStatus";
+					} else if (isValidId(poolPlayerId) && isValid(teamStatus)
+							&& UserTeamStatus.COMPLETE.name().equalsIgnoreCase(teamStatus)) {
+						logger.info("Choosing player for substitute...");
+						UserTeamSummary userTeam = userTeamService.getTeamWithSamePlayers(Long.valueOf(teamId), Long.valueOf(poolPlayerId));
+						if (userTeam != null) {
+							userTeam.setUserId(user.getId());
+							logger.info("UserTeamSummary: def:" + userTeam.getDefenders().size() + " goalie:"
+									+ userTeam.getGoalKeepers().size() + " mid:" + userTeam.getMidfielders().size() + " strikers:"
+									+ userTeam.getStrikers().size() + " sub:" + userTeam.getSubstitutes().size());
+						}
+						model.addAttribute("team", userTeam);
+						// The substitute's id
+						removeAndAdd(model, "substituteid", poolPlayerId);
+						return "substituteStatus";
+					} else if (isValidId(poolPlayerId)) {
+						UserPlayerSummary player = userTeamService.getTeamPlayer(Long.valueOf(teamId), Long.valueOf(poolPlayerId));
+						if (player != null) {
+							model.remove("statuses");
+							model.addAttribute("statuses", getStatuses(player.getStatus(), teamStatus));
+							model.remove("player");
+							model.addAttribute("player", player);
+						}
+					} else {
+						model.addAttribute("message", "No player specified");
 					}
 				} else {
-					model.addAttribute("message", "No team or player specified");
+					model.addAttribute("message", "No team specified");
 				}
 			} else {
 				// Check for any of the user's identification and if nothing, go back to the default mapping
@@ -387,17 +419,65 @@ public class TeamController extends BaseLeagueController {
 			removeAndAdd(model, TEAM_ID_PARAM, teamId);
 			if (user != null) {
 				if (isValidId(teamId)) {
-					if (isValidId(poolPlayerId) && isValid(status)) {
-						try {
-							userTeamService.setPlayerStatus(Long.valueOf(teamId), Long.valueOf(poolPlayerId), status);
-						} catch (InvalidPlayerException e) {
-							model.addAttribute("message", e.getMessage());
+					if (isValidId(poolPlayerId)) {
+						if (isValid(status)) {
+							try {
+								userTeamService.setPlayerStatus(Long.valueOf(teamId), Long.valueOf(poolPlayerId), status);
+							} catch (InvalidPlayerException e) {
+								model.addAttribute("message", e.getMessage());
+							}
+						} else {
+							model.addAttribute("message", "No status specified");
 						}
 					} else {
-						model.addAttribute("message", "No team specified");
+						model.addAttribute("message", "No player specified");
 					}
 				} else {
-					model.addAttribute("message", "No player or status specified");
+					model.addAttribute("message", "No team specified");
+				}
+			} else {
+				// Check for any of the user's identification and if nothing, go back to the default mapping
+				removeAndAdd(model, MESSAGE_PARAM, "No user identification found :( ");
+				return DEFAULT_MAPPING;
+			}
+		} catch (LeagueException e) {
+			logger.error("Error changing player's status: ", e);
+			model.addAttribute("message", "Unable to change player's status");
+		}
+		String url = "redirect:/team/players";
+		logger.info("Going back to players page:" + url);
+		return url;
+	}
+
+	@RequestMapping(value = "/swapPlayers")
+	public String swapPlayers(HttpServletRequest request,
+			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
+			@RequestParam(required = false, value = TEAM_ID_PARAM) String teamId,
+			@RequestParam(required = false, value = POOL_PLAYER_ID_PARAM) String poolPlayerId,
+			@RequestParam(required = false, value = "substituteid") String substituteId, ModelMap model) {
+		logger.info("Swapping players userId:" + userId + " teamId:" + teamId + " poolPlayerId:" + poolPlayerId
+				+ " substituteId:" + substituteId);
+		User user = getUser(request, userId, null);
+		try {
+			removeAndAdd(model, USER_ID_PARAM, userId);
+			removeAndAdd(model, TEAM_ID_PARAM, teamId);
+			if (user != null) {
+				if (isValidId(teamId)) {
+					if (isValidId(substituteId)) {
+						if (isValidId(poolPlayerId)) {
+							try {
+								userTeamService.swapPlayers(Long.valueOf(teamId), Long.valueOf(substituteId), Long.valueOf(poolPlayerId));
+							} catch (InvalidPlayerException e) {
+								model.addAttribute("message", e.getMessage());
+							}
+						} else {
+							model.addAttribute("message", "No player specified");
+						}
+					} else {
+						model.addAttribute("message", "No substitute specified");
+					}
+				} else {
+					model.addAttribute("message", "No team specified");
 				}
 			} else {
 				// Check for any of the user's identification and if nothing, go back to the default mapping
@@ -424,8 +504,7 @@ public class TeamController extends BaseLeagueController {
 			removeAndAdd(model, TEAM_ID_PARAM, teamId);
 			if (user != null) {
 				if (isValidId(teamId)) {
-					String message = userTeamService.isUserTeamAbleToTrade(Long.valueOf(teamId));
-					if (!isValid(message)) {
+					if (userTeamService.isUserTeamAbleToTrade(Long.valueOf(teamId))) {
 						List<TeamSummary> teams = teamService.getTeams(Long.valueOf(teamId));
 						Collections.sort(teams, new Comparator<TeamSummary>() {
 							@Override
@@ -434,10 +513,11 @@ public class TeamController extends BaseLeagueController {
 							}
 						});
 						model.addAttribute("teams", teams);
+						return TRADE_PLAYER_MAPPING;
 					} else {
-						model.addAttribute("message", message);
+						removeAndAdd(model, MESSAGE_PARAM, "You can not trade a player as you only get 1 free trade every 2 weeks");
+						return "redirect:/team/players";
 					}
-					return TRADE_PLAYER_MAPPING;
 				} else {
 					model.addAttribute("message", "No team specified");
 					return PLAYERS_PAGE_MAPPING;
@@ -453,13 +533,12 @@ public class TeamController extends BaseLeagueController {
 			return PLAYERS_PAGE_MAPPING;
 		}
 	}
-	
+
 	@RequestMapping(value = "/tradeTeamPlayers")
-	public String tradeTeamPlayer(HttpServletRequest request, 
+	public String tradeTeamPlayer(HttpServletRequest request,
 			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
 			@RequestParam(required = false, value = TEAM_ID_PARAM) String userTeamId,
-			@RequestParam(required = false, value = "team") String teamId, 
-			ModelMap model) {
+			@RequestParam(required = false, value = "team") String teamId, ModelMap model) {
 		logger.info("Finding team's player: " + userId + " userTeamId:" + userTeamId + " teamId:" + teamId);
 		User user = getUser(request, userId, null);
 		try {
@@ -469,7 +548,8 @@ public class TeamController extends BaseLeagueController {
 			model.remove("teams");
 			if (user != null) {
 				if (isValidId(userTeamId) && isValidId(teamId)) {
-					List<UserPlayerSummary> players = userTeamService.getTeamPlayers(Long.valueOf(teamId), Long.valueOf(userTeamId), BlockType.SUBSTITUTE.name());
+					List<UserPlayerSummary> players = userTeamService.getTeamPlayers(Long.valueOf(teamId), Long.valueOf(userTeamId),
+							BlockType.SUBSTITUTE.name());
 					Collections.sort(players, new Comparator<UserPlayerSummary>() {
 						@Override
 						public int compare(UserPlayerSummary o1, UserPlayerSummary o2) {
@@ -480,9 +560,9 @@ public class TeamController extends BaseLeagueController {
 					});
 					logger.info("Got " + players.size());
 					removeAndAdd(model, "players", players);
-					//User Team's money
+					// User Team's money
 					Long availableMoney = userTeamService.getAvailableMoney(Long.valueOf(teamId));
-					removeAndAdd(model, "availableMoney", availableMoney);					
+					removeAndAdd(model, "availableMoney", availableMoney);
 					return TRADE_PLAYER_MAPPING;
 				} else {
 					model.addAttribute("message", "No team specified");
@@ -499,40 +579,44 @@ public class TeamController extends BaseLeagueController {
 		}
 		return PLAYERS_PAGE_MAPPING;
 	}
-	
+
 	@RequestMapping(value = "/selectTradePoolPlayer")
-	public String selectTradePoolPlayer(HttpServletRequest request, 
+	public String selectTradePoolPlayer(HttpServletRequest request,
 			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
 			@RequestParam(required = false, value = TEAM_ID_PARAM) String userTeamId,
-			@RequestParam(required = false, value = "team") String teamId, 
 			@RequestParam(required = false, value = POOL_PLAYER_ID_PARAM) String poolPlayerId,
-			ModelMap model) {
-		logger.info("Selected new PoolPlayer: userId:" + userId + " userTeamId:" + userTeamId + " teamId:" + teamId
-				+" poolPlayerId: "+poolPlayerId);
+			@RequestParam(required = false, value = MESSAGE_PARAM) String message, ModelMap model) {
+		logger
+				.info("Selected new PoolPlayer: userId:" + userId + " userTeamId:" + userTeamId + " poolPlayerId: " + poolPlayerId);
 		User user = getUser(request, userId, null);
 		try {
 			removeAndAdd(model, USER_ID_PARAM, userId);
 			removeAndAdd(model, TEAM_ID_PARAM, userTeamId);
-			removeAndAdd(model, "team", teamId);
+			removeAndAdd(model, MESSAGE_PARAM, message);
 			model.remove("players");
 			if (user != null) {
-				if (isValidId(userTeamId) && isValidId(teamId) && isValidId(poolPlayerId)) {
-					//Pool player
-					PoolPlayer poolPlayer = poolService.getPoolPlayer(Long.valueOf(poolPlayerId));
-					removeAndAdd(model, "poolPlayer", poolPlayer);
-					//Get the current team players
-					UserTeamSummary userTeam = userTeamService.getTeamWithPlayers(Long.valueOf(userTeamId));
-					if (userTeam != null) {
-						userTeam.setUserId(user.getId());
-						logger.debug("Got userTeam: "+userTeam);
+				if (isValidId(userTeamId)) {
+					if (isValidId(poolPlayerId)) {
+						// Pool player
+						PoolPlayer poolPlayer = poolService.getPoolPlayer(Long.valueOf(poolPlayerId));
+						removeAndAdd(model, "poolPlayer", poolPlayer);
+						// Get the current team players
+						UserTeamSummary userTeam = userTeamService.getTeamWithPlayers(Long.valueOf(userTeamId));
+						if (userTeam != null) {
+							userTeam.setUserId(user.getId());
+							logger.debug("Got userTeam: " + userTeam);
+						}
+						removeAndAdd(model, "userTeam", userTeam);
+						// User Team's money
+						Long availableMoney = userTeamService.getAvailableMoney(Long.valueOf(userTeamId));
+						removeAndAdd(model, "availableMoney", availableMoney);
+						return TRADE_PLAYER_MAPPING;
+					} else {
+						model.addAttribute("message", "No pool player specified");
+						return PLAYERS_PAGE_MAPPING;
 					}
-					removeAndAdd(model, "userTeam", userTeam);					
-					//User Team's money
-					Long availableMoney = userTeamService.getAvailableMoney(Long.valueOf(userTeamId));
-					removeAndAdd(model, "availableMoney", availableMoney);					
-					return TRADE_PLAYER_MAPPING;
 				} else {
-					model.addAttribute("message", "No team or pool player specified");
+					model.addAttribute("message", "No team specified");
 					return PLAYERS_PAGE_MAPPING;
 				}
 			} else {
@@ -546,41 +630,37 @@ public class TeamController extends BaseLeagueController {
 		}
 		return PLAYERS_PAGE_MAPPING;
 	}
-	
-	
+
 	@RequestMapping(value = "/tradePlayer")
 	public String tradePlayer(HttpServletRequest request,
 			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
 			@RequestParam(required = false, value = TEAM_ID_PARAM) String teamId,
 			@RequestParam(required = false, value = POOL_PLAYER_ID_PARAM) String poolPlayerId,
-			@RequestParam(required = false, value = "selectedid") String selectedId,
-			ModelMap model) {
-		logger.info("Trading player - userId:" + userId + " teamId:" + teamId + " poolPlayerId:" + poolPlayerId+" selectedId:"+selectedId);
+			@RequestParam(required = false, value = "selectedid") String selectedId, ModelMap model) {
+		logger.info("Trading player - userId:" + userId + " teamId:" + teamId + " poolPlayerId:" + poolPlayerId + " selectedId:"
+				+ selectedId);
 		User user = getUser(request, userId, null);
 		try {
 			removeAndAdd(model, USER_ID_PARAM, userId);
 			removeAndAdd(model, TEAM_ID_PARAM, teamId);
+			removeAndAdd(model, POOL_PLAYER_ID_PARAM, poolPlayerId);
 			if (user != null) {
 				if (isValidId(teamId)) {
 					if (isValidId(poolPlayerId)) {
 						if (isValidId(selectedId)) {
 							try {
-								String message = userTeamService.tradePlayers(user, Long.valueOf(teamId), Long.valueOf(poolPlayerId), Long.valueOf(selectedId));
-								if (isValid(message)) {
-									//TODO
-									removeAndAdd(model, MESSAGE_PARAM, message);									
-								} else {
-									//Trade was successful
-									removeAndAdd(model, "notification", "Player was successfully traded");
-									return PLAYERS_PAGE_MAPPING;
-								}
+								userTeamService.tradePlayers(user, Long.valueOf(teamId), Long.valueOf(poolPlayerId),
+										Long.valueOf(selectedId));
+								// Trade was successful
+								removeAndAdd(model, "notification", "Player was successfully traded");
+								return "redirect:/team/players";
 							} catch (InvalidPlayerException e) {
 								model.addAttribute("message", e.getMessage());
 							}
 						} else {
 							model.addAttribute("message", "No pool player selected");
 						}
-					} else {						
+					} else {
 						model.addAttribute("message", "No team player specified");
 					}
 				} else {
@@ -595,7 +675,7 @@ public class TeamController extends BaseLeagueController {
 			logger.error("Error changing player's status: ", e);
 			model.addAttribute("message", "Unable to change player's status");
 		}
-		return TRADE_PLAYER_MAPPING;
+		return "redirect:/team/selectTradePoolPlayer";
 	}
 
 	@RequestMapping(value = "/set")
@@ -608,12 +688,9 @@ public class TeamController extends BaseLeagueController {
 			if (user != null) {
 				if (isValidId(teamId)) {
 					try {
-						String message = userTeamService.setTeam(user, Long.valueOf(teamId));
-						if (message != null) {
-							logger.info("Got status message: " + message);
-							model.addAttribute("notification", message);
-							return "redirect:/team/list";
-						}
+						userTeamService.setTeam(user, Long.valueOf(teamId));
+						model.addAttribute("notification", "Your team is ready to play!");
+						return "redirect:/team/list";
 					} catch (InvalidPlayerException e) {
 						model.addAttribute("message", e.getMessage());
 					}
@@ -634,11 +711,15 @@ public class TeamController extends BaseLeagueController {
 		return url;
 	}
 
-	private List<String> getStatuses(UserPlayerStatus playerStatus) {
+	private List<String> getStatuses(UserPlayerStatus playerStatus, String teamStatus) {
 		List<String> statuses = new ArrayList<String>();
-		for (UserPlayerStatus s : UserPlayerStatus.values()) {
-			if (s != playerStatus && !(s == UserPlayerStatus.CAPTAIN && playerStatus == UserPlayerStatus.SUBSTITUTE)) {
-				statuses.add(s.name());
+		if (isValid(teamStatus) && UserTeamStatus.COMPLETE.name().equalsIgnoreCase(teamStatus)) {
+			statuses.add(UserPlayerStatus.PLAYER.name());
+		} else {
+			for (UserPlayerStatus s : UserPlayerStatus.values()) {
+				if (s != playerStatus && !(s == UserPlayerStatus.CAPTAIN && playerStatus == UserPlayerStatus.SUBSTITUTE)) {
+					statuses.add(s.name());
+				}
 			}
 		}
 		return statuses;

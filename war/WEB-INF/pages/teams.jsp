@@ -7,6 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <style>
         .message { color: #FF0000 ; font-weight: bold; }
+        .message2 { color: #FF0000 ; }
         .notification { color: green; font-weight: bold; }
     </style>
   </head>
@@ -37,13 +38,13 @@
             <b>${team.teamName}</b>                        
             <br/>
             <c:if test="${team.teamStatus == 'INCOMPLETE'}">
-                <span class="message">You team is not ready to play. Use the <a href="${contextPath}/team/players?userid=${userid}&teamid=${team.teamId}">View your Players</a> link to complete your team.</span>
+                <span class="message2">You team is not ready to play. Use the <a href="${contextPath}/team/players?userid=${userid}&teamid=${team.teamId}">View your Players</a> link to complete your team.</span>
                 <br/>
             </c:if>
-            <c:if test="${team.teamStatus == 'COMPLETE' && empty notification}">
+<%--             <c:if test="${team.teamStatus == 'COMPLETE' && empty notification}">
                 <span class="notification">Your team is doing fine!</span>
                 <br/>
-            </c:if>            
+            </c:if>   --%>          
             League:&nbsp;<a href="${contextPath}/league/view?leagueid=${team.leagueId}&userid=${userid}">${team.leagueName}</a>
             <c:if test="${team.teamStatus != 'INCOMPLETE'}">
                 &nbsp;Position: ${team.positionInLeague} / ${team.leagueCount}

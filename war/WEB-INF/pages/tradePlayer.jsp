@@ -58,45 +58,55 @@
     <c:if test="${not empty userTeam}">     
      <c:if test="${userTeam.teamStatus == 'COMPLETE'}">
      Select the team player to be replaced<br/>
-        <b>Defenders:</b>             
-        <c:forEach items="${userTeam.defenders}" var="d">
-        <br/>
-            <a href="${contextPath}/team/tradePlayer?userid=${userTeam.userId}&teamid=${userTeam.teamId}&poolplayerid=${d.poolPlayerId}&selectedid=${poolPlayer.id}">
-            ${d.firstName}&nbsp;${d.lastName} - <fmt:formatNumber value="${d.price}" type="currency" currencySymbol="R"/>
-            </a>                              
-        </c:forEach>
-
-        <br/>
-        <b>Mid Fielders:</b>     
-        <c:forEach items="${userTeam.midfielders}" var="f">
-                <br/>
-            <a href="${contextPath}/team/tradePlayer?userid=${userTeam.userId}&teamid=${userTeam.teamId}&poolplayerid=${f.poolPlayerId}&selectedid=${poolPlayer.id}">
-            ${f.firstName}&nbsp;${f.lastName} - <fmt:formatNumber value="${f.price}" type="currency" currencySymbol="R"/></a>              
-        </c:forEach>
+     
+        <c:if test="${poolPlayer.player.block == 'DEFENDER'}">     
+            <b>Defenders:</b>             
+            <c:forEach items="${userTeam.defenders}" var="d">
+            <br/>
+                <a href="${contextPath}/team/tradePlayer?userid=${userTeam.userId}&teamid=${userTeam.teamId}&selectedid=${d.poolPlayerId}&poolplayerid=${poolPlayer.id}">
+                ${d.firstName}&nbsp;${d.lastName} - <fmt:formatNumber value="${d.price}" type="currency" currencySymbol="R"/>
+                </a>                              
+            </c:forEach>
+        </c:if>
                 
-        <br/>
+        <c:if test="${poolPlayer.player.block == 'MIDFIELDER'}"> 
+	        <b>Mid Fielders:</b>     
+	        <c:forEach items="${userTeam.midfielders}" var="f">
+	                <br/>
+	            <a href="${contextPath}/team/tradePlayer?userid=${userTeam.userId}&teamid=${userTeam.teamId}&selectedid=${f.poolPlayerId}&poolplayerid=${poolPlayer.id}">
+	            ${f.firstName}&nbsp;${f.lastName} - <fmt:formatNumber value="${f.price}" type="currency" currencySymbol="R"/></a>              
+	        </c:forEach>
+        </c:if>
+                
+        <c:if test="${poolPlayer.player.block == 'STRIKER'}"> 
         <b>Strikers:</b>   
-        <c:forEach items="${userTeam.strikers}" var="s">
-            <br/>
-            <a href="${contextPath}/team/tradePlayer?userid=${userTeam.userId}&teamid=${userTeam.teamId}&poolplayerid=${s.poolPlayerId}&selectedid=${poolPlayer.id}">
-            ${s.firstName}&nbsp;${s.lastName} - <fmt:formatNumber value="${s.price}" type="currency" currencySymbol="R"/></a>            
-        </c:forEach>        
+            <c:forEach items="${userTeam.strikers}" var="s">
+                <br/>
+                <a href="${contextPath}/team/tradePlayer?userid=${userTeam.userId}&teamid=${userTeam.teamId}&selectedid=${s.poolPlayerId}&poolplayerid=${poolPlayer.id}">
+                ${s.firstName}&nbsp;${s.lastName} - <fmt:formatNumber value="${s.price}" type="currency" currencySymbol="R"/></a>            
+            </c:forEach>        
+        </c:if>
         
-        <br/>
+        <c:if test="${poolPlayer.player.block == 'GOALKEEPER'}"> 
         <b>Goal Keepers:</b>  
-        <c:forEach items="${userTeam.goalKeepers}" var="g">
-            <br/>
-            <a href="${contextPath}/team/tradePlayer?userid=${userTeam.userId}&teamid=${userTeam.teamId}&poolplayerid=${g.poolPlayerId}&selectedid=${poolPlayer.id}">
-            ${g.firstName}&nbsp;${g.lastName} - <fmt:formatNumber value="${g.price}" type="currency" currencySymbol="R"/></a>
-        </c:forEach>         
-        
+            <c:forEach items="${userTeam.goalKeepers}" var="g">
+                <br/>
+                <a href="${contextPath}/team/tradePlayer?userid=${userTeam.userId}&teamid=${userTeam.teamId}&selectedid=${g.poolPlayerId}&poolplayerid=${poolPlayer.id}">
+                ${g.firstName}&nbsp;${g.lastName} - <fmt:formatNumber value="${g.price}" type="currency" currencySymbol="R"/></a>
+            </c:forEach>         
+        </c:if>
+                       
         <br/>
         <b>Substitutes:</b>
         <c:forEach items="${userTeam.substitutes}" var="s">
             <br/>
-            <a href="${contextPath}/team/tradePlayer?userid=${userTeam.userId}&teamid=${userTeam.teamId}&poolplayerid=${s.poolPlayerId}&selectedid=${poolPlayer.id}">
+            <a href="${contextPath}/team/tradePlayer?userid=${userTeam.userId}&teamid=${userTeam.teamId}&selectedid=${s.poolPlayerId}&poolplayerid=${poolPlayer.id}">
             ${s.firstName}&nbsp;${s.lastName} - <fmt:formatNumber value="${s.price}" type="currency" currencySymbol="R"/></a>                        
-        </c:forEach>                 
+        </c:forEach>
+                         
+        <br/>        
+        <a href="${contextPath}/team/startTrade?userid=${userTeam.userId}&teamid=${userTeam.teamId}">Back</a>                         
+                         
      </c:if> 
       
     </c:if>
