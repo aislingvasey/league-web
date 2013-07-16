@@ -6,7 +6,13 @@
     <title>League - Select the Captain</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <style>
+        body {color: #ffffff; background-color: #202020; }
+        a {color: #FF6600; }
+        a:visited {color: #FF6600; }
+        a:hover {color: #FF6600; }
         .message { color: #FF0000 ; font-weight: bold; }
+        .message2 { color: #FF0000 ; font-size: small; }
+        .notification { color: #00FF00; font-weight: bold; }
     </style>
   </head>
 
@@ -15,6 +21,8 @@
   <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
     
     <b>Select your Captain</b>
+    <br/>
+    Your captain can be changed between each match. They earn double points per week when they're captain.
     
     <c:if test="${not empty message}">    
       <br/><span class="message">${message}</span>

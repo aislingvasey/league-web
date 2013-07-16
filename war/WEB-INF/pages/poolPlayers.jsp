@@ -6,10 +6,13 @@
 <title>League - Pool Players</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <style>
-.message {
-	color: #FF0000;
-	font-weight: bold;
-}
+        body {color: #ffffff; background-color: #202020; }
+        a {color: #FF6600; }
+        a:visited {color: #FF6600; }
+        a:hover {color: #FF6600; }
+        .message { color: #FF0000 ; font-weight: bold; }
+        .message2 { color: #FF0000 ; font-size: small; }
+        .notification { color: #00FF00; font-weight: bold; }
 </style>
 </head>
 
@@ -36,11 +39,11 @@
 
 			<c:forEach items="${results.poolPlayers}" var="poolPlayer">
 				<tr>
-					<td>${poolPlayer.player.firstName}&nbsp;${poolPlayer.player.lastName}&nbsp;${poolPlayer.player.block}</td>
-					<td align="right">${poolPlayer.playerCurrentScore}</td>
-					<td align="right">&nbsp; <fmt:formatNumber
-							value="${poolPlayer.playerPrice}" type="currency"
-							currencySymbol="R" />
+					<td>
+					${poolPlayer.firstName}&nbsp;${poolPlayer.lastName}&nbsp;${poolPlayer.block}					
+					</td>
+					<td align="right">${poolPlayer.currentScore}</td>
+					<td align="right">&nbsp; <fmt:formatNumber value="${poolPlayer.price}" type="currency" currencySymbol="R" pattern="¤ # ##0" />
 					</td>
 				</tr>
 			</c:forEach>
@@ -54,15 +57,22 @@
 
 		<tr>
 			<td colspan="3">
-			<c:if test="${results.page > 0}">
+			     <c:if test="${results.page > 0}">
 					<a href="${contextPath}/pool/view?userid=${userid}&teamid=${teamid}&page=${results.page - 1}&pagesize=${results.pageSize}">
 						Previous </a>
 				</c:if>
+				 <c:if test="${results.page == 0}">                    
+                    Previous
+                </c:if>                
+				&nbsp;
 				<c:if test="${not results.lessThanAFullPage}"> 
-				&nbsp; <a href="${contextPath}/pool/view?userid=${userid}&teamid=${teamid}&page=${results.page + 1}&pagesize=${results.pageSize}">
+				    <a href="${contextPath}/pool/view?userid=${userid}&teamid=${teamid}&page=${results.page + 1}&pagesize=${results.pageSize}">
 					Next </a>
 				</c:if>	
-					</td>
+				<c:if test="${results.lessThanAFullPage}"> 
+                    Next
+                </c:if> 
+			</td>
 		</tr>
 
 	</table>

@@ -6,7 +6,13 @@
     <title>League - Teams Players</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <style>
+        body {color: #ffffff; background-color: #202020; }
+        a {color: #FF6600; }
+        a:visited {color: #FF6600; }
+        a:hover {color: #FF6600; }
         .message { color: #FF0000 ; font-weight: bold; }
+        .message2 { color: #FF0000 ; font-size: small; }
+        .notification { color: #00FF00; font-weight: bold; }
     </style>
   </head>
 
@@ -22,14 +28,16 @@
     
     Player Type:&nbsp;${type}<br/>
     <c:if test="${not empty availableMoney}">
-        Available Money: <fmt:formatNumber value="${availableMoney}" type="currency" currencySymbol="R"/><br/>
+        Available Money: <fmt:formatNumber value="${availableMoney}" type="currency" currencySymbol="R" pattern="¤ #,##0"/><br/>
     </c:if>
     <c:if test="${not empty players}">
         <c:forEach items="${players}" var="p">
             <a href="${contextPath}/team/addPlayer?userid=${userid}&teamid=${teamid}&type=${type}&team=${team}&poolplayerid=${p.poolPlayerId}">
             ${p.firstName}&nbsp;${p.lastName}</a>  
-            ${p.block}&nbsp;
-            Price:&nbsp;<fmt:formatNumber value="${p.price}" type="currency" currencySymbol="R"/>                               
+            <c:if test="${type == 'Substitute'}">
+                &nbsp;(${p.block})&nbsp;
+            </c:if>
+            Price:&nbsp;<fmt:formatNumber value="${p.price}" type="currency" currencySymbol="R" pattern="¤ #,##0"/>                               
             <br/>
         </c:forEach>
     </c:if>

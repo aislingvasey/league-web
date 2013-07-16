@@ -32,6 +32,7 @@ public class BaseLeagueController {
 	
 	protected static final String DEFAULT_MAPPING = "welcome";
 	protected static final String TEAMS_PAGE_MAPPING = "teams";
+	protected static final String NEW_TEAM_PAGE_MAPPING = "teamNew";
 	protected static final String PLAYERS_PAGE_MAPPING = "players";
 	protected static final String REGISTER = "register";
 	protected static final String LEAGUE_PAGE_MAPPING = "league";

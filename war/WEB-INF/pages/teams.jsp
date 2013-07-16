@@ -6,9 +6,16 @@
     <title>League - Teams</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <style>
+        body {color: #ffffff; background-color: #202020; }
+        a {color: #FF6600; }
+        a:visited {color: #FF6600; }
+        a:hover {color: #FF6600; }
+        a.message2:active { color: #FF0000 ; }
+        a.message2:hover { color: #FF0000 ; }
+        a.message2:visited { color: #FF0000 ; }
         .message { color: #FF0000 ; font-weight: bold; }
         .message2 { color: #FF0000 ; }
-        .notification { color: green; font-weight: bold; }
+        .notification { color: #00FF00; font-weight: bold; }
     </style>
   </head>
 
@@ -25,8 +32,11 @@
     </c:if>
 
     <c:if test="${(not empty newUser || empty teams) && empty message}">
-        <form action="create" method="get">
-            Create your team. Name:<input type="text" value="" name="teamname"></input>
+        Congratulations on starting to play fantasy soccer!<br/>
+        <form action="${contextPath}/team/create" method="get">
+            Create your team
+            <br/>
+            Name:<input type="text" value="" name="teamname"></input>
             <input type="hidden" value="${userid}" name="userid" />
             <input type="submit" value="Go"></input>
         </form>   
@@ -35,29 +45,26 @@
     <c:if test="${not empty teams}">
     
         <c:forEach items="${teams}" var="team">
-            <b>${team.teamName}</b>                        
+            <b>${team.teamName}</b>            
             <br/>
             <c:if test="${team.teamStatus == 'INCOMPLETE'}">
-                <span class="message2">You team is not ready to play. Use the <a href="${contextPath}/team/players?userid=${userid}&teamid=${team.teamId}">View your Players</a> link to complete your team.</span>
+                <span class="message2">Use the <a class="message2" href="${contextPath}/team/players?userid=${userid}&teamid=${team.teamId}">View your Players</a> link to complete your team.</span>
                 <br/>
-            </c:if>
-<%--             <c:if test="${team.teamStatus == 'COMPLETE' && empty notification}">
-                <span class="notification">Your team is doing fine!</span>
-                <br/>
-            </c:if>   --%>          
-            League:&nbsp;<a href="${contextPath}/league/view?leagueid=${team.leagueId}&userid=${userid}">${team.leagueName}</a>
+            </c:if>   
+                  
+            <a href="${contextPath}/league/view?leagueid=${team.leagueId}&userid=${userid}">${team.leagueName}</a>
             <c:if test="${team.teamStatus != 'INCOMPLETE'}">
-                &nbsp;Position: ${team.positionInLeague} / ${team.leagueCount}
+                Position:&nbsp;${team.positionInLeague} / ${team.leagueCount}
             </c:if>                        
             <br/>         
             Current Score: ${team.currentScore}
             <br/>            
-            Available Money: <fmt:formatNumber value="${team.availableMoney}" type="currency" currencySymbol="R"/>          
+            Available Money: <fmt:formatNumber value="${team.availableMoney}" type="currency" currencySymbol="R" pattern="¤ #,##0"/>          
             <br/>
             <a href="${contextPath}/team/players?userid=${userid}&teamid=${team.teamId}">View your Players</a> 
-            &nbsp;
+            <br/>
             <a href="${contextPath}/team/teamHistory?userid=${userid}&teamid=${team.teamId}">Team History</a>
-            &nbsp;
+            <br/>
             <a href="${contextPath}/pool/view?userid=${userid}&teamid=${team.teamId}">Pool Players</a>
             <br/>
         </c:forEach>
