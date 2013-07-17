@@ -1,87 +1,81 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <html>
-  <head>
+<head>
     <title>League - Player</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <style>
-        /* body {color: #ffffff; background-color: #202020; }
-        a {color: #FF6600; }
-        a:visited {color: #FF6600; }
-        a:hover {color: #FF6600; }
-        a.message2:active { color: #FF0000 ; }
-        a.message2:hover { color: #FF0000 ; }
-        a.message2:visited { color: #FF0000 ; }
-        .message { color: #FF0000 ; font-weight: bold; }
-        .message2 { color: #FF0000 ; }
-        .notification { color: #00FF00; font-weight: bold; } */
-        body { color: #005A31; background: #A8CD1B; }
-        h1 { color:  #F3FAB6; font-family: Verdana, sans-serif; text-transform: uppercase; font-size: 22px;}
-        h2 { font-family: Verdana, sans-serif; font-size: 20px; margin: 0;}
-        h3 { font-family: Verdana, sans-serif; font-size: 16px; margin: 0;}
-        p, li { font-family: Georgia, serif; font-size: 16px; margin: 0;  }
-        ol { margin: 0; margin-bottom: 2px;}
-        a { text-decoration: none; color: #F3FAB6;  }
-        a:hover { text-decoration: underline; color: #005A31; }
-        .label { font-family: Verdana, sans-serif; font-weight: bold; margin-right: 5px; }
-        .count { font-weight: 100; font-size: 16px; }
-                .message { font-family: Verdana, sans-serif; color: #FF6423 ; font-weight: bold; padding: 2px; }
-        .button-box { margin-top: 5px; margin-bottom: 7px; }
-        .button { color: #F3FAB6; background: #005A31; padding: 5px;}
-        a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
-    </style>
-  </head>
+    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/main.css" />" />
+</head>
 
-  <body>  
-  
-  <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-        
-    <c:if test="${not empty message}">    
-      <span class="message">${message}</span><br/>
-    </c:if>
-    
-    <c:if test="${not empty player}">
-    
-    <c:set var="status" value="${player.status}" scope="page" />
-    
-        <c:if test="${status == 'CAPTAIN'}">
-            <b>Captain: ${player.firstName} ${player.lastName}</b><br/>
-        </c:if>        
-        <c:if test="${status == 'PLAYER'}">
-            <b>Player: ${player.firstName} ${player.lastName}</b><br/>
-        </c:if>
-        <c:if test="${status == 'SUBSTITUTE'}">
-            <b>Substitute: ${player.firstName} ${player.lastName}</b><br/>
-        </c:if>
-        Position:&nbsp;${player.block}<br/>
-        Price:&nbsp;<fmt:formatNumber value="${player.price}" type="currency" currencySymbol="R"/><br/>
-        <c:forEach items="${statuses}" var="s">            
-            <c:if test="${s == 'CAPTAIN'}">
-                <a href="${contextPath}/team/setPlayerStatus?userid=${userid}&teamid=${teamid}&poolplayerid=${player.poolPlayerId}&status=${s}">
-                Make this player the Captain</a><br/>   
-            </c:if>
-            <c:if test="${s == 'SUBSTITUTE'}">
-                <a href="${contextPath}/team/setPlayerStatus?userid=${userid}&teamid=${teamid}&poolplayerid=${player.poolPlayerId}&status=${s}">
-                Put this player on the bench</a><br/>   
-            </c:if>
-            <c:if test="${s == 'DROPPED'}">
-                <a href="${contextPath}/team/setPlayerStatus?userid=${userid}&teamid=${teamid}&poolplayerid=${player.poolPlayerId}&status=${s}">
-                Drop this player</a><br/>   
-            </c:if>
-            <c:if test="${s == 'PLAYER' && status != 'CAPTAIN'}">
-                <a href="${contextPath}/team/setPlayerStatus?userid=${userid}&teamid=${teamid}&poolplayerid=${player.poolPlayerId}&status=${s}">
-                Add them to the starting team</a><br/>   
-            </c:if>
-            <c:if test="${s == 'PLAYER' && status == 'CAPTAIN'}">
-                <a href="${contextPath}/team/setPlayerStatus?userid=${userid}&teamid=${teamid}&poolplayerid=${player.poolPlayerId}&status=${s}">
-                No longer Captain</a><br/>   
-            </c:if>
-        </c:forEach>
-    </c:if>
+<body>
 
-    <a href="${contextPath}/team/players?userid=${userid}&teamid=${teamid}">Back</a><br/>
+	<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
-  </body>
+	<c:if test="${not empty message}">
+		<span class="message">${message}</span>
+		<br />
+	</c:if>
+
+	<c:if test="${not empty player}">
+
+		<c:set var="status" value="${player.status}" scope="page" />
+
+		<c:if test="${status == 'Captain'}">
+			<span class="heading">Captain: ${player.firstName} ${player.lastName}</span><br/>
+		</c:if>
+		<c:if test="${status == 'Player'}">
+			<span class="heading">Player: ${player.firstName} ${player.lastName}</span><br/>
+		</c:if>
+		<c:if test="${status == 'Substitute'}">
+			<span class="heading">Substitute: ${player.firstName} ${player.lastName}</span><br/>
+		</c:if>
+        Position:&nbsp;${player.block}<br />
+        Price:&nbsp;<fmt:formatNumber value="${player.price}" type="currency" currencySymbol="R" pattern="¤ #,##0" />
+		<br />
+		<c:forEach items="${statuses}" var="s">
+			<c:if test="${s == 'CAPTAIN'}">
+				<a
+					href="${contextPath}/team/setPlayerStatus?userid=${userid}&teamid=${teamid}&poolplayerid=${player.poolPlayerId}&status=${s}">
+					Make this player the Captain</a>
+				<br />
+			</c:if>
+			<c:if test="${s == 'SUBSTITUTE'}">
+				<a
+					href="${contextPath}/team/setPlayerStatus?userid=${userid}&teamid=${teamid}&poolplayerid=${player.poolPlayerId}&status=${s}">
+					Put this player on the bench</a>
+				<br />
+			</c:if>
+			<c:if test="${s == 'DROPPED'}">
+				<a
+					href="${contextPath}/team/setPlayerStatus?userid=${userid}&teamid=${teamid}&poolplayerid=${player.poolPlayerId}&status=${s}">
+					Drop this player</a>
+				<br />
+			</c:if>
+			<c:if test="${s == 'PLAYER' && status != 'CAPTAIN'}">
+				<a
+					href="${contextPath}/team/setPlayerStatus?userid=${userid}&teamid=${teamid}&poolplayerid=${player.poolPlayerId}&status=${s}">
+					Add them to the starting team</a>
+				<br />
+			</c:if>
+			<c:if test="${s == 'PLAYER' && status == 'CAPTAIN'}">
+				<a
+					href="${contextPath}/team/setPlayerStatus?userid=${userid}&teamid=${teamid}&poolplayerid=${player.poolPlayerId}&status=${s}">
+					No longer Captain</a>
+				<br />
+			</c:if>
+		</c:forEach>
+	</c:if>
+
+
+<p class="navigation">
+    <a href="${contextPath}/team/players?userid=${userid}&teamid=${teamid}">Back</a>
+          &nbsp;|&nbsp;
+          <a href="${contextPath}/team/list?userid=${userid}">Home</a>
+          &nbsp;|&nbsp;
+          <a href="${contextPath}/rules.jsp?userid=${userid}">Rules</a>
+      </p>	
+
+</body>
 
 </html>

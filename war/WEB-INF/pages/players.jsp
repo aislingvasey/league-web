@@ -5,46 +5,21 @@
   <head>
     <title>League - Team Players</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <style>
-        /* body {color: #ffffff; background-color: #202020; }
-        a {color: #FF6600; }
-        a:visited {color: #FF6600; }
-        a:hover {color: #FF6600; }
-        a.message2:active { color: #FF0000 ; }
-        a.message2:hover { color: #FF0000 ; }
-        a.message2:visited { color: #FF0000 ; }
-        .message { color: #FF0000 ; font-weight: bold; }
-        .message2 { color: #FF0000 ; }
-        .notification { color: #00FF00; font-weight: bold; } */
-        body { color: #005A31; background: #A8CD1B; }
-        h1 { color:  #F3FAB6; font-family: Verdana, sans-serif; text-transform: uppercase; font-size: 22px;}
-        h2 { font-family: Verdana, sans-serif; font-size: 20px; margin: 0;}
-        h3 { font-family: Verdana, sans-serif; font-size: 16px; margin: 0;}
-        p, li { font-family: Georgia, serif; font-size: 16px; margin: 0;  }
-        ol { margin: 0; margin-bottom: 2px;}
-        a { text-decoration: none; color: #F3FAB6;  }
-        a:hover { text-decoration: underline; color: #005A31; }
-        .label { font-family: Verdana, sans-serif; font-weight: bold; margin-right: 5px; }
-        .count { font-weight: 100; font-size: 16px; }
-                .message { font-family: Verdana, sans-serif; color: #FF6423 ; font-weight: bold; padding: 2px; }
-        .button-box { margin-top: 5px; margin-bottom: 7px; }
-        .button { color: #F3FAB6; background: #005A31; padding: 5px;}
-        a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
-    </style>
+    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/main.css" />" />
   </head>
 
   <body>  
   
-  <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+    <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
     
-    <b>Your Players</b><br/>
+    <span class="heading">Your Players</span><br/>
     
     <c:if test="${not empty message}">    
       <span class="message">${message}</span><br/>
     </c:if>
-    
+        
     <c:if test="${not empty notification}">    
-      <span class="notification">${notification}</span><br/>
+     <span class="notification">${notification}</span><br/>
     </c:if>
     
     <c:if test="${not empty team}"> 
@@ -52,7 +27,7 @@
       <c:if test="${team.teamStatus == 'INCOMPLETE'}">  
       
         <c:if test="${team.complete}">
-        <span class="notification">Your team are still in training, make sure to submit them so that they can start playing.</span><br/>
+        <span class="hint">Your team are still in training, make sure to submit them so that they can start playing.</span><br/>
         </c:if>
              
         <b>Team Name:</b>&nbsp;${team.teamName}<br/>
@@ -145,11 +120,7 @@
             ${count}&nbsp;${s.firstName}&nbsp;${s.lastName}&nbsp;(${s.originalBlock})            
             <a href="${contextPath}/team/changePlayerStatus?userid=${team.userId}&teamid=${team.teamId}&type=Substitute&poolplayerid=${s.poolPlayerId}">${s.status}</a>
             <c:set var="count" value="${count + 1}" scope="page"/>        
-        </c:forEach>           
-        <c:if test="${team.complete}">            
-            <br/>            
-            <a href="${contextPath}/team/set?userid=${team.userId}&teamid=${team.teamId}">Submit Your Team</a>            
-        </c:if>                     
+        </c:forEach>                                     
      </c:if>  
      
              
@@ -207,25 +178,36 @@
             <br/>
             ${count}&nbsp;<a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${s.poolPlayerId}">
             ${s.firstName}&nbsp;${s.lastName}</a>
-            &mnsp;(${s.originalBlock})&nbsp;            
+            &nbsp;(${s.originalBlock})&nbsp;            
             <a href="${contextPath}/team/changePlayerStatus?userid=${team.userId}&teamid=${team.teamId}&type=substitute&poolplayerid=${s.poolPlayerId}&teamstatus=COMPLETE&captainid=${team.captainId}">
             ${s.block}
             </a>             
             <c:set var="count" value="${count + 1}" scope="page"/>                         
-        </c:forEach>          
-        <c:if test="${team.canTrade}">       
-            <br/>
-            <a href="${contextPath}/team/startTrade?userid=${userid}&teamid=${team.teamId}">Trade a Player</a>
-        </c:if>
-        <c:if test="${not team.canTrade}">
-            <br/>       
-            Trade a Player
-        </c:if>
+        </c:forEach>                  
      </c:if>       
     </c:if>
     
-    <br/>
-    <a href="${contextPath}/team/list?userid=${userid}">Back</a>
+    <p class="navigation">
+        <c:if test="${team.teamStatus == 'INCOMPLETE' && team.complete}">                                  
+            <a href="${contextPath}/team/set?userid=${team.userId}&teamid=${team.teamId}">Submit Your Team</a>
+            &nbsp;|&nbsp;            
+        </c:if>   
+        
+        <c:if test="${team.teamStatus == 'COMPLETE' && team.canTrade}">       
+            <a href="${contextPath}/team/startTrade?userid=${userid}&teamid=${team.teamId}">Trade a Player</a>
+            &nbsp;|&nbsp;   
+        </c:if>
+        <c:if test="${team.teamStatus == 'COMPLETE' && not team.canTrade}">
+            Trade a Player (Used)
+            &nbsp;|&nbsp;   
+        </c:if>
+        
+          <a href="${contextPath}/team/list?userid=${userid}">Back</a>
+          &nbsp;|&nbsp;
+          <a href="${contextPath}/team/list?userid=${userid}">Home</a>
+          &nbsp;|&nbsp;
+          <a href="${contextPath}/rules.jsp?userid=${userid}">Rules</a>
+      </p>
     
   </body>
 

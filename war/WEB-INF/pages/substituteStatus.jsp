@@ -5,41 +5,17 @@
   <head>
     <title>League - Select a Player</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <style>
-        /* body {color: #ffffff; background-color: #202020; }
-        a {color: #FF6600; }
-        a:visited {color: #FF6600; }
-        a:hover {color: #FF6600; }
-        a.message2:active { color: #FF0000 ; }
-        a.message2:hover { color: #FF0000 ; }
-        a.message2:visited { color: #FF0000 ; }
-        .message { color: #FF0000 ; font-weight: bold; }
-        .message2 { color: #FF0000 ; }
-        .notification { color: #00FF00; font-weight: bold; } */
-        body { color: #005A31; background: #A8CD1B; }
-        h1 { color:  #F3FAB6; font-family: Verdana, sans-serif; text-transform: uppercase; font-size: 22px;}
-        h2 { font-family: Verdana, sans-serif; font-size: 20px; margin: 0;}
-        h3 { font-family: Verdana, sans-serif; font-size: 16px; margin: 0;}
-        p, li { font-family: Georgia, serif; font-size: 16px; margin: 0;  }
-        ol { margin: 0; margin-bottom: 2px;}
-        a { text-decoration: none; color: #F3FAB6;  }
-        a:hover { text-decoration: underline; color: #005A31; }
-        .label { font-family: Verdana, sans-serif; font-weight: bold; margin-right: 5px; }
-        .count { font-weight: 100; font-size: 16px; }
-                .message { font-family: Verdana, sans-serif; color: #FF6423 ; font-weight: bold; padding: 2px; }
-        .button-box { margin-top: 5px; margin-bottom: 7px; }
-        .button { color: #F3FAB6; background: #005A31; padding: 5px;}
-        a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
-    </style>
+    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/main.css" />" />
   </head>
 
   <body>  
   
   <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
     
-    <b>Select a Player to be Substituted</b><br/>
-    Your substitute can only be allocated to the correct player position, for example: striker must substitute another striker.<br/>
-    The captain can't be substituted. Make someone else the captain first. 
+    <span class="heading">Select a Player to be Substituted</span><br/>
+    <span class="hint">Your substitute can only be allocated to the correct player position, for example: striker must substitute another striker.<br/>
+    The captain can't be substituted. Make someone else the captain first.</span><br/> 
+    
     <c:if test="${not empty message}">    
       <br/><span class="message">${message}</span>
     </c:if>
@@ -47,7 +23,8 @@
     <c:if test="${not empty team}"> 
                
         <c:set var="count" value="1" scope="page" />       
-                      
+        
+        <c:if test="${not empty team.defenders}"><b>Defenders</b></c:if>                      
         <c:forEach items="${team.defenders}" var="d">
           <br/>${count}&nbsp;
             <c:if test="${captainid != d.poolPlayerId}">                
@@ -61,6 +38,7 @@
             <c:set var="count" value="${count + 1}" scope="page"/>                     
         </c:forEach>     
         
+        <c:if test="${not empty team.midfielders}"><b>Mid Fielders</b></c:if> 
         <c:forEach items="${team.midfielders}" var="f">
             <br/>${count}&nbsp;
             <c:if test="${captainid != f.poolPlayerId}">                
@@ -74,6 +52,7 @@
             <c:set var="count" value="${count + 1}" scope="page"/>          
         </c:forEach>
                 
+        <c:if test="${not empty team.strikers}"><b>Strikers</b></c:if>         
         <c:forEach items="${team.strikers}" var="s">
             <br/>${count}&nbsp;
             <c:if test="${captainid != s.poolPlayerId}">                
@@ -87,6 +66,7 @@
             <c:set var="count" value="${count + 1}" scope="page"/>                  
         </c:forEach>        
         
+        <c:if test="${not empty team.goalKeepers}"><b>Goal Keepers</b></c:if> 
         <c:forEach items="${team.goalKeepers}" var="g">
             <br/>${count}&nbsp;
             <c:if test="${captainid != g.poolPlayerId}">                
@@ -102,9 +82,14 @@
                                         
      </c:if>  
     
-     <br/>
-     <a href="${contextPath}/team/players?userid=${userid}&teamid=${teamid}">Back</a>
-    
+     
+    <p class="navigation">
+          <a href="${contextPath}/team/players?userid=${userid}&teamid=${teamid}">Back</a>
+          &nbsp;|&nbsp;
+          <a href="${contextPath}/team/list?userid=${userid}">Home</a>
+          &nbsp;|&nbsp;
+          <a href="${contextPath}/rules.jsp?userid=${userid}">Rules</a>
+      </p>
   </body>
 
 </html>

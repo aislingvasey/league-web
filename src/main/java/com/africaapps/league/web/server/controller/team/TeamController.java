@@ -174,12 +174,15 @@ public class TeamController extends BaseLeagueController {
 			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
 			@RequestParam(required = false, value = TEAM_ID_PARAM) String teamId,
 			@RequestParam(required = false, value = MESSAGE_PARAM) String message, 
+			@RequestParam(required = false, value = "notification") String notification, 
 			ModelMap model) {
 		logger.info("Getting players for user: " + userId + " teamId:" + teamId);
 		User user = getUser(request, userId, null);
 		try {
 			removeAndAdd(model, USER_ID_PARAM, userId);
 			removeAndAdd(model, TEAM_ID_PARAM, teamId);
+			removeAndAdd(model, MESSAGE_PARAM, message);
+			removeAndAdd(model, "notification", notification);
 			if (user != null) {
 				if (isValidId(teamId)) {
 					UserTeamSummary userTeam = userTeamService.getTeamWithPlayers(Long.valueOf(teamId));
@@ -190,9 +193,6 @@ public class TeamController extends BaseLeagueController {
 						userTeam.setUserId(user.getId());
 					}
 					model.addAttribute("team", userTeam);
-					if (message != null && !message.trim().equals("")) {
-						model.addAttribute("message", message);
-					}
 					return PLAYERS_PAGE_MAPPING;
 				} else {
 					model.addAttribute("message", "No team specified");
@@ -473,6 +473,7 @@ public class TeamController extends BaseLeagueController {
 						if (isValidId(poolPlayerId)) {
 							try {
 								userTeamService.swapPlayers(Long.valueOf(teamId), Long.valueOf(substituteId), Long.valueOf(poolPlayerId));
+								removeAndAdd(model, "notification", "Players swapped!");
 							} catch (InvalidPlayerException e) {
 								model.addAttribute("message", e.getMessage());
 							}
@@ -559,9 +560,7 @@ public class TeamController extends BaseLeagueController {
 					Collections.sort(players, new Comparator<UserPlayerSummary>() {
 						@Override
 						public int compare(UserPlayerSummary o1, UserPlayerSummary o2) {
-							String n1 = o1.getFirstName() + " " + o1.getLastName();
-							String n2 = o2.getFirstName() + " " + o2.getFirstName();
-							return n1.compareTo(n2);
+							return o1.getPoolPlayerId().compareTo(o2.getPoolPlayerId());
 						}
 					});
 					logger.info("Got " + players.size());

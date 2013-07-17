@@ -5,37 +5,14 @@
   <head>
     <title>League - Teams</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <style>
-        /* body {color: #ffffff; background-color: #202020; }
-        a {color: #FF6600; }
-        a:visited {color: #FF6600; }
-        a:hover {color: #FF6600; }
-        a.message2:active { color: #FF0000 ; }
-        a.message2:hover { color: #FF0000 ; }
-        a.message2:visited { color: #FF0000 ; }
-        .message { color: #FF0000 ; font-weight: bold; }
-        .message2 { color: #FF0000 ; }
-        .notification { color: #00FF00; font-weight: bold; } */
-        body { color: #005A31; background: #A8CD1B; }
-        h1 { color:  #F3FAB6; font-family: Verdana, sans-serif; text-transform: uppercase; font-size: 22px;}
-        h2 { font-family: Verdana, sans-serif; font-size: 20px; margin: 0;}
-        h3 { font-family: Verdana, sans-serif; font-size: 16px; margin: 0;}
-        p, li { font-family: Georgia, serif; font-size: 16px; margin: 0;  }
-        ol { margin: 0; margin-bottom: 2px;}
-        a { text-decoration: none; color: #F3FAB6;  }
-        a:hover { text-decoration: underline; color: #005A31; }
-        .label { font-family: Verdana, sans-serif; font-weight: bold; margin-right: 5px; }
-        .count { font-weight: 100; font-size: 16px; }
-                .message { font-family: Verdana, sans-serif; color: #FF6423 ; font-weight: bold; padding: 2px; }
-        .button-box { margin-top: 5px; margin-bottom: 7px; }
-        .button { color: #F3FAB6; background: #005A31; padding: 5px;}
-        a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
-    </style>
+    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/main.css" />" />
   </head>
 
   <body>  
   
-  <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+    <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+    
+    <img src="<c:url value="/resources/small_ball.jpeg" />" /><br/>
     
     <c:if test="${not empty message}">    
       <span class="message">${message}</span><br/>
@@ -46,11 +23,11 @@
     </c:if>
 
     <c:if test="${(not empty newUser || empty teams) && empty message}">
-        Congratulations on starting to play fantasy soccer!<br/>
+        <span class="heading">Hello!</span><br/>
         <form action="${contextPath}/team/create" method="get">
-            Create your team
+            <span class="hint">First things first. You need to create your team.</span>
             <br/>
-            Name:<input type="text" value="" name="teamname"></input>
+            Team Name:<input type="text" value="" name="teamname"></input>
             <input type="hidden" value="${userid}" name="userid" />
             <input type="submit" value="Go"></input>
         </form>   
@@ -62,11 +39,11 @@
             <b>${team.teamName}</b>            
             <br/>
             <c:if test="${team.teamStatus == 'INCOMPLETE'}">
-                <span class="message2">Use the <a class="message2" href="${contextPath}/team/players?userid=${userid}&teamid=${team.teamId}">View your Players</a> link to complete your team.</span>
+                <span class="hint">To complete your team, use the <a class="message2" href="${contextPath}/team/players?userid=${userid}&teamid=${team.teamId}">View your Players</a> page.</span>
                 <br/>
             </c:if>   
                   
-            <a href="${contextPath}/league/view?leagueid=${team.leagueId}&userid=${userid}">${team.leagueName}</a>
+            League:&nbsp;<a href="${contextPath}/league/view?leagueid=${team.leagueId}&userid=${userid}">${team.leagueName}</a>
             <c:if test="${team.teamStatus != 'INCOMPLETE'}">
                 Position:&nbsp;${team.positionInLeague} / ${team.leagueCount}
             </c:if>                        
@@ -74,13 +51,17 @@
             Current Score: ${team.currentScore}
             <br/>            
             Available Money: <fmt:formatNumber value="${team.availableMoney}" type="currency" currencySymbol="R" pattern="¤ #,##0"/>          
-            <br/>
-            <a href="${contextPath}/team/players?userid=${userid}&teamid=${team.teamId}">View your Players</a> 
-            <br/>
-            <a href="${contextPath}/team/teamHistory?userid=${userid}&teamid=${team.teamId}">Team History</a>
-            <br/>
-            <a href="${contextPath}/pool/view?userid=${userid}&teamid=${team.teamId}">Pool Players</a>
-            <br/>
+            
+            <p class="navigation">
+          <a href="${contextPath}/team/players?userid=${userid}&teamid=${team.teamId}">View your Players</a> 
+          &nbsp;|&nbsp;
+          <a href="${contextPath}/team/teamHistory?userid=${userid}&teamid=${team.teamId}">Team History</a>
+          &nbsp;|&nbsp;
+          <a href="${contextPath}/pool/view?userid=${userid}&teamid=${team.teamId}">Pool Players</a>
+          &nbsp;|&nbsp;
+          <a href="${contextPath}/rules.jsp?userid=${userid}">Rules</a>
+            </p>
+            
         </c:forEach>
     </c:if>
 

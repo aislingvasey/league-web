@@ -1,0 +1,12 @@
+body { color: #005A31; background: #A8CD1B; }
+a { color: #F3FAB6;  }
+a:hover { color: #005A31; }
+.heading { color: #005A31; font-weight: bold; font-size: large; }
+.hint { color: #005A31; font-size: smaller; }
+.list { margin: 0; margin-bottom: 5px; margin-left: 15px;}
+.message { background: #FF6423; color: #FFFFFF; font-weight: bold; padding: 2px; }
+.notification { background: #00FF00; color: #F3FAB6; padding: 2px; font-weight: bold; }
+.navigation { }
+.button-box { margin-top: 5px; margin-bottom: 7px; }
+.button { color: #F3FAB6; background: #005A31; padding: 5px;}
+a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
