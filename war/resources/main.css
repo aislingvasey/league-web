@@ -5,7 +5,7 @@ a:hover { color: #005A31; }
 .hint { color: #005A31; font-size: smaller; }
 .list { margin: 0; margin-bottom: 5px; margin-left: 15px;}
 .message { background: #FF6423; color: #FFFFFF; font-weight: bold; padding: 2px; }
-.notification { background: #00FF00; color: #F3FAB6; padding: 2px; font-weight: bold; }
+.notification { background: #005A31; color: #A8CD1B; padding: 2px; font-weight: bold; }
 .navigation { }
 .button-box { margin-top: 5px; margin-bottom: 7px; }
 .button { color: #F3FAB6; background: #005A31; padding: 5px;}

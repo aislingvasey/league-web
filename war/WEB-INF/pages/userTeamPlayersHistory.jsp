@@ -10,7 +10,10 @@
 
   <body>  
   
-  <c:set var="contextPath" value="${pageContext.request.contextPath}"/>    
+    <c:set var="contextPath" value="${pageContext.request.contextPath}"/>    
+  
+    <span class="heading">User Team History - Players Points</span><br/>
+  
     <c:if test="${not empty message}">    
       <span class="message">${message}</span><br/>
     </c:if>
