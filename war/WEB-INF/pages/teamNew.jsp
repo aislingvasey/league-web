@@ -3,32 +3,51 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
   <head>
-    <title>League - Your Team</title>
+    <title>PFL - Your Team</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/main.css" />" />
+    <style>
+body { color: #005A31; background: #A8CD1B; }
+a { color: #F3FAB6;  }
+a:hover { color: #005A31; }
+.heading { color: #005A31; font-weight: bold; font-size: large; }
+.hint { color: #005A31; font-size: smaller; }
+.list { margin: 0; margin-left: 15px;}
+.message { background: #FF6423; color: #FFFFFF; font-weight: bold; padding: 2px; }
+.marginSpacer { margin-top: 2px; margin-bottom: 2px; }
+.notification { background: #005A31; color: #A8CD1B; padding: 2px; font-weight: bold; }
+.navigation { }
+.button-box { margin-top: 5px; margin-bottom: 7px; }
+.button { color: #F3FAB6; background: #005A31; padding: 5px;}
+a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
+.logo { margin-top: 2px; margin-bottom: 2px; }
+    </style>
   </head>
 
   <body>  
   
-  <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+    <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+  
+    <div class="logo">
+        <img src="<c:url value="/resources/soccer-logo-small.png" />" />
+    </div>
     
     <c:if test="${not empty message}">    
-      <span class="message">${message}</span><br/>
+      <div class="marginSpacer"><span class="message">${message}</span></div>
     </c:if>
-    
+        
     <c:if test="${not empty notification}">    
-      <span class="notification">${notification}</span><br/>
+     <div class="marginSpacer"><span class="notification">${notification}</span></div>
     </c:if>
     
     <c:if test="${not empty team}">
-            <span class="heading">Team: ${team.name}!</span><br/>                        
+            <span class="heading">Team: ${team.name}</span><br/>                        
             <c:if test="${team.status == 'INCOMPLETE'}">            
-                Before your team can compete, you need to set up your team and choose your players.<br/><br/> 
+                Before your team can take part in the PFL, you need to set up your team and choose your players.<br/><br/> 
                 You're playing in the <b>${team.userLeague.name}</b>. 
-                You have a <b><fmt:formatNumber value="${team.availableMoney}" type="currency" currencySymbol="R" pattern="¤ # ##0"/></b> 
+                You have a <b><fmt:formatNumber value="${team.availableMoney}" type="currency" currencySymbol="R" pattern="¤ #,##0"/></b> 
                 budget to get the right players for your team.<br/>
-                Be smart, you can only get one free player trade every two weeks. You can however buy more player trades if necessary.<br/><br/>
-                You get 4 substitutes that can be swapped with your current players. Your substitute can only be allocated to the correct player position, for example: a striker must substitute another striker.<br/> 
+                Be smart, you only get 1 free player trade every 2 weeks. You can however buy more player trades if necessary.<br/><br/>
+                You get 4 substitutes that can be swapped with your current players. Each substitute can only be allocated to the correct position, eg: a striker must substitute another striker.<br/> 
                 <br/>
                 <a href="${contextPath}/team/players?userid=${userid}&teamid=${team.id}">Choose your Players</a>
             </c:if>   

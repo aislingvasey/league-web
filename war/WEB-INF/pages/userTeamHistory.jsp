@@ -3,23 +3,47 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
   <head>
-    <title>League - User Team History</title>
+    <title>PFL - User Team History</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/main.css" />" />
+    <style>
+body { color: #005A31; background: #A8CD1B; }
+a { color: #F3FAB6;  }
+a:hover { color: #005A31; }
+.heading { color: #005A31; font-weight: bold; font-size: large; }
+.hint { color: #005A31; font-size: smaller; }
+.list { margin: 0; margin-left: 15px;}
+.message { background: #FF6423; color: #FFFFFF; font-weight: bold; padding: 2px; }
+.marginSpacer { margin-top: 2px; margin-bottom: 2px; }
+.notification { background: #005A31; color: #A8CD1B; padding: 2px; font-weight: bold; }
+.navigation { }
+.button-box { margin-top: 5px; margin-bottom: 7px; }
+.button { color: #F3FAB6; background: #005A31; padding: 5px;}
+a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
+.logo { margin-top: 2px; margin-bottom: 2px; }
+    </style>
   </head>
 
   <body>  
   
-  <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+    <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+    
+    <div class="logo">
+        <img src="<c:url value="/resources/soccer-logo-small.png" />" />
+    </div>
     
     <span class="heading">User Team History</span><br/>
     
+
     <c:if test="${not empty message}">    
-      <span class="message">${message}</span><br/>
+      <div class="marginSpacer"><span class="message">${message}</span></div>
+    </c:if>
+        
+    <c:if test="${not empty notification}">    
+     <div class="marginSpacer"><span class="notification">${notification}</span></div>
     </c:if>
 
+
     <c:if test="${not empty scores}">
-        Team: 
         <c:out value="${scores[0].teamName}" />&nbsp;Current Score:<c:out value="${scores[0].teamCurrentScore}" /> 
         <br/>
         <table>
