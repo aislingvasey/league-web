@@ -60,9 +60,9 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
                 <br/>
             </c:if>   
                   
-            League:&nbsp;<a href="${contextPath}/league/view?leagueid=${team.leagueId}&userid=${userid}">${team.leagueName}</a>
+            League: <a href="${contextPath}/league/view?leagueid=${team.leagueId}&userid=${userid}">${team.leagueName}</a>
             <c:if test="${team.teamStatus != 'INCOMPLETE'}">
-                Position:&nbsp;${team.positionInLeague} / ${team.leagueCount}
+                Position: ${team.positionInLeague} / ${team.leagueCount}
             </c:if>                        
             <br/>         
             Current Score: ${team.currentScore}
@@ -71,11 +71,11 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
             
             <p class="navigation">
           <a href="${contextPath}/team/players?userid=${userid}&teamid=${team.teamId}">View your Players</a> 
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/team/teamHistory?userid=${userid}&teamid=${team.teamId}">Team History</a>
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/pool/view?userid=${userid}&teamid=${team.teamId}">Pool Players</a>
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/rules.jsp?userid=${userid}">Rules</a>
             </p>
             

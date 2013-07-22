@@ -42,14 +42,14 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
     </c:if>
 
     <c:if test="${not empty scores}">
-        <c:out value="${scores[0].teamName}" />&nbsp;Current Score:<c:out value="${scores[0].teamCurrentScore}" /> 
+        <c:out value="${scores[0].teamName}" /> Current Score:<c:out value="${scores[0].teamCurrentScore}" /> 
         <br/>
         Match Score: <b>${scores[0].matchPoints}</b>
-        <%-- &nbsp;<span class="hint">Team:&nbsp;${scores[0].teamOneName}</span> --%>
+        <%--  <span class="hint">Team: ${scores[0].teamOneName}</span> --%>
         <br/>        
         
         <%-- <br/> --%>
-        <%-- Match: ${scores[0].matchDate}&nbsp; --%>         
+        <%-- Match: ${scores[0].matchDate}  --%>         
         <table>
         <tr>
             <td><b>Player</b></td> 
@@ -60,7 +60,7 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
             <tr>
                 <td>
                     <a href="${contextPath}/team/viewMatchEvents?userid=${userid}&teamid=${teamid}&poolplayerid=${score.poolPlayerId}&matchid=${score.matchId}&fromteam=true">
-                    ${score.playerFirstName}&nbsp;${score.playerLastName}
+                    ${score.playerFirstName} ${score.playerLastName}
                     </a>
                 </td>
                 <%-- <td class="hint">${score.teamOneName}</td> --%>
@@ -73,9 +73,9 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
     
     <p class="navigation">
           <a href="${contextPath}/team/teamHistory?userid=${userid}&teamid=${teamid}">Back</a>
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/team/list?userid=${userid}">Home</a>
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/rules.jsp?userid=${userid}">Rules</a>
       </p>
     

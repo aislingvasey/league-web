@@ -42,7 +42,7 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
     </c:if>
     
     <c:if test="${not empty events}">
-        <b><c:out value="${events[0].firstName}" />&nbsp;<c:out value="${events[0].lastName}" /></b>
+        <b><c:out value="${events[0].firstName}" /> <c:out value="${events[0].lastName}" /></b>
         (<c:out value="${events[0].playerBlock}" />)
         <br/>    
         Match: <c:out value="${events[0].matchDate}" /> 
@@ -67,8 +67,8 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
     <c:if test="${empty fromteam}">
         <a href="${contextPath}/team/viewPlayerMatches?userid=${userid}&teamid=${teamid}&poolplayerid=${poolplayerid}">Back</a>
     </c:if>
-    <c:if test="${not empty fromteam}">
-        <a href="${contextPath}/team/teamHistory?userid=${userid}&teamid=${teamid}">Back</a>
+    <c:if test="${not empty fromteam}">    
+        <a href="${contextPath}/team/teamHistoryPlayersPoints?userid=${userid}&teamid=${teamid}&matchid=${matchid}">Back</a>
     </c:if>
     
   </body>

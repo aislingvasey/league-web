@@ -44,7 +44,7 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
 
 
     <c:if test="${not empty scores}">
-        <c:out value="${scores[0].teamName}" />&nbsp;Current Score:<c:out value="${scores[0].teamCurrentScore}" /> 
+        <c:out value="${scores[0].teamName}" /> Current Score:<c:out value="${scores[0].teamCurrentScore}" /> 
         <br/>
         <table>
         <tr>
@@ -75,9 +75,9 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
     
     <p class="navigation">
     <a href="${contextPath}/team/list?userid=${userid}">Back</a>  
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/team/list?userid=${userid}">Home</a>
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/rules.jsp?userid=${userid}">Rules</a>
       </p>
         

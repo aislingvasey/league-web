@@ -49,28 +49,28 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
         <span class="hint">Your team are still in training, make sure to submit them so that they can start playing.</span><br/>
         </c:if>
              
-        <b>Team Name:</b>&nbsp;${team.teamName}<br/>
+        <b>Team Name:</b> ${team.teamName}<br/>
         <c:if test="${empty team.captain && team.playersCount == 0}">
-            <b>Captain:</b>&nbsp;None<br/>
+            <b>Captain:</b> None<br/>
         </c:if>
         <c:if test="${empty team.captain && team.playersCount > 0}">
-            <b>Captain:</b>&nbsp; 
+            <b>Captain:</b>  
             <a href="${contextPath}/team/changePlayerStatus?userid=${team.userId}&teamid=${team.teamId}&type=defender&poolplayerid=&captain=true">Select One</a>
             <br/>
         </c:if>
         <c:if test="${not empty team.captain}">
-            <b>Captain:</b>&nbsp;<a href="${contextPath}/team/changePlayerStatus?userid=${team.userId}&teamid=${team.teamId}&type=defender&poolplayerid=${team.captainId}&captain=true">${team.captain}</a><br/>
+            <b>Captain:</b> <a href="${contextPath}/team/changePlayerStatus?userid=${team.userId}&teamid=${team.teamId}&type=defender&poolplayerid=${team.captainId}&captain=true">${team.captain}</a><br/>
         </c:if>
-        <b>Team Format:</b>&nbsp;<a href="${contextPath}/team/changeFormat?userid=${team.userId}&teamid=${team.teamId}">${team.teamFormat.name}</a><br/>
+        <b>Team Format:</b> <a href="${contextPath}/team/changeFormat?userid=${team.userId}&teamid=${team.teamId}">${team.teamFormat.name}</a><br/>
         
         <c:if test="${team.playersCount < 15}">
-            <b>Squad:</b>&nbsp;${team.playersCount} out of 15 players<br/> 
+            <b>Squad:</b> ${team.playersCount} out of 15 players<br/> 
         </c:if>    
         <c:if test="${team.playersCount == 15}">
-            <b>Squad:</b>&nbsp;${team.playersCount} out of 15 players<br/> 
+            <b>Squad:</b> ${team.playersCount} out of 15 players<br/> 
         </c:if>
         
-        <b>Available Money:</b>&nbsp;<fmt:formatNumber value="${team.availableMoney}" type="currency" currencySymbol="R" pattern="¤ #,##0"/><br/>
+        <b>Available Money:</b> <fmt:formatNumber value="${team.availableMoney}" type="currency" currencySymbol="R" pattern="¤ #,##0"/><br/>
         
         <c:set var="count" value="1" scope="page" />              
         
@@ -80,11 +80,11 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
         </c:if>              
         <div class="list">
         <c:forEach items="${team.defenders}" var="d">                                    
-            ${count}&nbsp;
+            ${count} 
             <a href="${contextPath}/team/changePlayerStatus?userid=${team.userId}&teamid=${team.teamId}&type=Defender&poolplayerid=${d.poolPlayerId}">            
-            ${d.firstName}&nbsp;${d.lastName}
+            ${d.firstName} ${d.lastName}
             </a>            
-            &nbsp;(<fmt:formatNumber value="${d.price}" type="currency" currencySymbol="R" pattern="¤ #,##0"/>)            
+             (<fmt:formatNumber value="${d.price}" type="currency" currencySymbol="R" pattern="¤ #,##0"/>)            
             <c:if test="${team.defendersCount > count}">
                 <br/>
             </c:if>    
@@ -99,11 +99,11 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
         <c:set var="count" value="1" scope="page"/>
         <div class="list">
         <c:forEach items="${team.midfielders}" var="f">
-            ${count}&nbsp;
+            ${count} 
             <a href="${contextPath}/team/changePlayerStatus?userid=${team.userId}&teamid=${team.teamId}&type=Midfielder&poolplayerid=${f.poolPlayerId}">
-            ${f.firstName}&nbsp;${f.lastName}&nbsp;
+            ${f.firstName} ${f.lastName} 
             </a>
-            &nbsp;(<fmt:formatNumber value="${f.price}" type="currency" currencySymbol="R" pattern="¤ #,##0"/>)            
+             (<fmt:formatNumber value="${f.price}" type="currency" currencySymbol="R" pattern="¤ #,##0"/>)            
             <c:if test="${team.midfieldersCount > count}">
                 <br/>
             </c:if>
@@ -118,11 +118,11 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
         <c:set var="count" value="1" scope="page"/>
         <div class="list">
         <c:forEach items="${team.strikers}" var="s">
-            ${count}&nbsp;
+            ${count} 
             <a href="${contextPath}/team/changePlayerStatus?userid=${team.userId}&teamid=${team.teamId}&type=Striker&poolplayerid=${s.poolPlayerId}">
-              ${s.firstName}&nbsp;${s.lastName}
+              ${s.firstName} ${s.lastName}
             </a>
-            &nbsp;(<fmt:formatNumber value="${s.price}" type="currency" currencySymbol="R" pattern="¤ #,##0"/>)            
+             (<fmt:formatNumber value="${s.price}" type="currency" currencySymbol="R" pattern="¤ #,##0"/>)            
             <c:if test="${team.strikersCount > count}">
                 <br/>
             </c:if>
@@ -140,11 +140,11 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
         </c:if>                   
         <div class="list">
         <c:forEach items="${team.goalKeepers}" var="g">
-            ${count}&nbsp;
+            ${count} 
             <a href="${contextPath}/team/changePlayerStatus?userid=${team.userId}&teamid=${team.teamId}&type=Goalkeeper&poolplayerid=${g.poolPlayerId}">
-              ${g.firstName}&nbsp;${g.lastName}
+              ${g.firstName} ${g.lastName}
             </a>
-            &nbsp;(<fmt:formatNumber value="${g.price}" type="currency" currencySymbol="R" pattern="¤ #,##0"/>)            
+             (<fmt:formatNumber value="${g.price}" type="currency" currencySymbol="R" pattern="¤ #,##0"/>)            
             <c:if test="${1 > count}">
                 <br/>
             </c:if>
@@ -161,10 +161,10 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
         <c:forEach items="${team.substitutes}" var="s">
             ${count}
             <a href="${contextPath}/team/changePlayerStatus?userid=${team.userId}&teamid=${team.teamId}&type=Substitute&poolplayerid=${s.poolPlayerId}">
-            &nbsp;${s.firstName}&nbsp;${s.lastName}
+             ${s.firstName} ${s.lastName}
             </a>
-            &nbsp;(${s.originalBlock})
-            &nbsp;(<fmt:formatNumber value="${s.price}" type="currency" currencySymbol="R" pattern="¤ #,##0"/>)                        
+             (${s.originalBlock})
+             (<fmt:formatNumber value="${s.price}" type="currency" currencySymbol="R" pattern="¤ #,##0"/>)                        
             <c:if test="${team.substitutesCount > count}">
                 <br/>
             </c:if>
@@ -176,17 +176,17 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
              
  <!-- Team is complete/locked -->    
      <c:if test="${team.teamStatus == 'COMPLETE'}">
-        <b>Team Name:</b>&nbsp;${team.teamName}<br/>
-        <b>Team Format:</b>&nbsp;${team.teamFormat.name}<br/>
-        <b>Squad:</b>&nbsp;${team.playersCount} out of 15 players assigned<br/> 
-        <b>Captain:</b>&nbsp;<a href="${contextPath}/team/changePlayerStatus?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${team.captainId}&captain=true">${team.captain}</a><br/>          
+        <b>Team Name:</b> ${team.teamName}<br/>
+        <b>Team Format:</b> ${team.teamFormat.name}<br/>
+        <b>Squad:</b> ${team.playersCount} out of 15 players assigned<br/> 
+        <b>Captain:</b> <a href="${contextPath}/team/changePlayerStatus?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${team.captainId}&captain=true">${team.captain}</a><br/>          
         
         <c:set var="count" value="1" scope="page" />        
         <b>Defenders: ${team.defendersCount}/${team.teamFormat.defenderCount}</b>
         <div class="list">             
         <c:forEach items="${team.defenders}" var="d">            
-            ${count}&nbsp;<a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${d.poolPlayerId}">
-            ${d.firstName}&nbsp;${d.lastName}
+            ${count} <a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${d.poolPlayerId}">
+            ${d.firstName} ${d.lastName}
             </a>
             <c:if test="${team.defendersCount > count}">
                 <br/>
@@ -199,8 +199,8 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
         <b>Mid Fielders: ${team.midfieldersCount}/${team.teamFormat.midfielderCount}</b>
         <div class="list">     
         <c:forEach items="${team.midfielders}" var="f">
-            ${count}&nbsp;<a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${f.poolPlayerId}">
-            ${f.firstName}&nbsp;${f.lastName}</a>
+            ${count} <a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${f.poolPlayerId}">
+            ${f.firstName} ${f.lastName}</a>
             <c:if test="${team.midfieldersCount > count}">
                 <br/>
             </c:if>
@@ -212,8 +212,8 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
         <b>Strikers: ${team.strikersCount}/${team.teamFormat.strikerCount}</b>
         <div class="list">   
         <c:forEach items="${team.strikers}" var="s">
-            ${count}&nbsp;<a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${s.poolPlayerId}">
-            ${s.firstName}&nbsp;${s.lastName}</a>
+            ${count} <a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${s.poolPlayerId}">
+            ${s.firstName} ${s.lastName}</a>
             <c:if test="${team.strikersCount > count}">
                 <br/>
             </c:if>
@@ -225,8 +225,8 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
         <b>Goal Keepers: 1/1</b>
         <div class="list">  
         <c:forEach items="${team.goalKeepers}" var="g">
-            ${count}&nbsp;<a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${g.poolPlayerId}">
-            ${g.firstName}&nbsp;${g.lastName}</a>
+            ${count} <a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${g.poolPlayerId}">
+            ${g.firstName} ${g.lastName}</a>
             <c:if test="${1 > count}">
                 <br/>
             </c:if>
@@ -238,9 +238,9 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
         <b>Substitutes: ${team.substitutesCount}/4</b>
         <div class="list">
         <c:forEach items="${team.substitutes}" var="s">
-            ${count}&nbsp;<a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${s.poolPlayerId}">
-            ${s.firstName}&nbsp;${s.lastName}</a>
-            &nbsp;(${s.originalBlock})&nbsp;            
+            ${count} <a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${s.poolPlayerId}">
+            ${s.firstName} ${s.lastName}</a>
+             (${s.originalBlock})             
             <a href="${contextPath}/team/changePlayerStatus?userid=${team.userId}&teamid=${team.teamId}&type=substitute&poolplayerid=${s.poolPlayerId}&teamstatus=COMPLETE&captainid=${team.captainId}">            
             ${s.block}
             </a>             
@@ -256,22 +256,22 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
     <p class="navigation">
         <c:if test="${team.teamStatus == 'INCOMPLETE' && team.complete}">                                  
             <a href="${contextPath}/team/set?userid=${team.userId}&teamid=${team.teamId}">Submit Your Team</a>
-            &nbsp;|&nbsp;            
+             |             
         </c:if>   
         
         <c:if test="${team.teamStatus == 'COMPLETE' && team.canTrade}">       
             <a href="${contextPath}/team/startTrade?userid=${userid}&teamid=${team.teamId}">Trade a Player</a>
-            &nbsp;|&nbsp;   
+             |    
         </c:if>
         <c:if test="${team.teamStatus == 'COMPLETE' && not team.canTrade}">
             Trade a Player (Used)
-            &nbsp;|&nbsp;   
+             |    
         </c:if>
         
           <a href="${contextPath}/team/list?userid=${userid}">Back</a>
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/team/list?userid=${userid}">Home</a>
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/rules.jsp?userid=${userid}">Rules</a>
       </p>
     

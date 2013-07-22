@@ -52,8 +52,8 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
 		<c:if test="${status == 'Substitute'}">
 			<span class="heading">Substitute: ${player.firstName} ${player.lastName}</span><br/>
 		</c:if>
-        Position:&nbsp;${player.block}<br />
-        Price:&nbsp;<fmt:formatNumber value="${player.price}" type="currency" currencySymbol="R" pattern="¤ #,##0" />
+        Position: ${player.block}<br />
+        Price: <fmt:formatNumber value="${player.price}" type="currency" currencySymbol="R" pattern="¤ #,##0" />
 		<br />
 		<c:forEach items="${statuses}" var="s">
 			<c:if test="${s == 'CAPTAIN'}">
@@ -92,9 +92,9 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
 
 <p class="navigation">
     <a href="${contextPath}/team/players?userid=${userid}&teamid=${teamid}">Back</a>
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/team/list?userid=${userid}">Home</a>
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/rules.jsp?userid=${userid}">Rules</a>
       </p>	
 

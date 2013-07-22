@@ -16,7 +16,8 @@ import com.africaapps.league.service.user.UserService;
 public class BaseLeagueController {
 
 	protected static final String MXIT_USER_ID_HEADER = "X-Mxit-USERID-R";
-
+	protected static final String MXIT_NICK_NAME_HEADER = "X-Mxit-Nick";
+	
 	protected static final int DEFAULT_PAGE_SIZE = 15;
 
 	protected static final String NUMERIC_REG_EXP = "[0-9]+";
@@ -125,6 +126,12 @@ public class BaseLeagueController {
 		String mxitHeaderUserId = request.getHeader(MXIT_USER_ID_HEADER);
 		logger.info("Got MXIT header: " + mxitHeaderUserId);
 		return mxitHeaderUserId;
+	}
+	
+	protected String getMxitNickName(HttpServletRequest request) {
+		String nickname = request.getHeader(MXIT_NICK_NAME_HEADER);
+		logger.info("Got MXIT nickname: " + nickname);
+		return nickname;
 	}
 
 	private void printHeaders(HttpServletRequest request) {

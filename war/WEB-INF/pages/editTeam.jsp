@@ -43,7 +43,7 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
     <c:if test="${not empty team}">
         <c:forEach items="${team}" var="team">
             ${team.name}
-            League:&nbsp;${team.userLeague.name}
+            League: ${team.userLeague.name}
         </c:forEach>
     </c:if>
 

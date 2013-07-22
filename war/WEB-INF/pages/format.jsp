@@ -39,10 +39,10 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
     </c:if>
     
       <c:if test="${not empty team}">  
-           <span class="heading">Current Team Format:&nbsp;${team.currentFormat.name}</span>           
+           <span class="heading">Current Team Format: ${team.currentFormat.name}</span>           
            <br/>
            <span class="hint">
-           ${team.currentFormat.defenderCount}&nbsp;Defenders - ${team.currentFormat.midfielderCount}&nbsp;Mid Fielders - ${team.currentFormat.strikerCount}&nbsp;Strikers</span> 
+           ${team.currentFormat.defenderCount} Defenders - ${team.currentFormat.midfielderCount} Mid Fielders - ${team.currentFormat.strikerCount} Strikers</span> 
            <br/>
            
            <c:if test="${not empty formats}">
@@ -55,9 +55,9 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
       
       <p class="navigation">
           <a href="${contextPath}/team/players?userid=${userid}&teamid=${teamid}">Back</a>
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/team/list?userid=${userid}">Home</a>
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/rules.jsp?userid=${userid}">Rules</a>
       </p>
   </body>

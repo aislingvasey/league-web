@@ -46,7 +46,7 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
     </c:if>
 
     <c:if test="${not empty matches}">
-        <b><c:out value="${matches[0].firstName}" />&nbsp;<c:out value="${matches[0].lastName}" /></b>
+        <b><c:out value="${matches[0].firstName}" /> <c:out value="${matches[0].lastName}" /></b>
         (<c:out value="${matches[0].playerBlock}" />)
         <br/>
         <table>
@@ -69,9 +69,9 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
     
     <p class="navigation">
           <a href="${contextPath}/team/players?userid=${userid}&teamid=${teamid}">Back</a>
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/team/list?userid=${userid}">Home</a>
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/rules.jsp?userid=${userid}">Rules</a>
       </p>
     

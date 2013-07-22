@@ -44,7 +44,7 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
     
     <p class="navigation">
           <a href="${contextPath}/team/list?userid=${userid}">Home</a>
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/rules.jsp?userid=${userid}">Rules</a>
       </p>
   </body>

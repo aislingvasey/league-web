@@ -84,6 +84,10 @@ public class TeamController extends BaseLeagueController {
 				try {
 					user = new User();
 					user.setUsername(mxitUser);
+					String nickName = getMxitNickName(request);
+					if (isValid(nickName)) {
+						user.setFirstName(nickName);
+					}
 					userService.saveUser(user);
 					removeAndAdd(model, USER_ID_PARAM, user.getId().toString());
 					logger.info("Saved new user: "+user);
@@ -573,14 +577,23 @@ public class TeamController extends BaseLeagueController {
 			model.remove("teams");
 			if (user != null) {
 				if (isValidId(userTeamId) && isValidId(teamId)) {
-					List<UserPlayerSummary> players = userTeamService.getTeamPlayers(Long.valueOf(teamId), Long.valueOf(userTeamId),
-							BlockType.SUBSTITUTE.name());
-					Collections.sort(players, new Comparator<UserPlayerSummary>() {
-						@Override
-						public int compare(UserPlayerSummary o1, UserPlayerSummary o2) {
-							return o1.getPoolPlayerId().compareTo(o2.getPoolPlayerId());
-						}
-					});
+					List<UserPlayerSummary> players = userTeamService.getTeamPlayers(Long.valueOf(teamId), Long.valueOf(userTeamId), BlockType.SUBSTITUTE.name());
+					UserPlayerSummary s = null;
+			    for(int i=players.size()-1;i>=0;i--) {
+			    	s = players.get(i);
+			    	if (!isValid(s.getBlock())) {				    		
+			    		logger.info("Removing player with no block: "+s);
+			    		players.remove(i);
+			    	}
+			    }
+					Collections.sort(players, new SubstituteComparator());
+					//TODO
+//					Collections.sort(players, new Comparator<UserPlayerSummary>() {
+//						@Override
+//						public int compare(UserPlayerSummary o1, UserPlayerSummary o2) {
+//							return o1.getPoolPlayerId().compareTo(o2.getPoolPlayerId());
+//						}
+//					});
 					logger.info("Got " + players.size());
 					removeAndAdd(model, "players", players);
 					// User Team's money

@@ -48,53 +48,53 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
         <c:set var="count" value="1" scope="page" />       
                       
         <c:forEach items="${team.defenders}" var="d">
-          <br/>${count}&nbsp;
+          <br/>${count} 
             <c:if test="${captainId != d.poolPlayerId}">                
                 <a href="${contextPath}/team/setPlayerStatus?userid=${userid}&teamid=${teamid}&poolplayerid=${d.poolPlayerId}&status=CAPTAIN">
-                ${d.firstName}&nbsp;${d.lastName}
+                ${d.firstName} ${d.lastName}
                 </a>                
             </c:if>   
             <c:if test="${captainId == d.poolPlayerId}">
-                ${d.firstName}&nbsp;${d.lastName}
+                ${d.firstName} ${d.lastName}
             </c:if> 
             <c:set var="count" value="${count + 1}" scope="page"/>                     
         </c:forEach>     
         
         <c:forEach items="${team.midfielders}" var="f">
-            <br/>${count}&nbsp;
+            <br/>${count} 
             <c:if test="${captainId != f.poolPlayerId}">	            
 	            <a href="${contextPath}/team/setPlayerStatus?userid=${userid}&teamid=${teamid}&poolplayerid=${f.poolPlayerId}&status=CAPTAIN">
-	            ${f.firstName}&nbsp;${f.lastName}
+	            ${f.firstName} ${f.lastName}
 	            </a>	            
             </c:if>   
             <c:if test="${captainId == f.poolPlayerId}">
-                ${f.firstName}&nbsp;${f.lastName}
+                ${f.firstName} ${f.lastName}
             </c:if> 
             <c:set var="count" value="${count + 1}" scope="page"/>          
         </c:forEach>
                 
         <c:forEach items="${team.strikers}" var="s">
-            <br/>${count}&nbsp;
+            <br/>${count} 
             <c:if test="${captainId != s.poolPlayerId}">                
                 <a href="${contextPath}/team/setPlayerStatus?userid=${userid}&teamid=${teamid}&poolplayerid=${s.poolPlayerId}&status=CAPTAIN">
-                ${s.firstName}&nbsp;${s.lastName}
+                ${s.firstName} ${s.lastName}
                 </a>                
             </c:if>   
             <c:if test="${captainId == s.poolPlayerId}">
-                ${s.firstName}&nbsp;${s.lastName}
+                ${s.firstName} ${s.lastName}
             </c:if> 
             <c:set var="count" value="${count + 1}" scope="page"/>                  
         </c:forEach>        
         
         <c:forEach items="${team.goalKeepers}" var="g">
-            <br/>${count}&nbsp;
+            <br/>${count} 
             <c:if test="${captainId != g.poolPlayerId}">                
                 <a href="${contextPath}/team/setPlayerStatus?userid=${userid}&teamid=${teamid}&poolplayerid=${g.poolPlayerId}&status=CAPTAIN">
-                ${g.firstName}&nbsp;${g.lastName}
+                ${g.firstName} ${g.lastName}
                 </a>                
             </c:if>   
             <c:if test="${captainId == g.poolPlayerId}">
-                ${g.firstName}&nbsp;${g.lastName}
+                ${g.firstName} ${g.lastName}
             </c:if> 
             <c:set var="count" value="${count + 1}" scope="page"/>                      
         </c:forEach>                       
@@ -103,9 +103,9 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
     
      <p class="navigation">
      <a href="${contextPath}/team/players?userid=${userid}&teamid=${teamid}">Back</a>
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/team/list?userid=${userid}">Home</a>
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/rules.jsp?userid=${userid}">Rules</a>
       </p>
     

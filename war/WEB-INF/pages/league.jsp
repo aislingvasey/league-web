@@ -48,14 +48,14 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
     
 	  <c:if test="${not empty league}">  
 	       <c:set var="count" value="${league.teamCount}"/>  
-	       <%-- Competing Teams:&nbsp;${count}
+	       <%-- Competing Teams: ${count}
 	       <br/> --%>
 	        
 	       <c:if test="${not empty league.leagueTeamSummary}">
                <b>Top <%-- ${league.currentCount} --%> Teams</b><br/>
                <table>
                <tr>
-                <td class="hint">&nbsp;</td>
+                <td class="hint"> </td>
                 <td class="hint"><b>Name</b></td>
                 <td class="hint"><b>Owner</b></td>                
                 <td class="hint"><b>Points</b></td>
@@ -79,9 +79,9 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
 	  
 	  <p class="navigation">
           <a href="${contextPath}/team/list?userid=${userid}">Back</a>
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/team/list?userid=${userid}">Home</a>
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/rules.jsp?userid=${userid}">Rules</a>
       </p>
   </body>

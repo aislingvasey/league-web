@@ -45,7 +45,7 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
 		<tr>
 			<td><b>Player</b></td>
 			<td><b>Points</b></td>
-			<td>&nbsp;<b>Price</b></td>
+			<td> <b>Price</b></td>
 		</tr>
 
 		<c:if test="${not empty results.poolPlayers}">
@@ -53,10 +53,10 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
 			<c:forEach items="${results.poolPlayers}" var="poolPlayer">
 				<tr>
 					<td>
-					${poolPlayer.firstName}&nbsp;${poolPlayer.lastName}&nbsp;(${poolPlayer.block})					
+					${poolPlayer.firstName} ${poolPlayer.lastName} (${poolPlayer.block})					
 					</td>
 					<td align="right">${poolPlayer.currentScore}</td>
-					<td align="right">&nbsp; <fmt:formatNumber value="${poolPlayer.price}" type="currency" currencySymbol="R" pattern="¤ # ##0" />
+					<td align="right">  <fmt:formatNumber value="${poolPlayer.price}" type="currency" currencySymbol="R" pattern="¤ # ##0" />
 					</td>
 				</tr>
 			</c:forEach>
@@ -77,7 +77,7 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
 				 <c:if test="${results.page == 0}">                    
                     Previous
                 </c:if>                
-				&nbsp;
+				 
 				<c:if test="${not results.lessThanAFullPage}"> 
 				    <a href="${contextPath}/pool/view?userid=${userid}&teamid=${teamid}&page=${results.page + 1}&pagesize=${results.pageSize}">
 					Next </a>
@@ -92,9 +92,9 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
 
 	<p class="navigation">
           <a href="${contextPath}/team/list?userid=${userid}">Back</a>
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/team/list?userid=${userid}">Home</a>
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/rules.jsp?userid=${userid}">Rules</a>
       </p>
 

@@ -47,9 +47,9 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
                 
         <p class="navigation">
 <a href="${contextPath}/team/players?userid=${userid}&teamid=${teamid}">Back</a>
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/team/list?userid=${userid}">Home</a>
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/rules.jsp?userid=${userid}">Rules</a>
         </p> 
         
@@ -73,9 +73,9 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
             <tr>
 	            <td>
 	            <a href="${contextPath}/team/selectTradePoolPlayer?userid=${userid}&teamid=${teamid}&team=${team}&poolplayerid=${p.poolPlayerId}">
-	            ${p.firstName}&nbsp;${p.lastName}</a>
+	            ${p.firstName} ${p.lastName}</a>
 	            </td> 
-	            <td><fmt:formatNumber value="${p.price}" type="currency" currencySymbol="R"/></td>
+	            <td><fmt:formatNumber value="${p.price}" type="currency" currencySymbol="R" pattern="¤ #,##0" /></td>
 	            <td>${p.block}</td>
             </tr>                                 
         </c:forEach>        
@@ -83,19 +83,19 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
         
         <p class="navigation">
             <a href="${contextPath}/team/startTrade?userid=${userid}&teamid=${teamid}&team=${team}">Back</a>
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/team/list?userid=${userid}">Home</a>
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/rules.jsp?userid=${userid}">Rules</a>
         </p> 
     </c:if>
     
     <c:if test="${not empty poolPlayer}">            
         <b>Incoming Player:</b>
-        ${poolPlayer.firstName}&nbsp;${poolPlayer.lastName}
-        &nbsp;<fmt:formatNumber value="${poolPlayer.price}" type="currency" currencySymbol="R"/>
-        &nbsp;Score: ${poolPlayer.currentScore}
-        &nbsp;${poolPlayer.block}
+        ${poolPlayer.firstName} ${poolPlayer.lastName}
+         <fmt:formatNumber value="${poolPlayer.price}" type="currency" currencySymbol="R"/>
+         Score: ${poolPlayer.currentScore}
+         ${poolPlayer.block}
         <br/>
     </c:if>
     
@@ -107,7 +107,7 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
             <c:forEach items="${userTeam.defenders}" var="d">
             <br/>
                 <a href="${contextPath}/team/tradePlayer?userid=${userTeam.userId}&teamid=${userTeam.teamId}&selectedid=${d.poolPlayerId}&poolplayerid=${poolPlayer.poolPlayerId}">
-                ${d.firstName}&nbsp;${d.lastName} <fmt:formatNumber value="${d.price}" type="currency" currencySymbol="R" pattern="¤ #,##0"/>
+                ${d.firstName} ${d.lastName} <fmt:formatNumber value="${d.price}" type="currency" currencySymbol="R" pattern="¤ #,##0"/>
                 </a>                              
             </c:forEach>
         </c:if>
@@ -117,7 +117,7 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
 	        <c:forEach items="${userTeam.midfielders}" var="f">
 	                <br/>
 	            <a href="${contextPath}/team/tradePlayer?userid=${userTeam.userId}&teamid=${userTeam.teamId}&selectedid=${f.poolPlayerId}&poolplayerid=${poolPlayer.poolPlayerId}">
-	            ${f.firstName}&nbsp;${f.lastName} <fmt:formatNumber value="${f.price}" type="currency" currencySymbol="R" pattern="¤ #,##0"/></a>              
+	            ${f.firstName} ${f.lastName} <fmt:formatNumber value="${f.price}" type="currency" currencySymbol="R" pattern="¤ #,##0"/></a>              
 	        </c:forEach>
         </c:if>
                 
@@ -126,7 +126,7 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
             <c:forEach items="${userTeam.strikers}" var="s">
                 <br/>
                 <a href="${contextPath}/team/tradePlayer?userid=${userTeam.userId}&teamid=${userTeam.teamId}&selectedid=${s.poolPlayerId}&poolplayerid=${poolPlayer.poolPlayerId}">
-                ${s.firstName}&nbsp;${s.lastName} <fmt:formatNumber value="${s.price}" type="currency" currencySymbol="R" pattern="¤ #,##0"/></a>            
+                ${s.firstName} ${s.lastName} <fmt:formatNumber value="${s.price}" type="currency" currencySymbol="R" pattern="¤ #,##0"/></a>            
             </c:forEach>        
         </c:if>
         
@@ -135,25 +135,25 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
             <c:forEach items="${userTeam.goalKeepers}" var="g">
                 <br/>
                 <a href="${contextPath}/team/tradePlayer?userid=${userTeam.userId}&teamid=${userTeam.teamId}&selectedid=${g.poolPlayerId}&poolplayerid=${poolPlayer.poolPlayerId}">
-                ${g.firstName}&nbsp;${g.lastName} <fmt:formatNumber value="${g.price}" type="currency" currencySymbol="R" pattern="¤ #,##0"/></a>
+                ${g.firstName} ${g.lastName} <fmt:formatNumber value="${g.price}" type="currency" currencySymbol="R" pattern="¤ #,##0"/></a>
             </c:forEach>         
         </c:if>
                        
         <br/>
-        <b>${poolPlayer.block}&nbsp;Substitutes:</b>
+        <b>${poolPlayer.block} Substitutes:</b>
         <c:forEach items="${userTeam.substitutes}" var="s">        
             <c:if test="${poolPlayer.block == s.originalBlock}">        
                 <br/>
                 <a href="${contextPath}/team/tradePlayer?userid=${userTeam.userId}&teamid=${userTeam.teamId}&selectedid=${s.poolPlayerId}&poolplayerid=${poolPlayer.poolPlayerId}">
-                ${s.firstName}&nbsp;${s.lastName} <fmt:formatNumber value="${s.price}" type="currency" currencySymbol="R" pattern="¤ #,##0"/></a>
+                ${s.firstName} ${s.lastName} <fmt:formatNumber value="${s.price}" type="currency" currencySymbol="R" pattern="¤ #,##0"/></a>
             </c:if>                        
         </c:forEach>
                          
                 <p class="navigation">
 <a href="${contextPath}/team/startTrade?userid=${userTeam.userId}&teamid=${userTeam.teamId}">Back</a>
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/team/list?userid=${userid}">Home</a>
-          &nbsp;|&nbsp;
+           | 
           <a href="${contextPath}/rules.jsp?userid=${userid}">Rules</a>
         </p>                                                
      </c:if> 
