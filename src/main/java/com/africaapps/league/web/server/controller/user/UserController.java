@@ -30,13 +30,19 @@ public class UserController extends BaseLeagueController {
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
-	public String registerUser(@RequestParam(required=false, value=USERNAME_PARAM) String username, ModelMap model) {
+	public String registerUser(
+			@RequestParam(required=false, value=USERNAME_PARAM) String username, 
+			@RequestParam(required=false, value="firstname") String firstName, 
+			ModelMap model) {
 		try {
 			if (username != null && !username.trim().equals("")) {
 				User user = userService.getUser(username, null);
 				if (user == null) {
 					user = new User();
 					user.setUsername(username);
+					if (isValid(firstName)) {
+						user.setFirstName(firstName);
+					}
 					userService.saveUser(user);
 				}
 				model.remove(USER_ID_PARAM);

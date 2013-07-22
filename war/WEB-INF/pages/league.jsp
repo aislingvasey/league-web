@@ -67,7 +67,14 @@ a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
                     <tr>
                     <td><b>${team.positionInLeague}</b><%--  / ${league.teamCount} --%></td>
                     <td><b>${team.teamName}</b></td>
-                    <td>${team.username}</td>                    
+                    <td>
+                    <c:if test="${not empty team.firstName}">
+                        ${team.firstName}
+                    </c:if>
+                    <c:if test="${empty team.firstName}">
+                        ${team.username}
+                    </c:if>
+                    </td>                    
                     <td align="right">${team.currentScore}</td>
                     <td align="right">${team.numberOfWeeks}</td>
                     <td align="right">${team.currentRank}</td>                                                            
