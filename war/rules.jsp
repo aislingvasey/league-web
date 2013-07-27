@@ -6,16 +6,16 @@
     <title>League - How to Play</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <style>
-        body { color: #005A31; background: #A8CD1B; }
-        a { color: #F3FAB6;  }
-        a:hover { color: #005A31; }
-        .heading { color: #005A31; font-weight: bold; }
+        body { color: #D3CBBD; background: #1C1919; }
+        .heading { color: #FF0000; font-weight: bold; }
+        a { color: #70BDC6;  }
+        a:hover { color: #A4E9F0; }
         .list { margin: 0; margin-bottom: 5px; margin-left: 15px;}
-        .message { color: #FF6423 ; font-weight: bold; padding: 2px; }
-        .navigation { }
-        .button-box { margin-top: 5px; margin-bottom: 7px; }
-        .button { color: #F3FAB6; background: #005A31; padding: 5px;}
-        a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
+        .label { margin-right: 5px; font-weight: bold; }
+        .count { font-weight: 100; }
+        .message-box { padding-top: 5px; padding-bottom: 5px; }
+        .message { background: #FF0000; color:#1C1919;  font-weight: bold; padding: 2px; }
+        .notification { background: #D3CBBD; color: #1C1919; font-weight: bold; padding: 2px; }
     </style>
   </head>
 

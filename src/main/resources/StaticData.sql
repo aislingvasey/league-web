@@ -10,8 +10,22 @@ INSERT INTO league_season(id, end_date, name, start_date, status, league_id)
 INSERT INTO league_season(id, end_date, name, start_date, status, league_id) 
     VALUES((select nextval('league_season_seq')), '2014-7-31 0:0:00.0', '', '2013-7-15 0:00:10.0', 'FUTURE', (select id from league where name = 'ABSA Premier Soccer League'));
     
------------------------------------------------------------------------------------------------------------------------------
-
+-- Team Formats
+INSERT INTO game_team_format(id, name, description, default_format, defender_count, midfielder_count, striker_count, league_type_id) 
+    VALUES((select nextval('team_format_seq')), '4-4-2', 'Default soccer team format', true, 4, 4, 2, (select id from league_type where name = 'Soccer'));
+INSERT INTO game_team_format(id, name, description, default_format, defender_count, midfielder_count, striker_count, league_type_id) 
+    VALUES((select nextval('team_format_seq')), '3-4-3', 'Soccer team format', false, 3, 4, 3, (select id from league_type where name = 'Soccer'));  
+INSERT INTO game_team_format(id, name, description, default_format, defender_count, midfielder_count, striker_count, league_type_id) 
+    VALUES((select nextval('team_format_seq')), '4-3-3', 'Soccer team format', false, 4, 3, 3, (select id from league_type where name = 'Soccer'));
+INSERT INTO game_team_format(id, name, description, default_format, defender_count, midfielder_count, striker_count, league_type_id) 
+    VALUES((select nextval('team_format_seq')), '4-5-1', 'Soccer team format', false, 4, 5, 1, (select id from league_type where name = 'Soccer'));    
+INSERT INTO game_team_format(id, name, description, default_format, defender_count, midfielder_count, striker_count, league_type_id) 
+    VALUES((select nextval('team_format_seq')), '3-5-2', 'Soccer team format', false, 3, 5, 2, (select id from league_type where name = 'Soccer'));    
+    
+-- League Data
+INSERT INTO league_data(id, init_team_money, last_feed_datetime, no_trade_hours, goalkeepers_count, substitutes_count, squad_size, user_points_playingweek, team_format_id, league_id) 
+    VALUES((select nextval('league_data_seq')), 5000000, null, 1, 1, 4, 15, 50, (select id from game_team_format where name='4-4-2' and league_type_id = (select id from league_type where name = 'Soccer')) , (select id from league where name = 'ABSA Premier Soccer League'));
+    
 -- Pool
 INSERT INTO game_pool(id, league_season_id) 
     VALUES((select nextval('pool_seq')), (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));    
@@ -81,21 +95,11 @@ INSERT INTO event(id, description, event_id, points, league_type_id, block_type)
   VALUES((select nextval('event_seq')), 'Goal Conceeded', -2, -5, (select id from league_type where name = 'Soccer'), 'DEFENDER');  
 INSERT INTO event(id, description, event_id, points, league_type_id)
   VALUES((select nextval('event_seq')), 'Team Clean Sheet', -3, 5, (select id from league_type where name = 'Soccer')); 
+      
+-- Fixtures
+INSERT INTO fixture(id, description, start_datetime, end_datetime, league_season_id) 
+    VALUES((select nextval('fixture_seq')), null, '2012-08-10 15:00:00.0', '2012-08-10 17:00:00.0', (select id from league_season where status = 'CURRENT' and league_id = (select id from league where name = 'ABSA Premier Soccer League')));  
   
--- Team Formats
--- 4-4-2 = 4 defenders, 4 midfielders and two forwards
-INSERT INTO game_team_format(id, name, description, default_format, defender_count, midfielder_count, striker_count, league_type_id) 
-    VALUES((select nextval('team_format_seq')), '4-4-2', 'Default soccer team format', true, 4, 4, 2, (select id from league_type where name = 'Soccer'));
-INSERT INTO game_team_format(id, name, description, default_format, defender_count, midfielder_count, striker_count, league_type_id) 
-    VALUES((select nextval('team_format_seq')), '3-4-3', 'Soccer team format', false, 3, 4, 3, (select id from league_type where name = 'Soccer'));  
-INSERT INTO game_team_format(id, name, description, default_format, defender_count, midfielder_count, striker_count, league_type_id) 
-    VALUES((select nextval('team_format_seq')), '4-3-3', 'Soccer team format', false, 4, 3, 3, (select id from league_type where name = 'Soccer'));
-INSERT INTO game_team_format(id, name, description, default_format, defender_count, midfielder_count, striker_count, league_type_id) 
-    VALUES((select nextval('team_format_seq')), '4-5-1', 'Soccer team format', false, 4, 5, 1, (select id from league_type where name = 'Soccer'));    
-INSERT INTO game_team_format(id, name, description, default_format, defender_count, midfielder_count, striker_count, league_type_id) 
-    VALUES((select nextval('team_format_seq')), '3-5-2', 'Soccer team format', false, 3, 5, 2, (select id from league_type where name = 'Soccer'));    
-
-    
 -- Playing Weeks
 -- Saturday to Friday
 INSERT INTO game_playing_week(id, start_date_time, end_date_time, league_season_id, playing_week_order)

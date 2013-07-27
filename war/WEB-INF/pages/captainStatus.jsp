@@ -6,20 +6,16 @@
     <title>PFL - Select the Captain</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <style>
-body { color: #005A31; background: #A8CD1B; }
-a { color: #F3FAB6;  }
-a:hover { color: #005A31; }
-.heading { color: #005A31; font-weight: bold; font-size: large; }
-.hint { color: #005A31; font-size: smaller; }
-.list { margin: 0; margin-left: 15px;}
-.message { background: #FF6423; color: #FFFFFF; font-weight: bold; padding: 2px; }
-.marginSpacer { margin-top: 2px; margin-bottom: 2px; }
-.notification { background: #005A31; color: #A8CD1B; padding: 2px; font-weight: bold; }
-.navigation { }
-.button-box { margin-top: 5px; margin-bottom: 7px; }
-.button { color: #F3FAB6; background: #005A31; padding: 5px;}
-a:hover.button { color: #F3FAB6; background: #327a5a; text-decoration: none; }
-.logo { margin-top: 2px; margin-bottom: 2px; }
+        body { color: #D3CBBD; background: #1C1919; }
+        .heading { color: #FF0000; font-weight: bold; }
+        a { color: #70BDC6;  }
+        a:hover { color: #A4E9F0; }
+        .list { margin: 0; margin-bottom: 5px; margin-left: 15px;}
+        .label { margin-right: 5px; font-weight: bold; }
+        .count { font-weight: 100; }
+        .message-box { padding-top: 5px; padding-bottom: 5px; }
+        .message { background: #FF0000; color:#1C1919;  font-weight: bold; padding: 2px; }
+        .notification { background: #D3CBBD; color: #1C1919; font-weight: bold; padding: 2px; }
     </style>
   </head>
 

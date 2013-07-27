@@ -33,6 +33,7 @@ import com.africaapps.league.model.game.UserPlayerStatus;
 import com.africaapps.league.model.game.UserTeam;
 import com.africaapps.league.model.game.UserTeamStatus;
 import com.africaapps.league.model.league.BlockType;
+import com.africaapps.league.model.league.League;
 import com.africaapps.league.service.game.team.UserTeamService;
 import com.africaapps.league.service.pool.PoolService;
 import com.africaapps.league.service.team.TeamService;
@@ -141,8 +142,8 @@ public class TeamController extends BaseLeagueController {
 						userTeam = new UserTeam();
 						userTeam.setName(teamName);
 						userTeam.setCurrentScore(0);
-						userTeam.setAvailableMoney(getInitTeamMoney());
-						userTeam.setCurrentFormat(getDefaultTeamFormat(league.getLeague().getLeagueType().getId()));
+						userTeam.setAvailableMoney(getInitTeamMoney(league.getLeague()));
+						userTeam.setCurrentFormat(getDefaultTeamFormat(league.getLeague()));
 						userTeam.setStatus(UserTeamStatus.INCOMPLETE);
 						userTeam.setUserLeague(league);
 						userTeam.setUser(user);
@@ -170,16 +171,16 @@ public class TeamController extends BaseLeagueController {
 		return TEAMS_PAGE_MAPPING;
 	}
 
-	protected Long getInitTeamMoney() throws LeagueException {
-		return userTeamService.getDefaultAvailableMoney();
+	protected Long getInitTeamMoney(League league) throws LeagueException {
+		return userTeamService.getDefaultAvailableMoney(league);
 	}
 
 	protected UserLeague getDefaultUserLeague() throws LeagueException {
 		return userTeamService.getDefaultUserLeague();
 	}
 
-	protected TeamFormat getDefaultTeamFormat(long leagueTypeId) throws LeagueException {
-		return userTeamService.getDefaultTeamFormat(leagueTypeId);
+	protected TeamFormat getDefaultTeamFormat(League league) throws LeagueException {
+		return userTeamService.getDefaultTeamFormat(league);
 	}
 
 	@RequestMapping(value = "/players")
@@ -587,13 +588,6 @@ public class TeamController extends BaseLeagueController {
 			    	}
 			    }
 					Collections.sort(players, new SubstituteComparator());
-					//TODO
-//					Collections.sort(players, new Comparator<UserPlayerSummary>() {
-//						@Override
-//						public int compare(UserPlayerSummary o1, UserPlayerSummary o2) {
-//							return o1.getPoolPlayerId().compareTo(o2.getPoolPlayerId());
-//						}
-//					});
 					logger.info("Got " + players.size());
 					removeAndAdd(model, "players", players);
 					// User Team's money
