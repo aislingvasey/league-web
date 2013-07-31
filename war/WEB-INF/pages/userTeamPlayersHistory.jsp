@@ -21,6 +21,8 @@
 
   <body>  
   
+  <mxit:advert auid=""/> 
+  
     <c:set var="contextPath" value="${pageContext.request.contextPath}"/> 
     
     <div class="logo">
@@ -41,15 +43,11 @@
         <c:out value="${scores[0].teamName}" /> Current Score:<c:out value="${scores[0].teamCurrentScore}" /> 
         <br/>
         Match Score: <b>${scores[0].matchPoints}</b>
-        <%--  <span class="hint">Team: ${scores[0].teamOneName}</span> --%>
         <br/>        
-        
-        <%-- <br/> --%>
-        <%-- Match: ${scores[0].matchDate}  --%>         
+                
         <table>
         <tr>
             <td><b>Player</b></td> 
-            <!-- <td><b>Team</b></td> --> 
             <td><b>Points</b></td>
         </tr>
         <c:forEach items="${scores}" var="score">
@@ -59,7 +57,6 @@
                     ${score.playerFirstName} ${score.playerLastName}
                     </a>
                 </td>
-                <%-- <td class="hint">${score.teamOneName}</td> --%>
                 <td align="right">${score.playerPoints}</td>
             </tr>                               
         </c:forEach>
@@ -73,6 +70,8 @@
           <a href="${contextPath}/team/list?userid=${userid}">Home</a>
            | 
           <a href="${contextPath}/rules.jsp?userid=${userid}">Rules</a>
+          |
+              <a href="${contextPath}/terms.jsp?userid=${userid}">T&amp;C</a>
       </p>
     
   </body>

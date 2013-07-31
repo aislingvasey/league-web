@@ -20,6 +20,8 @@
   </head>
 
   <body>  
+
+    <mxit:advert auid=""/> 
   
     <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
     
@@ -66,13 +68,15 @@
             Available Money: <fmt:formatNumber value="${team.availableMoney}" type="currency" currencySymbol="R" pattern="¤ #,##0"/>          
             
             <p class="navigation">
-          <a href="${contextPath}/team/players?userid=${userid}&teamid=${team.teamId}">View your Players</a> 
-           | 
-          <a href="${contextPath}/team/teamHistory?userid=${userid}&teamid=${team.teamId}">Team History</a>
-           | 
-          <a href="${contextPath}/pool/view?userid=${userid}&teamid=${team.teamId}">Pool Players</a>
-           | 
-          <a href="${contextPath}/rules.jsp?userid=${userid}">Rules</a>
+	          <a href="${contextPath}/team/players?userid=${userid}&teamid=${team.teamId}">View your Players</a> 
+	           | 
+	          <a href="${contextPath}/team/teamHistory?userid=${userid}&teamid=${team.teamId}">Team History</a>
+	           | 
+	          <a href="${contextPath}/pool/view?userid=${userid}&teamid=${team.teamId}">Pool Players</a>
+	           | 
+	          <a href="${contextPath}/rules.jsp?userid=${userid}">Rules</a>
+	          |
+	          <a href="${contextPath}/terms.jsp?userid=${userid}">T&amp;C</a>
             </p>
             
         </c:forEach>

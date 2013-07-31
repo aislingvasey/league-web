@@ -20,6 +20,9 @@
   </head>
 
   <body>  
+  
+    <mxit:advert auid=""/> 
+  
 	  <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 	  
 	  <div class="logo">
@@ -85,6 +88,8 @@
           <a href="${contextPath}/team/list?userid=${userid}">Home</a>
            | 
           <a href="${contextPath}/rules.jsp?userid=${userid}">Rules</a>
+          |
+              <a href="${contextPath}/terms.jsp?userid=${userid}">T&amp;C</a>
       </p>
   </body>
 

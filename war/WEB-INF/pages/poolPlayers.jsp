@@ -3,96 +3,135 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <html>
 <head>
-  <title>PFL - Pool Players</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <style>
-        body { color: #D3CBBD; background: #1C1919; }
-        .heading { color: #FF0000; font-weight: bold; }
-        a { color: #70BDC6;  }
-        a:hover { color: #A4E9F0; }
-        .list { margin: 0; margin-bottom: 5px; margin-left: 15px;}
-        .label { margin-right: 5px; font-weight: bold; }
-        .count { font-weight: 100; }
-        .message-box { padding-top: 5px; padding-bottom: 5px; }
-        .message { background: #FF0000; color:#1C1919;  font-weight: bold; padding: 2px; }
-        .notification { background: #D3CBBD; color: #1C1919; font-weight: bold; padding: 2px; }
-    </style>
+<title>PFL - Pool Players</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<style>
+body {
+	color: #D3CBBD;
+	background: #1C1919;
+}
+
+.heading {
+	color: #FF0000;
+	font-weight: bold;
+}
+
+a {
+	color: #70BDC6;
+}
+
+a:hover {
+	color: #A4E9F0;
+}
+
+.list {
+	margin: 0;
+	margin-bottom: 5px;
+	margin-left: 15px;
+}
+
+.label {
+	margin-right: 5px;
+	font-weight: bold;
+}
+
+.count {
+	font-weight: 100;
+}
+
+.message-box {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.message {
+	background: #FF0000;
+	color: #1C1919;
+	font-weight: bold;
+	padding: 2px;
+}
+
+.notification {
+	background: #D3CBBD;
+	color: #1C1919;
+	font-weight: bold;
+	padding: 2px;
+}
+</style>
 </head>
 
 <body>
 
+	<mxit:advert auid="" />
+
 	<c:set var="contextPath" value="${pageContext.request.contextPath}" />
-	
+
 	<div class="logo">
-        <img src="<c:url value="/resources/soccer-logo-small.png" />" />
-    </div>
+		<img src="<c:url value="/resources/soccer-logo-small.png" />" />
+	</div>
 
-	<span class="heading">Pool Players</span><br/>
+	<span class="heading">Pool Players</span>
+	<br />
 
-    <c:if test="${not empty message}">    
-      <div class="marginSpacer"><span class="message">${message}</span></div>
-    </c:if>
-        
-    <c:if test="${not empty notification}">    
-     <div class="marginSpacer"><span class="notification">${notification}</span></div>
-    </c:if>
+	<c:if test="${not empty message}">
+		<div class="marginSpacer">
+			<span class="message">${message}</span>
+		</div>
+	</c:if>
 
-	<table>
-		<tr>
-			<td><b>Player</b></td>
-			<td><b>Points</b></td>
-			<td> <b>Price</b></td>
-		</tr>
+	<c:if test="${not empty notification}">
+		<div class="marginSpacer">
+			<span class="notification">${notification}</span>
+		</div>
+	</c:if>
 
-		<c:if test="${not empty results.poolPlayers}">
+
+
+	<c:if test="${not empty results.poolPlayers}">
+
+		<table>
+			<tr>
+				<td><b>Player</b></td>
+				<td><b>Points</b></td>
+				<td><b>Price</b></td>
+			</tr>
 
 			<c:forEach items="${results.poolPlayers}" var="poolPlayer">
 				<tr>
-					<td>
-					${poolPlayer.firstName} ${poolPlayer.lastName} (${poolPlayer.block})					
-					</td>
+					<td>${poolPlayer.firstName} ${poolPlayer.lastName}
+						(${poolPlayer.block})</td>
 					<td align="right">${poolPlayer.currentScore}</td>
-					<td align="right">  <fmt:formatNumber value="${poolPlayer.price}" type="currency" currencySymbol="R" pattern="¤ # ##0" />
-					</td>
+					<td align="right"><fmt:formatNumber
+							value="${poolPlayer.price}" type="currency" currencySymbol="R"
+							pattern="¤ # ##0" /></td>
 				</tr>
 			</c:forEach>
-		</c:if>
 
-		<c:if test="${empty message && empty results.poolPlayers}">
+
 			<tr>
-				<td>No current pool players to view</td>
+				<td colspan="3"><c:if test="${results.page > 0}">
+						<a
+							href="${contextPath}/pool/view?userid=${userid}&teamid=${teamid}&page=${results.page - 1}&pagesize=${results.pageSize}">
+							Previous </a>
+					</c:if> <c:if test="${not results.lessThanAFullPage}">
+						<a
+							href="${contextPath}/pool/view?userid=${userid}&teamid=${teamid}&page=${results.page + 1}&pagesize=${results.pageSize}">
+							Next </a>
+					</c:if></td>
 			</tr>
-		</c:if>
 
-		<tr>
-			<td colspan="3">
-			     <c:if test="${results.page > 0}">
-					<a href="${contextPath}/pool/view?userid=${userid}&teamid=${teamid}&page=${results.page - 1}&pagesize=${results.pageSize}">
-						Previous </a>
-				</c:if>
-				 <c:if test="${results.page == 0}">                    
-                    Previous
-                </c:if>                
-				 
-				<c:if test="${not results.lessThanAFullPage}"> 
-				    <a href="${contextPath}/pool/view?userid=${userid}&teamid=${teamid}&page=${results.page + 1}&pagesize=${results.pageSize}">
-					Next </a>
-				</c:if>	
-				<c:if test="${results.lessThanAFullPage}"> 
-                    Next
-                </c:if> 
-			</td>
-		</tr>
-
-	</table>
+		</table>
+	</c:if>
+	<c:if test="${empty message && empty results.poolPlayers}">
+            No current pool players to view            
+        </c:if>
 
 	<p class="navigation">
-          <a href="${contextPath}/team/list?userid=${userid}">Back</a>
-           | 
-          <a href="${contextPath}/team/list?userid=${userid}">Home</a>
-           | 
-          <a href="${contextPath}/rules.jsp?userid=${userid}">Rules</a>
-      </p>
+		<a href="${contextPath}/team/list?userid=${userid}">Back</a> | <a
+			href="${contextPath}/team/list?userid=${userid}">Home</a> | <a
+			href="${contextPath}/rules.jsp?userid=${userid}">Rules</a> | <a
+			href="${contextPath}/terms.jsp?userid=${userid}">T&amp;C</a>
+	</p>
 
 </body>
 </html>

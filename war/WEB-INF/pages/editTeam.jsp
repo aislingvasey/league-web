@@ -20,6 +20,8 @@
 
   <body>  
   
+  <mxit:advert auid=""/> 
+  
     <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
   
     <div class="logo">

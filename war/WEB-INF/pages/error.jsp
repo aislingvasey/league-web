@@ -20,6 +20,8 @@
 
   <body>
   
+    <mxit:advert auid=""/> 
+  
     <div class="logo">
         <img src="<c:url value="/resources/soccer-logo-small.png" />" />
     </div>
@@ -42,6 +44,8 @@
           <a href="${contextPath}/team/list?userid=${userid}">Home</a>
            | 
           <a href="${contextPath}/rules.jsp?userid=${userid}">Rules</a>
+          |
+              <a href="${contextPath}/terms.jsp?userid=${userid}">T&amp;C</a>
       </p>
   </body>
 

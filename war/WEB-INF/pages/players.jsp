@@ -21,6 +21,8 @@
 
   <body>  
   
+  <mxit:advert auid=""/> 
+  
     <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
     
     <div class="logo">
@@ -236,10 +238,17 @@
         <c:forEach items="${team.substitutes}" var="s">
             ${count} <a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${s.poolPlayerId}">
             ${s.firstName} ${s.lastName}</a>
-             (${s.originalBlock})             
-            <a href="${contextPath}/team/changePlayerStatus?userid=${team.userId}&teamid=${team.teamId}&type=substitute&poolplayerid=${s.poolPlayerId}&teamstatus=COMPLETE&captainid=${team.captainId}">            
-            ${s.block}
-            </a>             
+             (${s.originalBlock})  
+            
+            <c:if test="${team.canSubstitute}">            
+	            <a href="${contextPath}/team/changePlayerStatus?userid=${team.userId}&teamid=${team.teamId}&type=substitute&poolplayerid=${s.poolPlayerId}&teamstatus=COMPLETE&captainid=${team.captainId}">            
+	            ${s.block}
+	            </a>             
+            </c:if>
+            <c:if test="${not team.canSubstitute}">            
+                <span class="hint">Substitution unavailable currently</span>
+            </c:if>
+            
             <c:if test="${team.substitutesCount > count}">
                 <br/>
             </c:if>
@@ -269,6 +278,8 @@
           <a href="${contextPath}/team/list?userid=${userid}">Home</a>
            | 
           <a href="${contextPath}/rules.jsp?userid=${userid}">Rules</a>
+          |
+              <a href="${contextPath}/terms.jsp?userid=${userid}">T&amp;C</a>
       </p>
     
   </body>
