@@ -2,6 +2,7 @@
 
 /bin/
 /war/WEB-INF/classes/
+/war/resources/images/
 /target
 war/league_web
 build
