@@ -30,7 +30,7 @@
     <!--  Quartz tasks --> 
     <task:scheduled-tasks>
         <!-- Process the match feed daily -->
-        <task:scheduled ref="service.task" method="processMatches" cron="0 27 18 ? * *"/>
+        <task:scheduled ref="service.task" method="processMatches" cron="0 17 19 ? * *"/>
     </task:scheduled-tasks> 
     
 </beans>
