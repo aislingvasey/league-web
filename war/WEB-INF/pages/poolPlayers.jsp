@@ -6,57 +6,15 @@
 <title>PFL - Pool Players</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <style>
-body {
-	color: #D3CBBD;
-	background: #1C1919;
-}
-
-.heading {
-	color: #FF0000;
-	font-weight: bold;
-}
-
-a {
-	color: #70BDC6;
-}
-
-a:hover {
-	color: #A4E9F0;
-}
-
-.list {
-	margin: 0;
-	margin-bottom: 5px;
-	margin-left: 15px;
-}
-
-.label {
-	margin-right: 5px;
-	font-weight: bold;
-}
-
-.count {
-	font-weight: 100;
-}
-
-.message-box {
-	padding-top: 5px;
-	padding-bottom: 5px;
-}
-
-.message {
-	background: #FF0000;
-	color: #1C1919;
-	font-weight: bold;
-	padding: 2px;
-}
-
-.notification {
-	background: #D3CBBD;
-	color: #1C1919;
-	font-weight: bold;
-	padding: 2px;
-}
+        body { color: #977038; background: #FFFFFF; }
+        .heading { color: #846231; font-weight: bold; }
+        .list { margin: 0; margin-bottom: 5px; margin-left: 15px;}
+        .label { margin-right: 5px; font-weight: bold; }
+        .count { font-weight: 100; }
+        .message-box { padding-top: 5px; padding-bottom: 5px; }
+        .message { color: #FC1108; font-weight: bold; padding: 1px; }
+        .notification { color: #FFFFFF; background: #977038; font-weight: bold; padding: 1px; }
+        .hint { font-size: smaller; }
 </style>
 </head>
 
@@ -67,7 +25,7 @@ a:hover {
 	<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 	<div class="logo">
-		<img src="<c:url value="/resources/soccer-logo-small.png" />" />
+		<img src="<c:url value="/resources/logo.png" />" />
 	</div>
 
 	<span class="heading">Pool Players</span>
@@ -93,7 +51,7 @@ a:hover {
 			<tr>
 				<td><b>Player</b></td>
 				<td><b>Points</b></td>
-				<td><b>Price</b></td>
+				<td><b>Current Price</b></td>
 			</tr>
 
 			<c:forEach items="${results.poolPlayers}" var="poolPlayer">
@@ -109,14 +67,17 @@ a:hover {
 
 
 			<tr>
-				<td colspan="3"><c:if test="${results.page > 0}">
+				<td colspan="3">
+				    <c:if test="${results.page > 0}">
 						<a
 							href="${contextPath}/pool/view?userid=${userid}&teamid=${teamid}&page=${results.page - 1}&pagesize=${results.pageSize}">
-							Previous </a>
-					</c:if> <c:if test="${not results.lessThanAFullPage}">
+							Previous</a>&nbsp;
+					</c:if> 
+					<c:if test="${not results.lessThanAFullPage}">
+						&nbsp;
 						<a
 							href="${contextPath}/pool/view?userid=${userid}&teamid=${teamid}&page=${results.page + 1}&pagesize=${results.pageSize}">
-							Next </a>
+							Next</a>
 					</c:if></td>
 			</tr>
 

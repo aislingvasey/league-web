@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
   <head>
-    <title>PFL - User Team Players History</title>
+    <title>PFL - Match Events</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <style>
         body { color: #977038; background: #FFFFFF; }
@@ -22,14 +22,14 @@
   
   <mxit:advert auid=""/> 
   
-    <c:set var="contextPath" value="${pageContext.request.contextPath}"/> 
-    
+    <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+  
     <div class="logo">
         <img src="<c:url value="/resources/logo.png" />" />
-    </div>   
+    </div>
   
-    <span class="heading">User Team History</span><br/>
-  
+    <span class="heading">Match Statistics</span><br/>
+        
     <c:if test="${not empty message}">    
       <div class="marginSpacer"><span class="message">${message}</span></div>
     </c:if>
@@ -37,41 +37,42 @@
     <c:if test="${not empty notification}">    
      <div class="marginSpacer"><span class="notification">${notification}</span></div>
     </c:if>
-
-    <c:if test="${not empty scores}">
-        <c:out value="${scores[0].teamName}" /> Current Score:<c:out value="${scores[0].teamCurrentScore}" /> 
+    
+    <c:if test="${not empty stats}">
+        <b><c:out value="${stats[0].firstName}" /> <c:out value="${stats[0].lastName}" /></b>
+        (<c:out value="${stats[0].playerBlock}" />)
+        <br/>    
+        Match: <c:out value="${stats[0].matchDate}" /> 
+        
+        <br/>${stats[0].teamOne} v ${stats[0].teamTwo}
+        
+        <br/>Total Points: <b><c:out value="${stats[0].matchPoints}" /></b> 
         <br/>
-        Match Score: <b>${scores[0].matchPoints}</b>
-        <br/>        
-                
         <table>
         <tr>
-            <td><b>Player</b></td> 
-            <td><b>Points</b></td>
+            <td><b>Statistic</b></td> 
+            <td><b>Points</b></td> 
+            <td><b>Number</b></td>
+            <td><b>Stat Total</b></td>
         </tr>
-        <c:forEach items="${scores}" var="score">
+        <c:forEach items="${stats}" var="stat">
             <tr>
-                <td>
-                    <a href="${contextPath}/team/viewMatchStats?userid=${userid}&teamid=${teamid}&poolplayerid=${score.poolPlayerId}&matchid=${score.matchId}&fromteam=true">
-                    ${score.playerFirstName} ${score.playerLastName}
-                    </a>
-                </td>
-                <td align="right">${score.playerPoints}</td>
+                <td>${stat.statName}</td>
+                <td align="right">${stat.statPoints}</td>
+                <td align="right">${stat.statCount}</td>
+                <td align="right">${stat.statTotal}</td>
             </tr>                               
         </c:forEach>
         
         </table>
     </c:if>
     
-    <p class="navigation">
-          <a href="${contextPath}/team/teamHistory?userid=${userid}&teamid=${teamid}">Back</a>
-           | 
-          <a href="${contextPath}/team/list?userid=${userid}">Home</a>
-           | 
-          <a href="${contextPath}/rules.jsp?userid=${userid}">Rules</a>
-          |
-              <a href="${contextPath}/terms.jsp?userid=${userid}">T&amp;C</a>
-      </p>
+    <c:if test="${empty fromteam}">
+        <a href="${contextPath}/team/viewPlayerMatches?userid=${userid}&teamid=${teamid}&poolplayerid=${poolplayerid}">Back</a>
+    </c:if>
+    <c:if test="${not empty fromteam}">    
+        <a href="${contextPath}/team/teamHistoryPlayersPoints?userid=${userid}&teamid=${teamid}&matchid=${matchid}">Back</a>
+    </c:if>
     
   </body>
 </html>  

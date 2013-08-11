@@ -6,16 +6,15 @@
     <title>PFL - User League</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <style>
-        body { color: #D3CBBD; background: #1C1919; }
-        .heading { color: #FF0000; font-weight: bold; }
-        a { color: #70BDC6;  }
-        a:hover { color: #A4E9F0; }
+        body { color: #977038; background: #FFFFFF; }
+        .heading { color: #846231; font-weight: bold; }
         .list { margin: 0; margin-bottom: 5px; margin-left: 15px;}
         .label { margin-right: 5px; font-weight: bold; }
         .count { font-weight: 100; }
         .message-box { padding-top: 5px; padding-bottom: 5px; }
-        .message { background: #FF0000; color:#1C1919;  font-weight: bold; padding: 2px; }
-        .notification { background: #D3CBBD; color: #1C1919; font-weight: bold; padding: 2px; }
+        .message { color: #FC1108; font-weight: bold; padding: 1px; }
+        .notification { color: #FFFFFF; background: #977038; font-weight: bold; padding: 1px; }
+        .hint { font-size: smaller; }
     </style>
   </head>
 
@@ -26,7 +25,7 @@
 	  <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 	  
 	  <div class="logo">
-        <img src="<c:url value="/resources/soccer-logo-small.png" />" />
+        <img src="<c:url value="/resources/logo.png" />" />
       </div>
 	    	    
 	  <c:if test="${not empty league}">
@@ -50,20 +49,19 @@
 	       <br/> --%>
 	        
 	       <c:if test="${not empty league.leagueTeamSummary}">
-               <b>Top <%-- ${league.currentCount} --%> Teams</b><br/>
                <table>
                <tr>
                 <td class="hint"> </td>
-                <td class="hint"><b>Name</b></td>
-                <td class="hint"><b>Owner</b></td>                
-                <td class="hint"><b>Points</b></td>
-                <td class="hint"><b>Weeks</b></td>
-                <td class="hint"><b>Total</b></td>
+                <td class="hint">Name</td>
+                <td class="hint">Owner</td>                
+                <td class="hint">Points</td>
+                <td class="hint">Weeks</td>
+                <td class="hint">Total</td>
                 <!-- <td class="hint"><b>Position</b></td> -->
                </tr>
                <c:forEach items="${league.leagueTeamSummary}" var="team">
                     <tr>
-                    <td><b>${team.positionInLeague}</b><%--  / ${league.teamCount} --%></td>
+                    <td>${team.positionInLeague}<%--  / ${league.teamCount} --%></td>
                     <td><b>${team.teamName}</b></td>
                     <td>
                     <c:if test="${not empty team.firstName}">

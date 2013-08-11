@@ -15,7 +15,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.africaapps.league.dto.PlayerMatchEventSummary;
+import com.africaapps.league.dto.PlayerMatchStatisticSummary;
 import com.africaapps.league.dto.PlayerMatchSummary;
 import com.africaapps.league.dto.PoolPlayerSummary;
 import com.africaapps.league.dto.TeamSummary;
@@ -272,7 +272,8 @@ public class TeamController extends BaseLeagueController {
 			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
 			@RequestParam(required = false, value = TEAM_ID_PARAM) String teamId,
 			@RequestParam(required = false, value = "type") String type,
-			@RequestParam(required = false, value = "team") String team, 
+			@RequestParam(required = false, value = "team") String team,
+			@RequestParam(required = false, value = "teamLogo") String teamLogo,
 			ModelMap model) {
 		logger.info("Finding team's player: " + userId + " teamId:" + teamId + " playerType:" + type + " team:" + team);
 		User user = getUser(request, userId, null);
@@ -304,6 +305,8 @@ public class TeamController extends BaseLeagueController {
 					// User Team's money
 					Long availableMoney = userTeamService.getAvailableMoney(Long.valueOf(teamId));
 					removeAndAdd(model, "availableMoney", availableMoney);
+					//Team's logo
+					removeAndAdd(model, "teamLogo", teamLogo);
 					return TEAM_PLAYERS_PAGE_MAPPING;
 				} else {
 					model.addAttribute("message", "No teams specified");
@@ -891,8 +894,8 @@ public class TeamController extends BaseLeagueController {
 		return url;
 	}
 
-	@RequestMapping(value = "/viewMatchEvents")
-	public String viewPlayerMatchEvents(HttpServletRequest request,
+	@RequestMapping(value = "/viewMatchStats")
+	public String viewPlayerMatchStats(HttpServletRequest request,
 			@RequestParam(required = false, value = USER_ID_PARAM) String userId,
 			@RequestParam(required = false, value = TEAM_ID_PARAM) String teamId,
 			@RequestParam(required = false, value = POOL_PLAYER_ID_PARAM) String poolPlayerId,
@@ -905,13 +908,14 @@ public class TeamController extends BaseLeagueController {
 				removeAndAdd(model, "fromteam", fromTeam);
 				if (isValidId(teamId) && isValidId(poolPlayerId) && isValidId(matchId)) {
 					updateAttributes(model, userId, teamId, poolPlayerId, matchId);
-					List<PlayerMatchEventSummary> events = userTeamService.getPoolPlayerMatchEvents(Long.valueOf(poolPlayerId),
+					List<PlayerMatchStatisticSummary> stats = userTeamService.getPoolPlayerMatchStats(
+							Long.valueOf(poolPlayerId),
 							Long.valueOf(matchId));
-					model.addAttribute("events", events);
-					return PLAYER_MATCH_EVENTS_PAGE_MAPPING;
+					model.addAttribute("stats", stats);
+					return PLAYER_MATCH_STATS_PAGE_MAPPING;
 				} else {
 					model.addAttribute("message", "No team, player or match specified");
-					return PLAYER_MATCH_EVENTS_PAGE_MAPPING;
+					return PLAYER_MATCH_STATS_PAGE_MAPPING;
 				}
 			} else {
 				// Check for any of the user's identification and if nothing, go back to the default mapping
@@ -922,8 +926,8 @@ public class TeamController extends BaseLeagueController {
 			logger.error("Error getting player's matches team: ", e);
 			model.addAttribute("message", "Unable to view player's matches");
 		}
-		String url = "redirect:/team/players";
-		logger.info("Going back to players page:" + url);
+		String url = "redirect:/team/teamHistory";
+		logger.info("Going back to teamHistory page:" + url);
 		return url;
 	}
 
