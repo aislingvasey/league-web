@@ -3,60 +3,18 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <html>
 <head>
-<title>League - How to Play</title>
+<title>League - Terms and Conditions</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <style>
-body {
-	color: #D3CBBD;
-	background: #1C1919;
-}
-
-.heading {
-	color: #FF0000;
-	font-weight: bold;
-}
-
-a {
-	color: #70BDC6;
-}
-
-a:hover {
-	color: #A4E9F0;
-}
-
-.list {
-	margin: 0;
-	margin-bottom: 5px;
-	margin-left: 15px;
-}
-
-.label {
-	margin-right: 5px;
-	font-weight: bold;
-}
-
-.count {
-	font-weight: 100;
-}
-
-.message-box {
-	padding-top: 5px;
-	padding-bottom: 5px;
-}
-
-.message {
-	background: #FF0000;
-	color: #1C1919;
-	font-weight: bold;
-	padding: 2px;
-}
-
-.notification {
-	background: #D3CBBD;
-	color: #1C1919;
-	font-weight: bold;
-	padding: 2px;
-}
+        body { color: #977038; background: #FFFFFF; }
+        .heading { color: #ff6819; font-weight: bold; }
+        .list { margin: 0; margin-bottom: 5px; margin-left: 15px;}
+        .label { margin-right: 5px; font-weight: bold; }
+        .count { font-weight: 100; }
+        .message-box { padding-top: 5px; padding-bottom: 5px; }
+        .message { color: #FC1108; font-weight: bold; padding: 1px; }
+        .notification { color: #FFFFFF; background: #ff6819; font-weight: bold; padding: 1px; }
+        .hint { font-size: smaller; }
 </style>
 </head>
 
@@ -64,9 +22,10 @@ a:hover {
 
 	<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
-	<span class="heading">AFC FANTASY FOOTBALL</span>
+	<span class="heading">Premier Fantasy League</span>
 	<br />
-	<b>TERMS AND CONDITIONS</b>
+	<br/>
+	<b>Terms and Conditions</b>
 	<br /> By registering to participate in the Fantasy game governed by
 	these terms and conditions and the Game Rules (as defined below) ("the
 	Game") you hereby agree to be bound by and to abide by the following

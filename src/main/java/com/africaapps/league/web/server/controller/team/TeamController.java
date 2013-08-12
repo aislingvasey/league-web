@@ -724,7 +724,7 @@ public class TeamController extends BaseLeagueController {
 			}
 		} catch (LeagueException e) {
 			logger.error("Error changing player's status: ", e);
-			model.addAttribute("message", "Unable to change player's status");
+			model.addAttribute("message", "Error trading player");
 		}
 		return "redirect:/team/selectTradePoolPlayer";
 	}

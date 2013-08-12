@@ -7,13 +7,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <style>
         body { color: #977038; background: #FFFFFF; }
-        .heading { color: #846231; font-weight: bold; }
+        .heading { color: #ff6819; font-weight: bold; }
         .list { margin: 0; margin-bottom: 5px; margin-left: 15px;}
         .label { margin-right: 5px; font-weight: bold; }
         .count { font-weight: 100; }
         .message-box { padding-top: 5px; padding-bottom: 5px; }
         .message { color: #FC1108; font-weight: bold; padding: 1px; }
-        .notification { color: #FFFFFF; background: #977038; font-weight: bold; padding: 1px; }
+        .notification { color: #FFFFFF; background: #ff6819; font-weight: bold; padding: 1px; }
         .hint { font-size: smaller; }
     </style>
   </head>
@@ -50,7 +50,7 @@
     <c:if test="${not empty teams}">
     
         <c:forEach items="${teams}" var="team">
-            <span class="label">${team.teamName}</span>            
+            <span class="heading">${team.teamName}</span>            
             <br/>
             <c:if test="${team.teamStatus == 'INCOMPLETE'}">
                 <span class="hint">To complete your team, use the <a class="message2" href="${contextPath}/team/players?userid=${userid}&teamid=${team.teamId}">View your Players</a> page.</span>

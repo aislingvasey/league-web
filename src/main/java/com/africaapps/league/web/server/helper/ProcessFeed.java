@@ -1,5 +1,7 @@
 package com.africaapps.league.web.server.helper;
 
+import java.util.ResourceBundle;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,11 +14,6 @@ import com.africaapps.league.service.league.LeagueService;
 public class ProcessFeed {
 
 	public static final String[] SPRING_CONFIG_LOCATIONS = new String[] { "classpath:spring.xml" };
-
-	private String x = "file:///home/aisling/development/workspaces/games/league/src/test/resources/new-env.wsdl";
-	private String y = "ashley.kleynhans@gmail.com";
-	private String z = "Mxit_For_AmiscoSA!!";
-	
 
 	private static Logger LOG = LoggerFactory.getLogger(ProcessFeed.class);
 
@@ -32,7 +29,12 @@ public class ProcessFeed {
 		try {
 			League league = leagueService.getLeague("ABSA Premier Soccer League"); 
 			MatchFilter matchFilter = null;
-			feedService.processFeed(league, x, y, z, matchFilter);
+			ResourceBundle bundle = ResourceBundle.getBundle("feed");
+			feedService.processFeed(league, 
+					bundle.getString("feed.wsdl.url"), 
+					bundle.getString("feed.username"), 
+					bundle.getString("feed.password"), 
+					matchFilter);
 		} catch (LeagueException e) {
 			LOG.error("Error running feed: ", e);
 		} finally {

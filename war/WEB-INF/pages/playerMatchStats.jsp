@@ -7,13 +7,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <style>
         body { color: #977038; background: #FFFFFF; }
-        .heading { color: #846231; font-weight: bold; }
+        .heading { color: #ff6819; font-weight: bold; }
         .list { margin: 0; margin-bottom: 5px; margin-left: 15px;}
         .label { margin-right: 5px; font-weight: bold; }
         .count { font-weight: 100; }
         .message-box { padding-top: 5px; padding-bottom: 5px; }
         .message { color: #FC1108; font-weight: bold; padding: 1px; }
-        .notification { color: #FFFFFF; background: #977038; font-weight: bold; padding: 1px; }
+        .notification { color: #FFFFFF; background: #ff6819; font-weight: bold; padding: 1px; }
         .hint { font-size: smaller; }
     </style>
   </head>
@@ -52,8 +52,8 @@
         <tr>
             <td><b>Statistic</b></td> 
             <td><b>Points</b></td> 
-            <td><b>Number</b></td>
-            <td><b>Stat Total</b></td>
+            <td>&nbsp;<b>Number</b></td>
+            <td>&nbsp;<b>Total Stat</b></td>
         </tr>
         <c:forEach items="${stats}" var="stat">
             <tr>
