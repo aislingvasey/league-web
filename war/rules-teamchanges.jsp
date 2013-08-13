@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
   <head>
-    <title>League - How to Play</title>
+    <title>League - Team Changes</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <style>
         body { color: #977038; background: #FFFFFF; }
@@ -56,7 +56,8 @@ your team. If the pool player is more expensive, then you need to have enough le
 You get one free Player Transfer every 2nd playing week. 
 Any unused transfers cannot be carried into subsequent weeks.
 Once a transfer has been submitted, it cannot be reversed or changed under any circumstance.
-You can make one transfer a week if you have paid the weekly subscription of x moola.  If you pay y moola you may make an additional substitution once every fortnight. 
+<!-- You can make one transfer a week if you have paid the cost of 25 moola.  
+If you pay 100 moola you may make an additional substitution once every fortnight.  -->
 Transfers take effect immediately.
 <br/>
  

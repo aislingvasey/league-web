@@ -49,6 +49,9 @@
 		href='${contextPath}/rules-teamchanges.jsp?userid=${param["userid"]}'>Team
 		Changes</a>
 	<br />
+	<a
+        href='${contextPath}/rules-points.jsp?userid=${param["userid"]}'>Points</a>
+    <br />
 	<p class="navigation">
 		<a href='${contextPath}/team/list?userid=${param["userid"]}'>Home</a>
 	</p>

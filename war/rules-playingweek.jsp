@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <html>
 <head>
-<title>League - How to Play</title>
+<title>League - Playing Weeks</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <style>
         body { color: #977038; background: #FFFFFF; }

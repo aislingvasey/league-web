@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
   <head>
-    <title>League - Basics</title>
+    <title>League - Points</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <style>
         body { color: #977038; background: #FFFFFF; }
@@ -22,29 +22,71 @@
   
     <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
     
-    <span class="heading">The Basics</span><br/><br/>
-    
-<b>Creating Your Squad:</b><br/>
-You need to choose 15 players to form your team's squad. Of these 15 players, 11 players are playing on the team and 4 players are on the bench as substitutes. 
-One of the 15 active players must be nominated as your team captain. 
-<br/>You have <b>R5 million</b> to spend to buy all your players. Any money you have left over can be used
-later as part of Player Trades.
-<br/><br/> 
+    <span class="heading">Points</span><br/><br/>
 
-<b>General League:</b><br/>
-By default all PFL teams are put into the <b>General League</b>. All teams are ranked with this league. 
+Players are awared points using the following statistics for the different positions.
 <br/><br/>
 
-<b>Team Format:</b><br/>
-You can choose from any of the following team formations: 4-4-2, 3-4-3, 4-3-3, 3-5-2, or 4-5-1.
-For example: the format 3-5-2 would be 3 defenders - 5 midfielders - 2 strickers. Your team always need at least 1 goalkeeper.<br/> 
-You need to select enough players of each type to complete your chosen team format. 
-When you chose your players for your team, you will be prompted to choose enough players of each type to complete your selected team format.
-<br/>
+<span class="heading">Balls</span><br/>
+<table>
+    <tr>
+        <td></td>
+        <td>Keeper</td>
+        <td>Defenders</td>
+        <td>Midfield</td>
+        <td>Strikers</td>
+    </tr> 
+    <tr>
+        <td>Balls played</td>
+        <td>0.5</td>
+        <td>0.5</td>
+        <td>0.5</td>
+        <td>0.5</td>
+    </tr>
+        <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+        <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+        <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+        <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+        <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
 
-    <p class="navigation">          
+Finish this off.....
+
+<br/>
+ 
+    <p class="navigation">      
         <a href='${contextPath}/rules.jsp?userid=${param["userid"]}'>Back</a>
-        |
+            |
         <a href='${contextPath}/team/list?userid=${param["userid"]}'>Home</a>
       </p>
     
