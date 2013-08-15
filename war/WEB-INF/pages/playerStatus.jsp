@@ -13,7 +13,7 @@
         .count { font-weight: 100; }
         .message-box { padding-top: 5px; padding-bottom: 5px; }
         .message { color: #FC1108; font-weight: bold; padding: 1px; }
-        .notification { color: #FFFFFF; background: #ff6819; font-weight: bold; padding: 1px; }
+        .notification { color: #FFFFFF; background: #977038; font-weight: bold; padding: 1px; }
         .hint { font-size: smaller; }
     </style>
 </head>

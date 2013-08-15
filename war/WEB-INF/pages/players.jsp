@@ -13,7 +13,7 @@
         .count { font-weight: 100; }
         .message-box { padding-top: 5px; padding-bottom: 5px; }
         .message { color: #FC1108; font-weight: bold; padding: 1px; }
-        .notification { color: #FFFFFF; background: #ff6819; font-weight: bold; padding: 1px; }
+        .notification { color: #FFFFFF; background: #977038; font-weight: bold; padding: 1px; }
         .hint { font-size: smaller; }
     </style>
   </head>
@@ -262,7 +262,10 @@
             <a href="${contextPath}/team/set?userid=${team.userId}&teamid=${team.teamId}">Submit Your Team</a>
              |             
         </c:if>   
-        
+        <c:if test="${team.teamStatus == 'INCOMPLETE' && not team.complete}">                                  
+            Submit Your Team
+             |             
+        </c:if>
         <c:if test="${team.teamStatus == 'COMPLETE' && team.canTrade}">       
             <a href="${contextPath}/team/startTrade?userid=${userid}&teamid=${team.teamId}">Trade a Player</a>
              |    

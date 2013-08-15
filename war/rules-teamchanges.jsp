@@ -13,7 +13,7 @@
         .count { font-weight: 100; }
         .message-box { padding-top: 5px; padding-bottom: 5px; }
         .message { color: #FC1108; font-weight: bold; padding: 1px; }
-        .notification { color: #FFFFFF; background: #ff6819; font-weight: bold; padding: 1px; }
+        .notification { color: #FFFFFF; background: #977038; font-weight: bold; padding: 1px; }
         .hint { font-size: smaller; }
     </style>
   </head>
@@ -52,7 +52,7 @@ If you transfer your captain to the bench as a substitute or drop them out of yo
 A Transfer means selecting a new player for the pool of available players and choosing an existing team member to be replaced
 by the pool player. This means that you can only trade players in the same position (striker to striker) or as one of your substitutes.
 You need to have enough available money to buy the new pool player. You will get back the money for the player you are dropping from
-your team. If the pool player is more expensive, then you need to have enough left over money from the initial 
+your team. If the pool player is more expensive, then you need to have enough left over money from the initial amount. 
 You get one free Player Transfer every 2nd playing week. 
 Any unused transfers cannot be carried into subsequent weeks.
 Once a transfer has been submitted, it cannot be reversed or changed under any circumstance.
