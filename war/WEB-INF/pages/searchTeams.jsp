@@ -54,7 +54,7 @@
     </c:if>
     
   <p class="navigation">
-          <a href="${contextPath}/team/players?userid=${userid}&teamid=${teamid}">Back</a>
+          <a href="${contextPath}/team/findPlayer?userid=${userid}&teamid=${teamid}&type=${type}">Back</a>
            | 
           <a href="${contextPath}/team/list?userid=${userid}">Home</a>
            | 

@@ -67,12 +67,14 @@
         </table>
     </c:if>
     
-    <c:if test="${empty fromteam}">
+    <c:if test="${empty fromteam && empty fromplayingweek}">
         <a href="${contextPath}/team/viewPlayerMatches?userid=${userid}&teamid=${teamid}&poolplayerid=${poolplayerid}">Back</a>
     </c:if>
     <c:if test="${not empty fromteam}">    
         <a href="${contextPath}/team/teamHistoryPlayersPoints?userid=${userid}&teamid=${teamid}&matchid=${matchid}">Back</a>
     </c:if>
-    
+    <c:if test="${not empty fromplayingweek}">    
+        <a href="${contextPath}/team/teamHistoryPlayingWeeks?userid=${userid}&teamid=${teamid}">Back</a>
+    </c:if>    
   </body>
 </html>  

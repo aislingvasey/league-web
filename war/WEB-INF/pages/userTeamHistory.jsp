@@ -28,7 +28,7 @@
         <img src="<c:url value="/resources/logo.png" />" />
     </div>
     
-    <span class="heading">User Team History</span><br/>
+    <span class="heading">User Team - PSL Game History</span><br/>
     
 
     <c:if test="${not empty message}">    
@@ -71,7 +71,7 @@
     </c:if>
     
     <p class="navigation">
-    <a href="${contextPath}/team/list?userid=${userid}">Back</a>  
+    <a href="${contextPath}/team/teamHistory?userid=${userid}&teamid=${teamid}">Back</a>  
            | 
           <a href="${contextPath}/team/list?userid=${userid}">Home</a>
            | 

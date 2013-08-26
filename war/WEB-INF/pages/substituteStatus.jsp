@@ -58,7 +58,7 @@
             <c:set var="count" value="${count + 1}" scope="page"/>                     
         </c:forEach>     
         
-        <c:if test="${not empty team.midfielders}"><br/><b>Mid Fielders</b></c:if> 
+        <c:if test="${not empty team.midfielders}"><br/><b>Midfielders</b></c:if> 
         <c:forEach items="${team.midfielders}" var="f">
             <br/>${count} 
             <c:if test="${captainid != f.poolPlayerId}">                
@@ -86,7 +86,7 @@
             <c:set var="count" value="${count + 1}" scope="page"/>                  
         </c:forEach>        
         
-        <c:if test="${not empty team.goalKeepers}"><br/><b>Goal Keepers</b></c:if> 
+        <c:if test="${not empty team.goalKeepers}"><br/><b>Goalkeepers</b></c:if> 
         <c:forEach items="${team.goalKeepers}" var="g">
             <br/>${count} 
             <c:if test="${captainid != g.poolPlayerId}">                

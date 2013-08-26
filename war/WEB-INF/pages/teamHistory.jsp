@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
   <head>
-    <title>PFL - Team Format</title>
+    <title>PFL - User Team History</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <style>
         body { color: #977038; background: #FFFFFF; }
@@ -19,14 +19,17 @@
   </head>
 
   <body>  
-    <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-   
-   <mxit:advert auid=""/> 
-   
+  
+  <mxit:advert auid=""/> 
+  
+  <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+  
     <div class="logo">
         <img src="<c:url value="/resources/logo.png" />" />
-    </div> 
-        
+    </div>
+    
+    <span class="heading">User Team History</span><br/>
+    
     <c:if test="${not empty message}">    
       <div class="marginSpacer"><span class="message">${message}</span></div>
     </c:if>
@@ -35,23 +38,13 @@
      <div class="marginSpacer"><span class="notification">${notification}</span></div>
     </c:if>
     
-      <c:if test="${not empty team}">  
-           <span class="heading">Current Team Format: ${team.currentFormat.name}</span>           
-           <br/>
-           <span class="hint">
-           ${team.currentFormat.defenderCount} Defenders - ${team.currentFormat.midfielderCount} Midfielders - ${team.currentFormat.strikerCount} Strikers</span> 
-           <br/>
-           
-           <c:if test="${not empty formats}">
-               Select a new team format:<br/>     
-               <c:forEach items="${formats}" var="format">
-                    <a href="${contextPath}/team/setFormat?teamid=${team.id}&userid=${userid}&formatid=${format.id}">${format.name}</a><br/>                               
-                </c:forEach>
-           </c:if>                         
-      </c:if>      
-      
-      <p class="navigation">
-          <a href="${contextPath}/team/players?userid=${userid}&teamid=${teamid}">Back</a>
+    <a href="${contextPath}/team/teamHistoryPlayingWeeks?userid=${userid}&teamid=${teamid}">By FSL Playing Weeks</a>
+    <br/>
+    <a href="${contextPath}/team/teamHistoryReal?userid=${userid}&teamid=${teamid}">By PSL Games</a>
+    <br/>
+    
+     <p class="navigation">
+          <a href="${contextPath}/team/list?userid=${userid}">Back</a>
            | 
           <a href="${contextPath}/team/list?userid=${userid}">Home</a>
            | 
@@ -59,6 +52,7 @@
           |
               <a href="${contextPath}/terms.jsp?userid=${userid}">T&amp;C</a>
       </p>
+  
   </body>
 
 </html>

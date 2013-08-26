@@ -130,7 +130,7 @@ body { color: #977038; background: #FFFFFF; }
 			</c:if>
 
 			<c:if test="${poolPlayer.block == 'Midfielder'}">
-				<b>Mid Fielders:</b>
+				<b>Midfielders:</b>
 				<c:forEach items="${userTeam.midfielders}" var="f">
 					<br />
 					<a
@@ -154,7 +154,7 @@ body { color: #977038; background: #FFFFFF; }
 			</c:if>
 
 			<c:if test="${poolPlayer.block == 'Goalkeeper'}">
-				<b>Goal Keepers:</b>
+				<b>Goalkeepers:</b>
 				<c:forEach items="${userTeam.goalKeepers}" var="g">
 					<br />
 					<a

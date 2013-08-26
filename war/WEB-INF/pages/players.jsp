@@ -69,8 +69,29 @@
         
         <b>Available Money:</b> <fmt:formatNumber value="${team.availableMoney}" type="currency" currencySymbol="R" pattern="¤ #,##0"/><br/>
         
-        <c:set var="count" value="1" scope="page" />              
+        <c:set var="count" value="1" scope="page"/>        
+        <c:if test="${not team.requiresGoalKeepers}">
+            <b>Goalkeepers: 1/1</b>
+        </c:if>     
+        <c:if test="${team.requiresGoalKeepers}">
+            <b>Goalkeepers: 0/1</b>
+            <a href="${contextPath}/team/findPlayer?userid=${team.userId}&teamid=${team.teamId}&type=Goalkeeper">Add Goalkeeper</a> 
+        </c:if>                   
+        <div class="list">
+        <c:forEach items="${team.goalKeepers}" var="g">
+            ${count} 
+            <a href="${contextPath}/team/changePlayerStatus?userid=${team.userId}&teamid=${team.teamId}&type=Goalkeeper&poolplayerid=${g.poolPlayerId}">
+              ${g.firstName} ${g.lastName}
+            </a>
+             (<fmt:formatNumber value="${g.price}" type="currency" currencySymbol="R" pattern="¤ #,##0"/>)            
+            <c:if test="${1 > count}">
+                <br/>
+            </c:if>
+            <c:set var="count" value="${count + 1}" scope="page"/>                    
+        </c:forEach>      
+        </div>   
         
+        <c:set var="count" value="1" scope="page" />                      
         <b>Defenders: ${team.defendersCount}/${team.teamFormat.defenderCount}</b>
         <c:if test="${team.requiresDefenders}">
             <a href="${contextPath}/team/findPlayer?userid=${team.userId}&teamid=${team.teamId}&type=Defender">Add Defender</a> 
@@ -89,9 +110,9 @@
         </c:forEach>
         </div>
                 
-        <b>Mid Fielders: ${team.midfieldersCount}/${team.teamFormat.midfielderCount}</b>
+        <b>Midfielders: ${team.midfieldersCount}/${team.teamFormat.midfielderCount}</b>
         <c:if test="${team.requiresMidFielders}">
-            <a href="${contextPath}/team/findPlayer?userid=${team.userId}&teamid=${team.teamId}&type=Midfielder">Add Mid Fielder</a> 
+            <a href="${contextPath}/team/findPlayer?userid=${team.userId}&teamid=${team.teamId}&type=Midfielder">Add Midfielder</a> 
         </c:if>              
         <c:set var="count" value="1" scope="page"/>
         <div class="list">
@@ -127,27 +148,7 @@
         </c:forEach>        
         </div>
         
-        <c:set var="count" value="1" scope="page"/>        
-        <c:if test="${not team.requiresGoalKeepers}">
-            <b>Goal Keepers: 1/1</b>
-        </c:if>     
-        <c:if test="${team.requiresGoalKeepers}">
-            <b>Goal Keepers: 0/1</b>
-            <a href="${contextPath}/team/findPlayer?userid=${team.userId}&teamid=${team.teamId}&type=Goalkeeper">Add Goal Keeper</a> 
-        </c:if>                   
-        <div class="list">
-        <c:forEach items="${team.goalKeepers}" var="g">
-            ${count} 
-            <a href="${contextPath}/team/changePlayerStatus?userid=${team.userId}&teamid=${team.teamId}&type=Goalkeeper&poolplayerid=${g.poolPlayerId}">
-              ${g.firstName} ${g.lastName}
-            </a>
-             (<fmt:formatNumber value="${g.price}" type="currency" currencySymbol="R" pattern="¤ #,##0"/>)            
-            <c:if test="${1 > count}">
-                <br/>
-            </c:if>
-            <c:set var="count" value="${count + 1}" scope="page"/>                    
-        </c:forEach>      
-        </div>   
+        
                 
         <b>Substitutes: ${team.substitutesCount}/4</b>
         <c:if test="${team.requiresSubstitutes}">
@@ -178,6 +179,19 @@
         <b>Squad:</b> ${team.playersCount} out of 15 players assigned<br/> 
         <b>Captain:</b> <a href="${contextPath}/team/changePlayerStatus?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${team.captainId}&captain=true">${team.captain}</a><br/>          
         
+        <c:set var="count" value="1" scope="page"/>
+        <b>Goalkeepers: 1/1</b>
+        <div class="list">  
+        <c:forEach items="${team.goalKeepers}" var="g">
+            ${count} <a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${g.poolPlayerId}">
+            ${g.firstName} ${g.lastName}</a>
+            <c:if test="${1 > count}">
+                <br/>
+            </c:if>
+            <c:set var="count" value="${count + 1}" scope="page"/>
+        </c:forEach>
+        </div> 
+        
         <c:set var="count" value="1" scope="page" />        
         <b>Defenders: ${team.defendersCount}/${team.teamFormat.defenderCount}</b>
         <div class="list">             
@@ -193,7 +207,7 @@
         </div>
 
         <c:set var="count" value="1" scope="page"/>
-        <b>Mid Fielders: ${team.midfieldersCount}/${team.teamFormat.midfielderCount}</b>
+        <b>Midfielders: ${team.midfieldersCount}/${team.teamFormat.midfielderCount}</b>
         <div class="list">     
         <c:forEach items="${team.midfielders}" var="f">
             ${count} <a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${f.poolPlayerId}">
@@ -216,20 +230,7 @@
             </c:if>
             <c:set var="count" value="${count + 1}" scope="page"/>          
         </c:forEach>        
-        </div>
-        
-        <c:set var="count" value="1" scope="page"/>
-        <b>Goal Keepers: 1/1</b>
-        <div class="list">  
-        <c:forEach items="${team.goalKeepers}" var="g">
-            ${count} <a href="${contextPath}/team/viewPlayerMatches?userid=${team.userId}&teamid=${team.teamId}&poolplayerid=${g.poolPlayerId}">
-            ${g.firstName} ${g.lastName}</a>
-            <c:if test="${1 > count}">
-                <br/>
-            </c:if>
-            <c:set var="count" value="${count + 1}" scope="page"/>
-        </c:forEach>
-        </div>         
+        </div>        
         
         <c:set var="count" value="1" scope="page"/>
         <b>Substitutes: ${team.substitutesCount}/4</b>

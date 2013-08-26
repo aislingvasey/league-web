@@ -42,11 +42,15 @@ public class BaseLeagueController {
 	protected static final String REGISTER = "register";
 	protected static final String LEAGUE_PAGE_MAPPING = "league";
 	protected static final String TEAMS_SEARCH_PAGE_MAPPING = "searchTeams";
+	protected static final String SEARCH_PLAYERS_PAGE_MAPPING = "searchPlayers";
 	protected static final String TEAM_PLAYERS_PAGE_MAPPING = "teamPlayers";
+	protected static final String POINTS_PRICE_SEARCH_PAGE_MAPPING = "pointPriceSearchPlayers";
 	protected static final String CHANGE_TEAM_FORMAT_MAPPING = "format";
 	protected static final String PLAYER_MATCHES_PAGE_MAPPING = "playerMatches";
 	protected static final String PLAYER_MATCH_STATS_PAGE_MAPPING = "playerMatchStats";
+	protected static final String TEAM_HISTORY_PAGE_MAPPING = "teamHistory";
 	protected static final String USER_TEAM_SCORE_HISTORY_PAGE_MAPPING = "userTeamHistory";
+	protected static final String USER_TEAM_PLAYING_WEEK_PAGE_MAPPING = "userTeamPlayingWeeks";
 	protected static final String USER_TEAM_SCORE_PLAYERS_HISTORY_PAGE_MAPPING = "userTeamPlayersHistory";
 	protected static final String POOL_PLAYERS_PAGE_MAPPING = "poolPlayers";
 	protected static final String TRADE_PLAYER_MAPPING = "tradePlayer";
