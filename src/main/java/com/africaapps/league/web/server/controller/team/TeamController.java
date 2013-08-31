@@ -231,6 +231,7 @@ public class TeamController extends BaseLeagueController {
 		removeAndAdd(model, USER_ID_PARAM, userId);
 		removeAndAdd(model, TEAM_ID_PARAM, teamId);
 		removeAndAdd(model, "type", playerType);
+		printHeaders(request);
 		if (user != null) {
 			if (isValid(playerType) && isValidId(teamId)) {
 				return SEARCH_PLAYERS_PAGE_MAPPING;

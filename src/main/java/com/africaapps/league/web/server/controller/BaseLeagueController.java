@@ -138,7 +138,7 @@ public class BaseLeagueController {
 		return nickname;
 	}
 
-	private void printHeaders(HttpServletRequest request) {
+	protected void printHeaders(HttpServletRequest request) {
 		if (logger.isDebugEnabled()) {
 			if (request != null) {
 				Enumeration<String> names = request.getHeaderNames();
