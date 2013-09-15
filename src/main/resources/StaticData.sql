@@ -24,7 +24,7 @@ INSERT INTO game_team_format(id, name, description, default_format, defender_cou
     
 -- League Data
 INSERT INTO league_data(id, init_team_money, last_feed_datetime, no_trade_hours, goalkeepers_count, substitutes_count, squad_size, user_points_playingweek, team_format_id, league_id) 
-    VALUES((select nextval('league_data_seq')), 5000000, null, 1, 1, 4, 15, 100, (select id from game_team_format where name='4-4-2' and league_type_id = (select id from league_type where name = 'Soccer')) , (select id from league where name = 'ABSA Premier Soccer League'));
+    VALUES((select nextval('league_data_seq')), 10000000, null, 1, 1, 4, 15, 100, (select id from game_team_format where name='4-4-2' and league_type_id = (select id from league_type where name = 'Soccer')) , (select id from league where name = 'ABSA Premier Soccer League'));
     
 -- Pool
 INSERT INTO game_pool(id, league_season_id) 

@@ -39,14 +39,17 @@
     </c:if>
     
     <c:if test="${not empty teams}">
-        <c:set var="count" value="1" scope="page" /> 
+        <%-- <c:set var="count" value="1" scope="page" />  --%>
         <c:forEach items="${teams}" var="team">
             <a href="${contextPath}/team/teamPlayers?userid=${userid}&teamid=${teamid}&type=${type}&team=${team.teamId}&teamLogo=${team.logo}">
-            <img src="<c:url value="/resources/images/teams/${team.logo}" />" /></a>
-            <c:if test="${count % 4 == 0}">
+            ${team.teamName}
+            <%-- <img src="<c:url value="/resources/images/teams/${team.logo}" />" /> --%>
+            </a>
+            <br/>
+            <%-- <c:if test="${count % 4 == 0}">
                 <br/>                
             </c:if>            
-            <c:set var="count" value="${count + 1}" scope="page"/>
+            <c:set var="count" value="${count + 1}" scope="page"/> --%>
         </c:forEach>
     </c:if>
     <c:if test="${empty message && empty teams}">
